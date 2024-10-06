@@ -2,6 +2,7 @@ import 'package:codegopay/widgets/custom_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../constant_string/User.dart';
 import '../../utils/assets.dart';
 import '../../utils/input_fields/custom_color.dart';
 import '../buttons/custom_icon_button_widget.dart';
@@ -76,25 +77,22 @@ class _HubPopupContentState extends State<HubPopupContent>
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "HUB",
-                          style: GoogleFonts.inter(
-                            fontSize: 28,
-                            fontWeight: FontWeight.w500,
-                            color: CustomColor.black,
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "HUB",
+                            style: GoogleFonts.inter(
+                              fontSize: 28,
+                              fontWeight: FontWeight.w500,
+                              color: CustomColor.black,
+                            ),
                           ),
-                        ),
-                        CustomIconButtonWidget(
-                          svgAssetPath: StaticAssets.setting,
-                          iconSize: 21,
-                          onTap: () {
-                            // Add your navigation logic here
-                          },
-                        ),
-                      ],
+                          Container(),
+                        ],
+                      ),
                     ),
                     Expanded(
                       child: GridView(
@@ -114,24 +112,26 @@ class _HubPopupContentState extends State<HubPopupContent>
                                   context, 'dashboard', (route) => false);
                             },
                           ),
-                          HubContainerWidget(
-                            title: "Currency",
-                            imagePath: StaticAssets.currencyArrow,
-                            isHubContainerBorderColor: false,
-                            onTap: () {
-                              Navigator.pushNamedAndRemoveUntil(context,
-                                  'cryptoScreen', (route) => false);
-                            },
-                          ),
-                          HubContainerWidget(
-                            title: "Invest",
-                            imagePath: StaticAssets.investment,
-                            isHubContainerBorderColor: false,
-                            onTap: () {
-                              Navigator.pushNamedAndRemoveUntil(context,
-                                  'investmentScreen', (route) => false);
-                            },
-                          ),
+                          if (User.hidepage == 0)
+                            HubContainerWidget(
+                              title: "Currency",
+                              imagePath: StaticAssets.currencyArrow,
+                              isHubContainerBorderColor: false,
+                              onTap: () {
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, 'cryptoScreen', (route) => false);
+                              },
+                            ),
+                          if (User.hidepage == 0)
+                            HubContainerWidget(
+                              title: "Invest",
+                              imagePath: StaticAssets.investment,
+                              isHubContainerBorderColor: false,
+                              onTap: () {
+                                Navigator.pushNamedAndRemoveUntil(context,
+                                    'investmentScreen', (route) => false);
+                              },
+                            ),
                           HubContainerWidget(
                             title: "Send",
                             imagePath: StaticAssets.send,
@@ -146,8 +146,8 @@ class _HubPopupContentState extends State<HubPopupContent>
                             imagePath: StaticAssets.cards,
                             isHubContainerBorderColor: false,
                             onTap: () {
-                              Navigator.pushNamedAndRemoveUntil(context,
-                                  'cardScreen', (route) => false);
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context, 'cardScreen', (route) => false);
                             },
                           ),
                           HubContainerWidget(
@@ -166,6 +166,16 @@ class _HubPopupContentState extends State<HubPopupContent>
                             onTap: () {
                               Navigator.pushNamedAndRemoveUntil(context,
                                   'addBeneficiaryScreen', (route) => false);
+                            },
+                          ),
+
+                          HubContainerWidget(
+                            title: "My Profile",
+                            imagePath: StaticAssets.addPeople,
+                            isHubContainerBorderColor: false,
+                            onTap: () {
+                              Navigator.pushNamedAndRemoveUntil(context,
+                                  'profileScreen', (route) => false);
                             },
                           ),
                         ],

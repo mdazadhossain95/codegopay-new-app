@@ -119,8 +119,10 @@ flutter:
     - assets/svg/buy.svg
     - assets/svg/card-add.svg
     - assets/svg/cards.svg
+    - assets/svg/clock-rewind.svg
     - assets/svg/close-black.svg
     - assets/svg/close.svg
+    - assets/svg/contact-us.svg
     - assets/svg/copy.svg
     - assets/svg/currency-arrow.svg
     - assets/svg/daily-profit.svg
@@ -131,6 +133,9 @@ flutter:
     - assets/svg/home.svg
     - assets/svg/investment.svg
     - assets/svg/light.svg
+    - assets/svg/location.svg
+    - assets/svg/lock.svg
+    - assets/svg/logout.svg
     - assets/svg/menu.svg
     - assets/svg/month-profit.svg
     - assets/svg/no-card.svg

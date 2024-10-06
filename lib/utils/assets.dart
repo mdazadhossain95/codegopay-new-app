@@ -72,6 +72,11 @@ class StaticAssets {
   static const String dailyProfit = 'assets/svg/daily-profit.svg';
   static const String cardAdd = 'assets/svg/card-add.svg';
   static const String noCard = 'assets/svg/no-card.svg';
+  static const String location = 'assets/svg/location.svg';
+  static const String timeRewind = 'assets/svg/clock-rewind.svg';
+  static const String lock = 'assets/svg/lock.svg';
+  static const String contactUs = 'assets/svg/contact-us.svg';
+  static const String logout = 'assets/svg/logout.svg';
 
   //png image
   static const String errorDialog = 'assets/svg/dialog-warning.svg';

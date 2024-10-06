@@ -21,8 +21,10 @@ class AssetsRes {
   static const String BUY = 'assets/svg/buy.svg';
   static const String CARD_ADD = 'assets/svg/card-add.svg';
   static const String CARDS = 'assets/svg/cards.svg';
+  static const String CLOCK_REWIND = 'assets/svg/clock-rewind.svg';
   static const String CLOSE_BLACK = 'assets/svg/close-black.svg';
   static const String CLOSE = 'assets/svg/close.svg';
+  static const String CONTACT_US = 'assets/svg/contact-us.svg';
   static const String COPY = 'assets/svg/copy.svg';
   static const String CURRENCY_ARROW = 'assets/svg/currency-arrow.svg';
   static const String DAILY_PROFIT = 'assets/svg/daily-profit.svg';
@@ -33,6 +35,9 @@ class AssetsRes {
   static const String HOME = 'assets/svg/home.svg';
   static const String INVESTMENT = 'assets/svg/investment.svg';
   static const String LIGHT = 'assets/svg/light.svg';
+  static const String LOCATION = 'assets/svg/location.svg';
+  static const String LOCK = 'assets/svg/lock.svg';
+  static const String LOGOUT = 'assets/svg/logout.svg';
   static const String MENU = 'assets/svg/menu.svg';
   static const String MONTH_PROFIT = 'assets/svg/month-profit.svg';
   static const String NO_CARD = 'assets/svg/no-card.svg';

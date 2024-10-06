@@ -44,6 +44,7 @@ class CustomColor {
   static const Color cryptoListContainerColor = Color(0xFFEFF4F5);
   static const Color noteContainerColor = Color(0xFFE8EBEC);
   static const Color stakingSmallContainerColor = Color(0xFFF2F2F7);
+  static const Color profileImageContainerColor = Color(0xFFEDF0F5);
 
   //button color
   static const Color primaryButtonColor = Color(0xFF132559);

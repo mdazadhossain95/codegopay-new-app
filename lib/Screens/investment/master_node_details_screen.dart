@@ -44,273 +44,266 @@ class _MasterNodeDetailsScreenState extends State<MasterNodeDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: const SystemUiOverlayStyle(
-            statusBarIconBrightness: Brightness.dark,
-            statusBarBrightness: Brightness.light,
-            statusBarColor: Color(0xffFAFAFA),
-            systemNavigationBarIconBrightness: Brightness.dark,
-            systemNavigationBarColor: Color(0xffFAFAFA)),
-        child: Scaffold(
-          backgroundColor: const Color(0xffFAFAFA),
-          body: Stack(
-            children: [
-              BlocListener(
+    return Scaffold(
+      backgroundColor: const Color(0xffFAFAFA),
+      body: Stack(
+        children: [
+          BlocListener(
+              bloc: _investmentBloc,
+              listener: (context, InvestmentState state) {
+                if (state.statusModel?.status == 0) {
+                  AwesomeDialog(
+                    context: context,
+                    dialogType: DialogType.error,
+                    animType: AnimType.rightSlide,
+                    desc: state.statusModel?.message,
+                    btnCancelText: 'OK',
+                    buttonsTextStyle: const TextStyle(
+                        fontSize: 14,
+                        fontFamily: 'pop',
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white),
+                    btnCancelOnPress: () {},
+                  ).show();
+                }
+              },
+              child: BlocBuilder(
                   bloc: _investmentBloc,
-                  listener: (context, InvestmentState state) {
-                    if (state.statusModel?.status == 0) {
-                      AwesomeDialog(
-                        context: context,
-                        dialogType: DialogType.error,
-                        animType: AnimType.rightSlide,
-                        desc: state.statusModel?.message,
-                        btnCancelText: 'OK',
-                        buttonsTextStyle: const TextStyle(
-                            fontSize: 14,
-                            fontFamily: 'pop',
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white),
-                        btnCancelOnPress: () {},
-                      ).show();
-                    }
-                  },
-                  child: BlocBuilder(
-                      bloc: _investmentBloc,
-                      builder: (context, InvestmentState state) {
-                        return SafeArea(
-                          child: ProgressHUD(
-                            inAsyncCall: state.isloading,
-                            child: RefreshIndicator(
-                              onRefresh: _onRefresh,
-                              child: Column(
-                                // mainAxisAlignment:
-                                //     MainAxisAlignment.spaceBetween,
+                  builder: (context, InvestmentState state) {
+                    return SafeArea(
+                      child: ProgressHUD(
+                        inAsyncCall: state.isloading,
+                        child: RefreshIndicator(
+                          onRefresh: _onRefresh,
+                          child: Column(
+                            // mainAxisAlignment:
+                            //     MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
                                 children: [
-                                  Column(
-                                    children: [
-                                      const SizedBox(
-                                        height: 30,
-                                      ),
-                                      appBarSection(context, state),
-                                      const SizedBox(
-                                        height: 30,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 30),
-                                        child: Column(
+                                  const SizedBox(
+                                    height: 30,
+                                  ),
+                                  appBarSection(context, state),
+                                  const SizedBox(
+                                    height: 30,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 30),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment
+                                                  .spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
                                           children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                const Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 3),
-                                                  child: Text("Masternode Id",
-                                                      style: TextStyle(
-                                                        color:
-                                                            Color(0xff7D7D7D),
-                                                        fontFamily: 'Poppins',
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      )),
-                                                ),
-                                                Text(
-                                                    state.nodeProfitLogModel!
-                                                        .orderId!,
-                                                    style: const TextStyle(
-                                                      color: Color(0xff484444),
-                                                      fontFamily: 'Poppins',
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    )),
-                                              ],
+                                            const Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 3),
+                                              child: Text("Masternode Id",
+                                                  style: TextStyle(
+                                                    color:
+                                                        Color(0xff7D7D7D),
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 10,
+                                                    fontWeight:
+                                                        FontWeight.bold,
+                                                  )),
                                             ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                const Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 3),
-                                                  child: Text("Paid Profit",
-                                                      style: TextStyle(
-                                                        color:
-                                                            Color(0xff7D7D7D),
-                                                        fontFamily: 'Poppins',
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      )),
-                                                ),
-                                                Text(
-                                                    state.nodeProfitLogModel!
-                                                        .totalPaid!
-                                                        .toUpperCase(),
-                                                    style: const TextStyle(
-                                                      color: Color(0xff484444),
-                                                      fontFamily: 'Poppins',
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    )),
-                                              ],
-                                            ),
+                                            Text(
+                                                state.nodeProfitLogModel!
+                                                    .orderId!,
+                                                style: const TextStyle(
+                                                  color: Color(0xff484444),
+                                                  fontFamily: 'Poppins',
+                                                  fontSize: 15,
+                                                  fontWeight:
+                                                      FontWeight.bold,
+                                                )),
                                           ],
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                    ],
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment
+                                                  .spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            const Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 3),
+                                              child: Text("Paid Profit",
+                                                  style: TextStyle(
+                                                    color:
+                                                        Color(0xff7D7D7D),
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: 10,
+                                                    fontWeight:
+                                                        FontWeight.bold,
+                                                  )),
+                                            ),
+                                            Text(
+                                                state.nodeProfitLogModel!
+                                                    .totalPaid!
+                                                    .toUpperCase(),
+                                                style: const TextStyle(
+                                                  color: Color(0xff484444),
+                                                  fontFamily: 'Poppins',
+                                                  fontSize: 15,
+                                                  fontWeight:
+                                                      FontWeight.bold,
+                                                )),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  Expanded(
-                                    child: ListView.builder(
-                                        itemCount: state
-                                            .nodeProfitLogModel?.logs!.length,
-                                        itemBuilder: (context, index) {
-                                          return Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 30, vertical: 5),
-                                            child: Container(
-                                              // height: 80,
-                                              decoration: const BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(10),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                ],
+                              ),
+                              Expanded(
+                                child: ListView.builder(
+                                    itemCount: state
+                                        .nodeProfitLogModel?.logs!.length,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 30, vertical: 5),
+                                        child: Container(
+                                          // height: 80,
+                                          decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(10),
+                                            ),
+                                            color: Color(0xffF1EEEE),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .spaceAround,
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                child: Text(
+                                                  '${state.nodeProfitLogModel?.logs![index].id}',
+                                                  textAlign: TextAlign.left,
+                                                  style: const TextStyle(
+                                                      color:
+                                                          Color(0xff000000),
+                                                      fontFamily: 'Inter',
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      height: 1),
                                                 ),
-                                                color: Color(0xffF1EEEE),
                                               ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Text(
-                                                      '${state.nodeProfitLogModel?.logs![index].id}',
-                                                      textAlign: TextAlign.left,
-                                                      style: const TextStyle(
-                                                          color:
-                                                              Color(0xff000000),
-                                                          fontFamily: 'Inter',
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                          height: 1),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Text(
-                                                      '${state.nodeProfitLogModel?.logs![index].profit!.toUpperCase()}',
-                                                      textAlign: TextAlign.left,
-                                                      style: const TextStyle(
-                                                          color:
-                                                              Color(0xff000000),
-                                                          fontFamily: 'Inter',
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                          height: 1),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: SizedBox(
-                                                      width: 80,
-                                                      child: Text(
-                                                        '${state.nodeProfitLogModel?.logs![index].status!.toUpperCase()}',
-                                                        textAlign: TextAlign.center,
-                                                        style: TextStyle(
-                                                            color: state
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                child: Text(
+                                                  '${state.nodeProfitLogModel?.logs![index].profit!.toUpperCase()}',
+                                                  textAlign: TextAlign.left,
+                                                  style: const TextStyle(
+                                                      color:
+                                                          Color(0xff000000),
+                                                      fontFamily: 'Inter',
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      height: 1),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                child: SizedBox(
+                                                  width: 80,
+                                                  child: Text(
+                                                    '${state.nodeProfitLogModel?.logs![index].status!.toUpperCase()}',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        color: state
+                                                                    .nodeProfitLogModel
+                                                                    ?.logs![
+                                                                        index]
+                                                                    .status ==
+                                                                "processing"
+                                                            ? Colors.orange
+                                                            : state
                                                                         .nodeProfitLogModel
                                                                         ?.logs![
                                                                             index]
                                                                         .status ==
-                                                                    "processing"
-                                                                ? Colors.orange
-                                                                : state
-                                                                            .nodeProfitLogModel
-                                                                            ?.logs![
-                                                                                index]
-                                                                            .status ==
-                                                                        "unpaid"
-                                                                    ? Colors.red
-                                                                    : Colors
-                                                                        .green,
-                                                            fontFamily: 'Inter',
-                                                            fontSize: 12,
-                                                            fontWeight:
-                                                                FontWeight.normal,
-                                                            height: 1),
-                                                      ),
-                                                    ),
+                                                                    "unpaid"
+                                                                ? Colors.red
+                                                                : Colors
+                                                                    .green,
+                                                        fontFamily: 'Inter',
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.normal,
+                                                        height: 1),
                                                   ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Text(
-                                                      '${state.nodeProfitLogModel?.logs![index].date}',
-                                                      textAlign: TextAlign.left,
-                                                      style: const TextStyle(
-                                                          color:
-                                                              Color(0xff000000),
-                                                          fontFamily: 'Inter',
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                          height: 1),
-                                                    ),
-                                                  )
-                                                ],
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        }),
-                                  ),
-                                  // Container(
-                                  //   alignment: Alignment.bottomCenter,
-                                  //   padding:
-                                  //       const EdgeInsets.symmetric(vertical: 5),
-                                  //   child:  Text(
-                                  //     '***${widget.profit} Profit in ${widget.time}\n***Daily profit payment',
-                                  //     textAlign: TextAlign.left,
-                                  //     style: const TextStyle(
-                                  //         color: Color.fromRGBO(0, 0, 0, 1),
-                                  //         fontFamily: 'Poppins',
-                                  //         fontSize: 10,
-                                  //         fontWeight: FontWeight.normal,
-                                  //         height: 1),
-                                  //   ),
-                                  // )
-                                ],
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                child: Text(
+                                                  '${state.nodeProfitLogModel?.logs![index].date}',
+                                                  textAlign: TextAlign.left,
+                                                  style: const TextStyle(
+                                                      color:
+                                                          Color(0xff000000),
+                                                      fontFamily: 'Inter',
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      height: 1),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    }),
                               ),
-                            ),
+                              // Container(
+                              //   alignment: Alignment.bottomCenter,
+                              //   padding:
+                              //       const EdgeInsets.symmetric(vertical: 5),
+                              //   child:  Text(
+                              //     '***${widget.profit} Profit in ${widget.time}\n***Daily profit payment',
+                              //     textAlign: TextAlign.left,
+                              //     style: const TextStyle(
+                              //         color: Color.fromRGBO(0, 0, 0, 1),
+                              //         fontFamily: 'Poppins',
+                              //         fontSize: 10,
+                              //         fontWeight: FontWeight.normal,
+                              //         height: 1),
+                              //   ),
+                              // )
+                            ],
                           ),
-                        );
-                      })),
-            ],
-          ),
-          bottomNavigationBar: CustomBottomBar(index: 2),
-        ));
+                        ),
+                      ),
+                    );
+                  })),
+        ],
+      ),
+      bottomNavigationBar: CustomBottomBar(index: 2),
+    );
   }
 
   appBarSection(BuildContext context, state) {

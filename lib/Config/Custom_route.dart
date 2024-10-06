@@ -1,4 +1,5 @@
 import 'package:codegopay/Screens/Dashboard_screen/notification_screen.dart';
+import 'package:codegopay/Screens/Profile_screen/Profile_screen.dart';
 import 'package:codegopay/Screens/Profile_screen/change_password_screen.dart';
 import 'package:codegopay/Screens/Sign_up_screens/kyc/address_proof/address_proof_screen.dart';
 import 'package:codegopay/Screens/Sign_up_screens/kyc/face_verify/face_proof_screen.dart';
@@ -488,6 +489,14 @@ Route generatroutecustomRoute(
       case 'depositScreen':
       return PageTransition(
         child: const DepositScreen(),
+        type: PageTransitionType.rightToLeft,
+        alignment: Alignment.center,
+        duration: const Duration(milliseconds: 300),
+        reverseDuration: const Duration(milliseconds: 200),
+      );
+      case 'profileScreen':
+      return PageTransition(
+        child: const ProfileScreen(),
         type: PageTransitionType.rightToLeft,
         alignment: Alignment.center,
         duration: const Duration(milliseconds: 300),
