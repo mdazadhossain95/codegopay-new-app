@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "830718645903",
+    "project_id": "codegopay",
+    "storage_bucket": "codegopay.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:830718645903:android:c9a4e90f7999f4415e82fa",
+        "android_client_info": {
+          "package_name": "com.codego.pay"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBS8nEC3xRLw-zFBL1kuBPkHulxSYALb3o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:830718645903:android:298b58a6dd7dbd615e82fa",
+        "android_client_info": {
+          "package_name": "com.codegopay.individual"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBS8nEC3xRLw-zFBL1kuBPkHulxSYALb3o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

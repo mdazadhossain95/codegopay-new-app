@@ -1,0 +1,31 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "codegopay",
+          "appId": "1:830718645903:android:298b58a6dd7dbd615e82fa",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "codegopay",
+          "appId": "1:830718645903:ios:21dc13f48aaa99bb5e82fa",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "codegopay",
+          "configurations": {
+            "android": "1:830718645903:android:298b58a6dd7dbd615e82fa",
+            "ios": "1:830718645903:ios:21dc13f48aaa99bb5e82fa",
+            "web": "1:830718645903:web:9d6ca5f59cf467345e82fa"
+          }
+        }
+      }
+    }
+  }
+}

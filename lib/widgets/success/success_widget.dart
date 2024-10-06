@@ -1,0 +1,123 @@
+import 'package:codegopay/utils/assets.dart';
+import 'package:codegopay/utils/input_fields/custom_color.dart';
+import 'package:codegopay/widgets/custom_image_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../../constant_string/User.dart';
+import '../../utils/custom_style.dart';
+import '../../utils/strings.dart';
+import '../../widgets/buttons/default_back_button_widget.dart';
+import '../buttons/primary_button_widget.dart';
+
+// Renamed enum to avoid conflict
+enum SuccessImageType {
+  success,
+  error,
+  warning,
+}
+
+class SuccessWidget extends StatefulWidget {
+  SuccessWidget({
+    super.key,
+    required this.imageType, // Accepting image type as a parameter
+    required this.title,
+    required this.subTitle,
+    required this.btnText,
+    required this.onTap,
+  });
+
+  final SuccessImageType imageType; // Updated to the new enum name
+  final String title;
+  final String subTitle;
+  final String btnText;
+  final VoidCallback onTap;
+
+  @override
+  State<SuccessWidget> createState() => _SuccessWidgetState();
+}
+
+class _SuccessWidgetState extends State<SuccessWidget> {
+  @override
+  void initState() {
+    super.initState();
+    User.Screen = 'Success Screen';
+  }
+
+  // Method to get the image path based on the image type
+  String _getImagePath() {
+    switch (widget.imageType) {
+      case SuccessImageType.success:
+        return StaticAssets.successIcon; // Assuming you have a success icon
+      case SuccessImageType.error:
+        return StaticAssets.errorIcon; // Assuming you have an error icon
+      case SuccessImageType.warning:
+        return StaticAssets.errorIcon; // Assuming you have a warning icon
+      default:
+        return StaticAssets.errorIcon; // Fallback icon if needed
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: CustomColor.scaffoldBg,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CustomImageWidget(
+                imagePath: _getImagePath(), // Call the method to get the correct image path
+                imageType: 'svg', // Assuming all are SVG, adjust as necessary
+              ),
+              Text(
+                widget.title,
+                textAlign: TextAlign.center,
+                style: CustomStyle.loginTitleStyle,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Text(
+                  widget.subTitle,
+                  textAlign: TextAlign.center,
+                  style: CustomStyle.loginSubTitleStyle,
+                ),
+              ),
+              const SizedBox(height: 10),
+              PrimaryButtonWidget(
+                onPressed: widget.onTap,
+                buttonText: widget.btnText,
+              ), // Space before buttons
+            ],
+          ),
+        ),
+      ),
+      // bottomNavigationBar: CustomBottomBar(index: 0),
+    );
+  }
+
+  Widget appBarSection(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          DefaultBackButtonWidget(onTap: () {
+            Navigator.pushNamedAndRemoveUntil(
+                context, 'dashboard', (route) => false);
+          }),
+          Text(
+            'Create IBAN',
+            style: GoogleFonts.inter(
+                color: CustomColor.black,
+                fontSize: 18,
+                fontWeight: FontWeight.w500),
+          ),
+          const SizedBox(width: 20), // Changed from Container to SizedBox
+        ],
+      ),
+    );
+  }
+}
