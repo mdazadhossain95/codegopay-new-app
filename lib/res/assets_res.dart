@@ -10,6 +10,7 @@ class AssetsRes {
   static const String PLUGIN_VERSION = '2.0.0+1';
   static const String DASHBOARD_NOTIFICATION = 'assets/images/dashboard-notification.png';
   static const String ERROR = 'assets/images/error.png';
+  static const String IMG = 'assets/images/img.png';
   static const String ADD_PEOPLE = 'assets/svg/add-people.svg';
   static const String ALERT_ICON = 'assets/svg/alert-icon.svg';
   static const String ARROW_DOWN_LEFT = 'assets/svg/arrow-down-left.svg';

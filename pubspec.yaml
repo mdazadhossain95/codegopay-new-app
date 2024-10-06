@@ -106,6 +106,7 @@ flutter:
     - assets/gifs/
     - assets/images/dashboard-notification.png
     - assets/images/error.png
+    - assets/images/img.png
     - assets/logo/
     - assets/svg/
     - assets/svg/add-people.svg

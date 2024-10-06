@@ -5,10 +5,8 @@ import 'package:codegopay/utils/assets.dart';
 import 'package:codegopay/utils/user_data_manager.dart';
 import 'package:codegopay/widgets/custom_image_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:page_transition/page_transition.dart';
 
 import 'package:codegopay/Screens/Dashboard_screen/bloc/dashboard_bloc.dart';
 import 'package:codegopay/constant_string/User.dart';
@@ -20,7 +18,6 @@ import '../../utils/custom_scroll_behavior.dart';
 import '../../utils/input_fields/custom_color.dart';
 import '../../widgets/buttons/custom_floating_action_button.dart';
 import '../../widgets/buttons/primary_button_widget.dart';
-import '../gift_card/buy_gift_card_screen.dart';
 
 class CardScreen extends StatefulWidget {
   const CardScreen({super.key});
