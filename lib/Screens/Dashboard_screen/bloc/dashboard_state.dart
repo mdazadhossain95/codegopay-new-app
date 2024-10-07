@@ -133,6 +133,8 @@ class DashboardState {
         bic: '',
         currency: '',
         notifications: [],
+        bankAddress: "",
+        bankName: "",
         transaction: Transaction(today: [], past: [], yesterday: []),
         the3Dsconf: The3Dsconf(status: 222, uniqueId: "", body: ""),
         sof: Sof(sourceOfWealth: 0, sourceOfWealthMsg: ""),
@@ -244,7 +246,7 @@ class DashboardState {
           TransactionApprovedModel(status: 222, message: ""),
       ibanCurrencyModel: IbanCurrencyModel(status: 222, currency: [], iban: []),
       ibanKycCheckModel:
-      IbanKycCheckModel(status: 222, sumsubtoken: "", message: ""),
+          IbanKycCheckModel(status: 222, sumsubtoken: "", message: ""),
     );
   }
 

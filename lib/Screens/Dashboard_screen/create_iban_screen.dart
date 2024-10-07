@@ -68,6 +68,22 @@ class _CreateIbanScreenState extends State<CreateIbanScreen> {
               ).show();
             }
 
+            if (state.statusModel?.status == 0) {
+              AwesomeDialog(
+                context: context,
+                dialogType: DialogType.error,
+                animType: AnimType.rightSlide,
+                desc: state.statusModel?.message,
+                btnCancelText: 'OK',
+                buttonsTextStyle: const TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'pop',
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white),
+                btnCancelOnPress: () {},
+              ).show();
+            }
+
             if (state.ibanKycCheckModel?.status == 1) {
               allowIbanLabel = true;
             }
@@ -153,7 +169,7 @@ class _CreateIbanScreenState extends State<CreateIbanScreen> {
                                 iban: _ibanController.text,
                               ));
                             },
-                            buttonText: 'Submit',
+                            buttonText: 'Next',
                           ),
                         ],
                       ),

@@ -5,10 +5,13 @@ import 'package:codegopay/utils/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../cutom_weidget/custom_navigationBar.dart';
 import '../../cutom_weidget/cutom_progress_bar.dart';
 import '../../cutom_weidget/flip_card_widget.dart';
+import '../../utils/input_fields/custom_color.dart';
 import '../../utils/user_data_manager.dart';
+import '../../widgets/buttons/default_back_button_widget.dart';
 
 class ShowGiftCardScreen extends StatefulWidget {
   const ShowGiftCardScreen({super.key});
@@ -41,852 +44,838 @@ class _ShowGiftCardScreenState extends State<ShowGiftCardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-          statusBarIconBrightness: Brightness.dark,
-          statusBarBrightness: Brightness.light,
-          statusBarColor: Color(0xffFAFAFA),
-          systemNavigationBarIconBrightness: Brightness.dark,
-          systemNavigationBarColor: Color(0xffFAFAFA)),
-      child: PopScope(
-        canPop: false,
-        onPopInvoked: (bool didPop) {
-          debugPrint("$didPop");
+    return Scaffold(
+      backgroundColor: CustomColor.scaffoldBg,
+      body: BlocListener(
+        bloc: _giftCardDetailsBloc,
+        listener: (context, DashboardState state) {
+          if (state.giftCardShareModel?.status == 0) {
+            AwesomeDialog(
+              context: context,
+              dialogType: DialogType.error,
+              animType: AnimType.rightSlide,
+              desc: state.giftCardShareModel?.message,
+              btnCancelText: 'OK',
+              buttonsTextStyle: const TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'pop',
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white),
+              btnCancelOnPress: () {},
+            ).show();
+            // Update flag to indicate sharing is successful
+          } else if (state.giftCardShareModel?.status == 1) {
+            ScaffoldMessenger.of(context)
+                .removeCurrentSnackBar(); // Remove any existing SnackBar
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                  content: Text(
+                state.giftCardShareModel!.message.toString(),
+                style: const TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'pop',
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white),
+              )),
+            );
+          }
         },
-        child: Scaffold(
-          backgroundColor: const Color(0xffFAFAFA),
-          body: BlocListener(
+        child: BlocBuilder(
             bloc: _giftCardDetailsBloc,
-            listener: (context, DashboardState state) {
-              if (state.giftCardShareModel?.status == 0) {
-                AwesomeDialog(
-                  context: context,
-                  dialogType: DialogType.error,
-                  animType: AnimType.rightSlide,
-                  desc: state.giftCardShareModel?.message,
-                  btnCancelText: 'OK',
-                  buttonsTextStyle: const TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'pop',
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
-                  btnCancelOnPress: () {},
-                ).show();
-                // Update flag to indicate sharing is successful
-              } else if (state.giftCardShareModel?.status == 1) {
-                ScaffoldMessenger.of(context)
-                    .removeCurrentSnackBar(); // Remove any existing SnackBar
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                      content: Text(
-                    state.giftCardShareModel!.message.toString(),
-                    style: const TextStyle(
-                        fontSize: 14,
-                        fontFamily: 'pop',
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white),
-                  )),
-                );
-              }
-            },
-            child: BlocBuilder(
-                bloc: _giftCardDetailsBloc,
-                builder: (context, DashboardState state) {
-                  return ProgressHUD(
-                    inAsyncCall: state.isloading,
-                    child: SafeArea(
-                      bottom: false,
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
+            builder: (context, DashboardState state) {
+              return ProgressHUD(
+                inAsyncCall: state.isloading,
+                child: SafeArea(
+                  bottom: false,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    height: double.maxFinite,
+                    child: Column(
+                      // shrinkWrap: true,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(
+                              right: 16, left: 16, top: 30),
+                          child:    Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                DefaultBackButtonWidget(onTap: () {
+                                  Navigator.pushNamed(
+                                      context, 'buyGiftCardScreen');
+                                }),
+                                Text(
+                                  '',
+                                  style: GoogleFonts.inter(
+                                      color: CustomColor.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Container(
+                                  width: 20,
+                                )
+                              ],
+                            ),
+                          ),
                         ),
-                        height: double.maxFinite,
-                        child: Column(
-                          // shrinkWrap: true,
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  right: 20, left: 20, top: 20),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                          context, 'buyGiftCardScreen');
-                                    },
-                                    child: Container(
-                                      width: 24,
-                                      height: 24,
-                                      alignment: Alignment.center,
-                                      child: Image.asset(
-                                        'images/backarrow.png',
-                                        width: 24,
-                                        height: 24,
+
+
+                        Center(
+                          child: Text(
+                            "€${state.giftCardDetailsModel!.card!.balance!.toString() ?? ''}",
+                            style: GoogleFonts.inter(
+                                color: Colors.black,
+                                fontSize: 50,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: 16),
+                          child: Image.network(
+                            state.giftCardDetailsModel!.image!.toString(),
+                            height: 200,
+                            width: MediaQuery.of(context).size.width,
+                            loadingBuilder: (BuildContext context,
+                                Widget child,
+                                ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              } else {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            },
+                            errorBuilder: (BuildContext context,
+                                Object error, StackTrace? stackTrace) {
+                              // Error occurred while loading image, show the asset image as a fallback
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        _detailsWidget(
+                            context,
+                            state.giftCardDetailsModel!.card!.cardNumber
+                                    .toString() ??
+                                "",
+                            state.giftCardDetailsModel!.card!.expiryDate
+                                    .toString() ??
+                                "",
+                            state.giftCardDetailsModel!.card!.cvv
+                                    .toString() ??
+                                ""),
+                        const SizedBox(height: 10),
+                        _transactionTitleWidget(context),
+                        Expanded(
+                          flex: 1,
+                          child:
+                              state.giftCardDetailsModel!.card!.trx!.isEmpty
+                                  ?  Center(
+                                      child: Text(
+                                        'No Transaction yet',
+                                        style: GoogleFonts.inter(
+                                          color: Colors.black.withOpacity(0.7),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                "€${state.giftCardDetailsModel!.card!.balance!.toString() ?? ''}",
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 50,
-                                    fontFamily: 'pop',
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Image.network(
-                                state.giftCardDetailsModel!.image!.toString(),
-                                height: 200,
-                                width: MediaQuery.of(context).size.width,
-                                loadingBuilder: (BuildContext context,
-                                    Widget child,
-                                    ImageChunkEvent? loadingProgress) {
-                                  if (loadingProgress == null) {
-                                    return child;
-                                  } else {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  }
-                                },
-                                errorBuilder: (BuildContext context,
-                                    Object error, StackTrace? stackTrace) {
-                                  // Error occurred while loading image, show the asset image as a fallback
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                },
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            _detailsWidget(
-                                context,
-                                state.giftCardDetailsModel!.card!.cardNumber
-                                        .toString() ??
-                                    "",
-                                state.giftCardDetailsModel!.card!.expiryDate
-                                        .toString() ??
-                                    "",
-                                state.giftCardDetailsModel!.card!.cvv
-                                        .toString() ??
-                                    ""),
-                            const SizedBox(height: 10),
-                            _transactionTitleWidget(context),
-                            Expanded(
-                              flex: 1,
-                              child:
-                                  state.giftCardDetailsModel!.card!.trx!.isEmpty
-                                      ? const Center(
-                                          child: Text(
-                                            'No Transaction yet',
-                                            style: TextStyle(
-                                              fontFamily: 'pop',
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        )
-                                      : ListView.builder(
-                                          itemCount: 5,
-                                          shrinkWrap: true,
-                                          physics: const ScrollPhysics(),
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            if (index >=
-                                                state.giftCardDetailsModel!
-                                                    .card!.trx!.length) {
-                                              return Container(); // Return an empty container if index is out of bounds
-                                            }
-                                            return InkWell(
-                                              onTap: () {
-                                                AwesomeDialog(
-                                                        context: context,
-                                                        dialogType: DialogType
-                                                            .info,
-                                                        btnCancelColor:
-                                                            const Color(
-                                                                0xff10245C),
-                                                        dialogBackgroundColor:
-                                                            Colors.white,
-                                                        animType: AnimType
-                                                            .scale,
-                                                        body: Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      10,
-                                                                  vertical: 5),
-                                                          child: Column(
-                                                            children: [
-                                                              Center(
-                                                                child: Text(
-                                                                  "€${state.giftCardDetailsModel!.card!.trx![index].amount.toString() ?? ''}",
-                                                                  style: const TextStyle(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          50,
+                                    )
+                                  : ListView.builder(
+                                      itemCount: 5,
+                                      shrinkWrap: true,
+                                      physics: const ScrollPhysics(),
+                                      itemBuilder: (BuildContext context,
+                                          int index) {
+                                        if (index >=
+                                            state.giftCardDetailsModel!
+                                                .card!.trx!.length) {
+                                          return Container(); // Return an empty container if index is out of bounds
+                                        }
+                                        return InkWell(
+                                          onTap: () {
+                                            AwesomeDialog(
+                                                    context: context,
+                                                    dialogType: DialogType
+                                                        .info,
+                                                    btnCancelColor:
+                                                        const Color(
+                                                            0xff10245C),
+                                                    dialogBackgroundColor:
+                                                        Colors.white,
+                                                    animType: AnimType
+                                                        .scale,
+                                                    body: Container(
+                                                      padding:
+                                                          const EdgeInsets
+                                                              .symmetric(
+                                                              horizontal:
+                                                                  10,
+                                                              vertical: 5),
+                                                      child: Column(
+                                                        children: [
+                                                          Center(
+                                                            child: Text(
+                                                              "€${state.giftCardDetailsModel!.card!.trx![index].amount.toString() ?? ''}",
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize:
+                                                                      50,
+                                                                  fontFamily:
+                                                                      'pop',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600),
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            margin: const EdgeInsets
+                                                                .symmetric(
+                                                                vertical:
+                                                                    10),
+                                                            child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  const Text(
+                                                                    'Transaction Type',
+                                                                    style:
+                                                                        TextStyle(
                                                                       fontFamily:
                                                                           'pop',
+                                                                      fontSize:
+                                                                          14,
                                                                       fontWeight:
-                                                                          FontWeight
-                                                                              .w600),
-                                                                ),
-                                                              ),
-                                                              Container(
-                                                                margin: const EdgeInsets
-                                                                    .symmetric(
-                                                                    vertical:
-                                                                        10),
-                                                                child: Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceBetween,
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .center,
-                                                                    children: [
-                                                                      const Text(
-                                                                        'Transaction Type',
+                                                                          FontWeight.w600,
+                                                                      color:
+                                                                          Color(0xff2C2C2C),
+                                                                    ),
+                                                                  ),
+                                                                  Expanded(
+                                                                    child:
+                                                                        Container(
+                                                                      alignment:
+                                                                          Alignment.centerRight,
+                                                                      child:
+                                                                          Text(
+                                                                        state.giftCardDetailsModel!.card!.trx![index].type.toString(),
                                                                         style:
                                                                             TextStyle(
-                                                                          fontFamily:
-                                                                              'pop',
-                                                                          fontSize:
-                                                                              14,
-                                                                          fontWeight:
-                                                                              FontWeight.w600,
-                                                                          color:
-                                                                              Color(0xff2C2C2C),
+                                                                          fontFamily: 'pop',
+                                                                          fontSize: 12,
+                                                                          fontWeight: FontWeight.w600,
+                                                                          color: state.giftCardDetailsModel!.card!.trx![index].type.toString() == "Debit" ? Colors.red : Colors.green,
                                                                         ),
                                                                       ),
-                                                                      Expanded(
-                                                                        child:
-                                                                            Container(
-                                                                          alignment:
-                                                                              Alignment.centerRight,
-                                                                          child:
-                                                                              Text(
-                                                                            state.giftCardDetailsModel!.card!.trx![index].type.toString(),
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontFamily: 'pop',
-                                                                              fontSize: 12,
-                                                                              fontWeight: FontWeight.w600,
-                                                                              color: state.giftCardDetailsModel!.card!.trx![index].type.toString() == "Debit" ? Colors.red : Colors.green,
-                                                                            ),
+                                                                    ),
+                                                                  )
+                                                                ]),
+                                                          ),
+                                                          state
+                                                                      .giftCardDetailsModel!
+                                                                      .card!
+                                                                      .trx![
+                                                                          index]
+                                                                      .trxid
+                                                                      .toString() ==
+                                                                  ""
+                                                              ? Container()
+                                                              : Container(
+                                                                  margin: const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          10),
+                                                                  child: Row(
+                                                                      mainAxisAlignment: MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment.center,
+                                                                      children: [
+                                                                        const Text(
+                                                                          'Transaction Id',
+                                                                          style: TextStyle(
+                                                                            fontFamily: 'pop',
+                                                                            fontSize: 14,
+                                                                            fontWeight: FontWeight.w600,
+                                                                            color: Color(0xff2C2C2C),
                                                                           ),
                                                                         ),
-                                                                      )
-                                                                    ]),
-                                                              ),
-                                                              state
-                                                                          .giftCardDetailsModel!
-                                                                          .card!
-                                                                          .trx![
-                                                                              index]
-                                                                          .trxid
-                                                                          .toString() ==
-                                                                      ""
-                                                                  ? Container()
-                                                                  : Container(
-                                                                      margin: const EdgeInsets
-                                                                          .symmetric(
-                                                                          vertical:
-                                                                              10),
-                                                                      child: Row(
-                                                                          mainAxisAlignment: MainAxisAlignment
-                                                                              .spaceBetween,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.center,
-                                                                          children: [
-                                                                            const Text(
-                                                                              'Transaction Id',
-                                                                              style: TextStyle(
+                                                                        Expanded(
+                                                                          child: Container(
+                                                                            alignment: Alignment.centerRight,
+                                                                            child: Text(
+                                                                              state.giftCardDetailsModel!.card!.trx![index].trxid.toString(),
+                                                                              maxLines: 2,
+                                                                              textAlign: TextAlign.right,
+                                                                              style: const TextStyle(
                                                                                 fontFamily: 'pop',
-                                                                                fontSize: 14,
+                                                                                fontSize: 12,
                                                                                 fontWeight: FontWeight.w600,
-                                                                                color: Color(0xff2C2C2C),
+                                                                                color: Color(0xffC4C4C4),
                                                                               ),
                                                                             ),
-                                                                            Expanded(
-                                                                              child: Container(
-                                                                                alignment: Alignment.centerRight,
-                                                                                child: Text(
-                                                                                  state.giftCardDetailsModel!.card!.trx![index].trxid.toString(),
-                                                                                  maxLines: 2,
-                                                                                  textAlign: TextAlign.right,
-                                                                                  style: const TextStyle(
-                                                                                    fontFamily: 'pop',
-                                                                                    fontSize: 12,
-                                                                                    fontWeight: FontWeight.w600,
-                                                                                    color: Color(0xffC4C4C4),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            )
-                                                                          ]),
-                                                                    ),
-                                                              state
-                                                                          .giftCardDetailsModel!
-                                                                          .card!
-                                                                          .trx![
-                                                                              index]
-                                                                          .transactionDate
-                                                                          .toString() ==
-                                                                      ""
-                                                                  ? Container()
-                                                                  : Container(
-                                                                      margin: const EdgeInsets
-                                                                          .symmetric(
-                                                                          vertical:
-                                                                              10),
-                                                                      child: Row(
-                                                                          mainAxisAlignment: MainAxisAlignment
-                                                                              .spaceBetween,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.center,
-                                                                          children: [
-                                                                            const Text(
-                                                                              'Transaction Date',
-                                                                              style: TextStyle(
+                                                                          ),
+                                                                        )
+                                                                      ]),
+                                                                ),
+                                                          state
+                                                                      .giftCardDetailsModel!
+                                                                      .card!
+                                                                      .trx![
+                                                                          index]
+                                                                      .transactionDate
+                                                                      .toString() ==
+                                                                  ""
+                                                              ? Container()
+                                                              : Container(
+                                                                  margin: const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          10),
+                                                                  child: Row(
+                                                                      mainAxisAlignment: MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment.center,
+                                                                      children: [
+                                                                        const Text(
+                                                                          'Transaction Date',
+                                                                          style: TextStyle(
+                                                                            fontFamily: 'pop',
+                                                                            fontSize: 14,
+                                                                            fontWeight: FontWeight.w600,
+                                                                            color: Color(0xff2C2C2C),
+                                                                          ),
+                                                                        ),
+                                                                        Expanded(
+                                                                          child: Container(
+                                                                            alignment: Alignment.centerRight,
+                                                                            child: Text(
+                                                                              state.giftCardDetailsModel!.card!.trx![index].transactionDate.toString(),
+                                                                              maxLines: 2,
+                                                                              textAlign: TextAlign.right,
+                                                                              style: const TextStyle(
                                                                                 fontFamily: 'pop',
-                                                                                fontSize: 14,
+                                                                                fontSize: 12,
                                                                                 fontWeight: FontWeight.w600,
-                                                                                color: Color(0xff2C2C2C),
+                                                                                color: Color(0xffC4C4C4),
                                                                               ),
                                                                             ),
-                                                                            Expanded(
-                                                                              child: Container(
-                                                                                alignment: Alignment.centerRight,
-                                                                                child: Text(
-                                                                                  state.giftCardDetailsModel!.card!.trx![index].transactionDate.toString(),
-                                                                                  maxLines: 2,
-                                                                                  textAlign: TextAlign.right,
-                                                                                  style: const TextStyle(
-                                                                                    fontFamily: 'pop',
-                                                                                    fontSize: 12,
-                                                                                    fontWeight: FontWeight.w600,
-                                                                                    color: Color(0xffC4C4C4),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            )
-                                                                          ]),
-                                                                    ),
-                                                              state
-                                                                          .giftCardDetailsModel!
-                                                                          .card!
-                                                                          .trx![
-                                                                              index]
-                                                                          .merchant
-                                                                          .toString() ==
-                                                                      ""
-                                                                  ? Container()
-                                                                  : Container(
-                                                                      margin: const EdgeInsets
-                                                                          .symmetric(
-                                                                          vertical:
-                                                                              10),
-                                                                      child: Row(
-                                                                          mainAxisAlignment: MainAxisAlignment
-                                                                              .spaceBetween,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.center,
-                                                                          children: [
-                                                                            const Text(
-                                                                              'Merchant',
-                                                                              style: TextStyle(
+                                                                          ),
+                                                                        )
+                                                                      ]),
+                                                                ),
+                                                          state
+                                                                      .giftCardDetailsModel!
+                                                                      .card!
+                                                                      .trx![
+                                                                          index]
+                                                                      .merchant
+                                                                      .toString() ==
+                                                                  ""
+                                                              ? Container()
+                                                              : Container(
+                                                                  margin: const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          10),
+                                                                  child: Row(
+                                                                      mainAxisAlignment: MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment.center,
+                                                                      children: [
+                                                                        const Text(
+                                                                          'Merchant',
+                                                                          style: TextStyle(
+                                                                            fontFamily: 'pop',
+                                                                            fontSize: 14,
+                                                                            fontWeight: FontWeight.w600,
+                                                                            color: Color(0xff2C2C2C),
+                                                                          ),
+                                                                        ),
+                                                                        Expanded(
+                                                                          child: Container(
+                                                                            alignment: Alignment.centerRight,
+                                                                            child: Text(
+                                                                              state.giftCardDetailsModel!.card!.trx![index].merchant.toString(),
+                                                                              maxLines: 2,
+                                                                              textAlign: TextAlign.right,
+                                                                              style: const TextStyle(
                                                                                 fontFamily: 'pop',
-                                                                                fontSize: 14,
+                                                                                fontSize: 12,
                                                                                 fontWeight: FontWeight.w600,
-                                                                                color: Color(0xff2C2C2C),
+                                                                                color: Color(0xffC4C4C4),
                                                                               ),
                                                                             ),
-                                                                            Expanded(
-                                                                              child: Container(
-                                                                                alignment: Alignment.centerRight,
-                                                                                child: Text(
-                                                                                  state.giftCardDetailsModel!.card!.trx![index].merchant.toString(),
-                                                                                  maxLines: 2,
-                                                                                  textAlign: TextAlign.right,
-                                                                                  style: const TextStyle(
-                                                                                    fontFamily: 'pop',
-                                                                                    fontSize: 12,
-                                                                                    fontWeight: FontWeight.w600,
-                                                                                    color: Color(0xffC4C4C4),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            )
-                                                                          ]),
-                                                                    ),
-                                                              state
-                                                                          .giftCardDetailsModel!
-                                                                          .card!
-                                                                          .trx![
-                                                                              index]
-                                                                          .merchantName
-                                                                          .toString() ==
-                                                                      ""
-                                                                  ? Container()
-                                                                  : Container(
-                                                                      margin: const EdgeInsets
-                                                                          .symmetric(
-                                                                          vertical:
-                                                                              10),
-                                                                      child: Row(
-                                                                          mainAxisAlignment: MainAxisAlignment
-                                                                              .spaceBetween,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.center,
-                                                                          children: [
-                                                                            const Text(
-                                                                              'Merchant Name',
-                                                                              style: TextStyle(
+                                                                          ),
+                                                                        )
+                                                                      ]),
+                                                                ),
+                                                          state
+                                                                      .giftCardDetailsModel!
+                                                                      .card!
+                                                                      .trx![
+                                                                          index]
+                                                                      .merchantName
+                                                                      .toString() ==
+                                                                  ""
+                                                              ? Container()
+                                                              : Container(
+                                                                  margin: const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          10),
+                                                                  child: Row(
+                                                                      mainAxisAlignment: MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment.center,
+                                                                      children: [
+                                                                        const Text(
+                                                                          'Merchant Name',
+                                                                          style: TextStyle(
+                                                                            fontFamily: 'pop',
+                                                                            fontSize: 14,
+                                                                            fontWeight: FontWeight.w600,
+                                                                            color: Color(0xff2C2C2C),
+                                                                          ),
+                                                                        ),
+                                                                        Expanded(
+                                                                          child: Container(
+                                                                            alignment: Alignment.centerRight,
+                                                                            child: Text(
+                                                                              state.giftCardDetailsModel!.card!.trx![index].merchantName.toString(),
+                                                                              maxLines: 2,
+                                                                              textAlign: TextAlign.right,
+                                                                              style: const TextStyle(
                                                                                 fontFamily: 'pop',
-                                                                                fontSize: 14,
+                                                                                fontSize: 12,
                                                                                 fontWeight: FontWeight.w600,
-                                                                                color: Color(0xff2C2C2C),
+                                                                                color: Color(0xffC4C4C4),
                                                                               ),
                                                                             ),
-                                                                            Expanded(
-                                                                              child: Container(
-                                                                                alignment: Alignment.centerRight,
-                                                                                child: Text(
-                                                                                  state.giftCardDetailsModel!.card!.trx![index].merchantName.toString(),
-                                                                                  maxLines: 2,
-                                                                                  textAlign: TextAlign.right,
-                                                                                  style: const TextStyle(
-                                                                                    fontFamily: 'pop',
-                                                                                    fontSize: 12,
-                                                                                    fontWeight: FontWeight.w600,
-                                                                                    color: Color(0xffC4C4C4),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            )
-                                                                          ]),
-                                                                    ),
-                                                              state
-                                                                          .giftCardDetailsModel!
-                                                                          .card!
-                                                                          .trx![
-                                                                              index]
-                                                                          .merchantCity
-                                                                          .toString() ==
-                                                                      ""
-                                                                  ? Container()
-                                                                  : Container(
-                                                                      margin: const EdgeInsets
-                                                                          .symmetric(
-                                                                          vertical:
-                                                                              10),
-                                                                      child: Row(
-                                                                          mainAxisAlignment: MainAxisAlignment
-                                                                              .spaceBetween,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.center,
-                                                                          children: [
-                                                                            const Text(
-                                                                              'Merchant City',
-                                                                              style: TextStyle(
+                                                                          ),
+                                                                        )
+                                                                      ]),
+                                                                ),
+                                                          state
+                                                                      .giftCardDetailsModel!
+                                                                      .card!
+                                                                      .trx![
+                                                                          index]
+                                                                      .merchantCity
+                                                                      .toString() ==
+                                                                  ""
+                                                              ? Container()
+                                                              : Container(
+                                                                  margin: const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          10),
+                                                                  child: Row(
+                                                                      mainAxisAlignment: MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment.center,
+                                                                      children: [
+                                                                        const Text(
+                                                                          'Merchant City',
+                                                                          style: TextStyle(
+                                                                            fontFamily: 'pop',
+                                                                            fontSize: 14,
+                                                                            fontWeight: FontWeight.w600,
+                                                                            color: Color(0xff2C2C2C),
+                                                                          ),
+                                                                        ),
+                                                                        Expanded(
+                                                                          child: Container(
+                                                                            alignment: Alignment.centerRight,
+                                                                            child: Text(
+                                                                              state.giftCardDetailsModel!.card!.trx![index].merchantCity.toString(),
+                                                                              maxLines: 2,
+                                                                              textAlign: TextAlign.right,
+                                                                              style: const TextStyle(
                                                                                 fontFamily: 'pop',
-                                                                                fontSize: 14,
+                                                                                fontSize: 12,
                                                                                 fontWeight: FontWeight.w600,
-                                                                                color: Color(0xff2C2C2C),
+                                                                                color: Color(0xffC4C4C4),
                                                                               ),
                                                                             ),
-                                                                            Expanded(
-                                                                              child: Container(
-                                                                                alignment: Alignment.centerRight,
-                                                                                child: Text(
-                                                                                  state.giftCardDetailsModel!.card!.trx![index].merchantCity.toString(),
-                                                                                  maxLines: 2,
-                                                                                  textAlign: TextAlign.right,
-                                                                                  style: const TextStyle(
-                                                                                    fontFamily: 'pop',
-                                                                                    fontSize: 12,
-                                                                                    fontWeight: FontWeight.w600,
-                                                                                    color: Color(0xffC4C4C4),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            )
-                                                                          ]),
-                                                                    ),
-                                                              state
-                                                                          .giftCardDetailsModel!
-                                                                          .card!
-                                                                          .trx![
-                                                                              index]
-                                                                          .merchantCountry
-                                                                          .toString() ==
-                                                                      ""
-                                                                  ? Container()
-                                                                  : Container(
-                                                                      margin: const EdgeInsets
-                                                                          .symmetric(
-                                                                          vertical:
-                                                                              10),
-                                                                      child: Row(
-                                                                          mainAxisAlignment: MainAxisAlignment
-                                                                              .spaceBetween,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.center,
-                                                                          children: [
-                                                                            const Text(
-                                                                              'Merchant Country',
-                                                                              style: TextStyle(
+                                                                          ),
+                                                                        )
+                                                                      ]),
+                                                                ),
+                                                          state
+                                                                      .giftCardDetailsModel!
+                                                                      .card!
+                                                                      .trx![
+                                                                          index]
+                                                                      .merchantCountry
+                                                                      .toString() ==
+                                                                  ""
+                                                              ? Container()
+                                                              : Container(
+                                                                  margin: const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          10),
+                                                                  child: Row(
+                                                                      mainAxisAlignment: MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment.center,
+                                                                      children: [
+                                                                        const Text(
+                                                                          'Merchant Country',
+                                                                          style: TextStyle(
+                                                                            fontFamily: 'pop',
+                                                                            fontSize: 14,
+                                                                            fontWeight: FontWeight.w600,
+                                                                            color: Color(0xff2C2C2C),
+                                                                          ),
+                                                                        ),
+                                                                        Expanded(
+                                                                          child: Container(
+                                                                            alignment: Alignment.centerRight,
+                                                                            child: Text(
+                                                                              state.giftCardDetailsModel!.card!.trx![index].merchantCountry.toString(),
+                                                                              maxLines: 2,
+                                                                              textAlign: TextAlign.right,
+                                                                              style: const TextStyle(
                                                                                 fontFamily: 'pop',
-                                                                                fontSize: 14,
+                                                                                fontSize: 12,
                                                                                 fontWeight: FontWeight.w600,
-                                                                                color: Color(0xff2C2C2C),
+                                                                                color: Color(0xffC4C4C4),
                                                                               ),
                                                                             ),
-                                                                            Expanded(
-                                                                              child: Container(
-                                                                                alignment: Alignment.centerRight,
-                                                                                child: Text(
-                                                                                  state.giftCardDetailsModel!.card!.trx![index].merchantCountry.toString(),
-                                                                                  maxLines: 2,
-                                                                                  textAlign: TextAlign.right,
-                                                                                  style: const TextStyle(
-                                                                                    fontFamily: 'pop',
-                                                                                    fontSize: 12,
-                                                                                    fontWeight: FontWeight.w600,
-                                                                                    color: Color(0xffC4C4C4),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            )
-                                                                          ]),
-                                                                    ),
-                                                              state
-                                                                          .giftCardDetailsModel!
-                                                                          .card!
-                                                                          .trx![
-                                                                              index]
-                                                                          .description
-                                                                          .toString() ==
-                                                                      ""
-                                                                  ? Container()
-                                                                  : Container(
-                                                                      margin: const EdgeInsets
-                                                                          .symmetric(
-                                                                          vertical:
-                                                                              10),
-                                                                      child: Row(
-                                                                          mainAxisAlignment: MainAxisAlignment
-                                                                              .spaceBetween,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.center,
-                                                                          children: [
-                                                                            const Text(
-                                                                              'Description',
-                                                                              style: TextStyle(
+                                                                          ),
+                                                                        )
+                                                                      ]),
+                                                                ),
+                                                          state
+                                                                      .giftCardDetailsModel!
+                                                                      .card!
+                                                                      .trx![
+                                                                          index]
+                                                                      .description
+                                                                      .toString() ==
+                                                                  ""
+                                                              ? Container()
+                                                              : Container(
+                                                                  margin: const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          10),
+                                                                  child: Row(
+                                                                      mainAxisAlignment: MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment.center,
+                                                                      children: [
+                                                                        const Text(
+                                                                          'Description',
+                                                                          style: TextStyle(
+                                                                            fontFamily: 'pop',
+                                                                            fontSize: 14,
+                                                                            fontWeight: FontWeight.w600,
+                                                                            color: Color(0xff2C2C2C),
+                                                                          ),
+                                                                        ),
+                                                                        Expanded(
+                                                                          child: Container(
+                                                                            alignment: Alignment.centerRight,
+                                                                            child: Text(
+                                                                              state.giftCardDetailsModel!.card!.trx![index].description.toString(),
+                                                                              maxLines: 2,
+                                                                              overflow: TextOverflow.ellipsis,
+                                                                              textAlign: TextAlign.right,
+                                                                              style: const TextStyle(
                                                                                 fontFamily: 'pop',
-                                                                                fontSize: 14,
+                                                                                fontSize: 12,
                                                                                 fontWeight: FontWeight.w600,
-                                                                                color: Color(0xff2C2C2C),
+                                                                                color: Color(0xffC4C4C4),
                                                                               ),
                                                                             ),
-                                                                            Expanded(
-                                                                              child: Container(
-                                                                                alignment: Alignment.centerRight,
-                                                                                child: Text(
-                                                                                  state.giftCardDetailsModel!.card!.trx![index].description.toString(),
-                                                                                  maxLines: 2,
-                                                                                  overflow: TextOverflow.ellipsis,
-                                                                                  textAlign: TextAlign.right,
-                                                                                  style: const TextStyle(
-                                                                                    fontFamily: 'pop',
-                                                                                    fontSize: 12,
-                                                                                    fontWeight: FontWeight.w600,
-                                                                                    color: Color(0xffC4C4C4),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            )
-                                                                          ]),
-                                                                    ),
-                                                              const SizedBox(
-                                                                height: 15,
-                                                              ),
-                                                            ],
+                                                                          ),
+                                                                        )
+                                                                      ]),
+                                                                ),
+                                                          const SizedBox(
+                                                            height: 15,
                                                           ),
-                                                        ),
-                                                        // btnCancelText: 'Cancel',
-                                                        btnOkText: 'Ok',
-                                                        btnOkColor: Colors
-                                                            .green,
-                                                        buttonsTextStyle:
-                                                            const TextStyle(
-                                                                fontSize: 14,
-                                                                fontFamily:
-                                                                    'pop',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                color: Colors
-                                                                    .white),
-                                                        btnCancelOnPress: () {},
-                                                        btnOkOnPress: () {})
-                                                    .show();
-                                              },
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 20),
-                                                margin:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 12),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Container(
-                                                              height: 65,
-                                                              width: 65,
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              decoration: BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              11),
-                                                                  border: Border.all(
-                                                                      width: 1,
-                                                                      color: const Color(
-                                                                          0xffE3E3E3))),
-                                                              child:
-                                                                  Image.network(
-                                                                state
-                                                                    .giftCardDetailsModel!
-                                                                    .card!
-                                                                    .trx![index]
-                                                                    .image
-                                                                    .toString(),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    // btnCancelText: 'Cancel',
+                                                    btnOkText: 'Ok',
+                                                    btnOkColor: Colors
+                                                        .green,
+                                                    buttonsTextStyle:
+                                                        const TextStyle(
+                                                            fontSize: 14,
+                                                            fontFamily:
+                                                                'pop',
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600,
+                                                            color: Colors
+                                                                .white),
+                                                    btnCancelOnPress: () {},
+                                                    btnOkOnPress: () {})
+                                                .show();
+                                          },
+                                          child: Container(
+                                            padding:
+                                                const EdgeInsets.symmetric(
+                                                    horizontal: 20),
+                                            margin:
+                                                const EdgeInsets.symmetric(
+                                                    vertical: 12),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Expanded(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Container(
+                                                          height: 65,
+                                                          width: 65,
+                                                          alignment:
+                                                              Alignment
+                                                                  .center,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          11),
+                                                              border: Border.all(
+                                                                  width: 1,
+                                                                  color: const Color(
+                                                                      0xffE3E3E3))),
+                                                          child:
+                                                              Image.network(
+                                                            state
+                                                                .giftCardDetailsModel!
+                                                                .card!
+                                                                .trx![index]
+                                                                .image
+                                                                .toString(),
+                                                            height: 45,
+                                                            width: 45,
+                                                            loadingBuilder: (BuildContext
+                                                                    context,
+                                                                Widget
+                                                                    child,
+                                                                ImageChunkEvent?
+                                                                    loadingProgress) {
+                                                              if (loadingProgress ==
+                                                                  null) {
+                                                                return child;
+                                                              } else {
+                                                                return Image
+                                                                    .asset(
+                                                                  'images/master_card_logo.png',
+                                                                  height:
+                                                                      45,
+                                                                  width: 45,
+                                                                ); // Show loading indicator
+                                                              }
+                                                            },
+                                                            errorBuilder: (BuildContext
+                                                                    context,
+                                                                Object
+                                                                    error,
+                                                                StackTrace?
+                                                                    stackTrace) {
+                                                              return Image
+                                                                  .asset(
+                                                                'images/master_card_logo.png',
                                                                 height: 45,
                                                                 width: 45,
-                                                                loadingBuilder: (BuildContext
-                                                                        context,
-                                                                    Widget
-                                                                        child,
-                                                                    ImageChunkEvent?
-                                                                        loadingProgress) {
-                                                                  if (loadingProgress ==
-                                                                      null) {
-                                                                    return child;
-                                                                  } else {
-                                                                    return Image
-                                                                        .asset(
-                                                                      'images/master_card_logo.png',
-                                                                      height:
-                                                                          45,
-                                                                      width: 45,
-                                                                    ); // Show loading indicator
-                                                                  }
-                                                                },
-                                                                errorBuilder: (BuildContext
-                                                                        context,
-                                                                    Object
-                                                                        error,
-                                                                    StackTrace?
-                                                                        stackTrace) {
-                                                                  return Image
-                                                                      .asset(
-                                                                    'images/master_card_logo.png',
-                                                                    height: 45,
-                                                                    width: 45,
-                                                                  ); // Show error icon if image loading fails
-                                                                },
-                                                              )),
-                                                          const SizedBox(
-                                                            width: 15,
-                                                          ),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
+                                                              ); // Show error icon if image loading fails
+                                                            },
+                                                          )),
+                                                      const SizedBox(
+                                                        width: 15,
+                                                      ),
+                                                      Expanded(
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text(
+                                                              state
+                                                                  .giftCardDetailsModel!
+                                                                  .card!
+                                                                  .trx![
+                                                                      index]
+                                                                  .merchantName
+                                                                  .toString(),
+                                                              maxLines: 2,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              style: const TextStyle(
+                                                                  fontSize:
+                                                                      15,
+                                                                  fontFamily:
+                                                                      'pop',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color: Colors
+                                                                      .black),
+                                                            ),
+                                                            Text(
+                                                              "Date: ${state.giftCardDetailsModel!.card!.trx![index].transactionDate.toString() ?? ""}",
+                                                              style: const TextStyle(
+                                                                  fontSize:
+                                                                      12,
+                                                                  fontFamily:
+                                                                      'pop',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color: Color(
+                                                                      0xffC4C4C4)),
+                                                            ),
+                                                            Row(
                                                               children: [
+                                                                const Text(
+                                                                  "Status: ",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          12,
+                                                                      fontFamily:
+                                                                          'pop',
+                                                                      fontWeight: FontWeight
+                                                                          .w500,
+                                                                      color:
+                                                                          Color(0xffC4C4C4)),
+                                                                ),
                                                                 Text(
                                                                   state
                                                                       .giftCardDetailsModel!
                                                                       .card!
                                                                       .trx![
                                                                           index]
-                                                                      .merchantName
+                                                                      .status
                                                                       .toString(),
-                                                                  maxLines: 2,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  style: const TextStyle(
-                                                                      fontSize:
-                                                                          15,
-                                                                      fontFamily:
-                                                                          'pop',
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      color: Colors
-                                                                          .black),
-                                                                ),
-                                                                Text(
-                                                                  "Date: ${state.giftCardDetailsModel!.card!.trx![index].transactionDate.toString() ?? ""}",
-                                                                  style: const TextStyle(
+                                                                  style: TextStyle(
                                                                       fontSize:
                                                                           12,
                                                                       fontFamily:
                                                                           'pop',
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      color: Color(
-                                                                          0xffC4C4C4)),
+                                                                      fontWeight: FontWeight
+                                                                          .w500,
+                                                                      color: state.giftCardDetailsModel!.card!.trx![index].status.toString() == "declined"
+                                                                          ? Colors.red
+                                                                          : Colors.green),
                                                                 ),
-                                                                Row(
-                                                                  children: [
-                                                                    const Text(
-                                                                      "Status: ",
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              12,
-                                                                          fontFamily:
-                                                                              'pop',
-                                                                          fontWeight: FontWeight
-                                                                              .w500,
-                                                                          color:
-                                                                              Color(0xffC4C4C4)),
-                                                                    ),
-                                                                    Text(
-                                                                      state
-                                                                          .giftCardDetailsModel!
-                                                                          .card!
-                                                                          .trx![
-                                                                              index]
-                                                                          .status
-                                                                          .toString(),
-                                                                      style: TextStyle(
-                                                                          fontSize:
-                                                                              12,
-                                                                          fontFamily:
-                                                                              'pop',
-                                                                          fontWeight: FontWeight
-                                                                              .w500,
-                                                                          color: state.giftCardDetailsModel!.card!.trx![index].status.toString() == "declined"
-                                                                              ? Colors.red
-                                                                              : Colors.green),
-                                                                    ),
-                                                                  ],
-                                                                )
                                                               ],
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .end,
-                                                      children: [
-                                                        Text(
-                                                          "${state.giftCardDetailsModel!.card!.trx![index].symbol.toString() ?? ""}${state.giftCardDetailsModel!.card!.trx![index].amount.toString() ?? ""}",
-                                                          style: TextStyle(
-                                                              fontSize: 15,
-                                                              fontFamily: 'pop',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color: state
-                                                                          .giftCardDetailsModel!
-                                                                          .card!
-                                                                          .trx![
-                                                                              index]
-                                                                          .type
-                                                                          .toString() ==
-                                                                      "Debit"
-                                                                  ? Colors.red
-                                                                  : Colors
-                                                                      .green),
+                                                            )
+                                                          ],
                                                         ),
-                                                        Text(
-                                                          state
-                                                                  .giftCardDetailsModel!
-                                                                  .card!
-                                                                  .trx![index]
-                                                                  .type
-                                                                  .toString() ??
-                                                              "",
-                                                          style: TextStyle(
-                                                              fontSize: 15,
-                                                              fontFamily: 'pop',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color: state
-                                                                          .giftCardDetailsModel!
-                                                                          .card!
-                                                                          .trx![
-                                                                              index]
-                                                                          .type
-                                                                          .toString() ==
-                                                                      "Debit"
-                                                                  ? Colors.red
-                                                                  : Colors
-                                                                      .green),
-                                                        )
-                                                      ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment
+                                                          .end,
+                                                  children: [
+                                                    Text(
+                                                      "${state.giftCardDetailsModel!.card!.trx![index].symbol.toString() ?? ""}${state.giftCardDetailsModel!.card!.trx![index].amount.toString() ?? ""}",
+                                                      style: TextStyle(
+                                                          fontSize: 15,
+                                                          fontFamily: 'pop',
+                                                          fontWeight:
+                                                              FontWeight
+                                                                  .w500,
+                                                          color: state
+                                                                      .giftCardDetailsModel!
+                                                                      .card!
+                                                                      .trx![
+                                                                          index]
+                                                                      .type
+                                                                      .toString() ==
+                                                                  "Debit"
+                                                              ? Colors.red
+                                                              : Colors
+                                                                  .green),
+                                                    ),
+                                                    Text(
+                                                      state
+                                                              .giftCardDetailsModel!
+                                                              .card!
+                                                              .trx![index]
+                                                              .type
+                                                              .toString() ??
+                                                          "",
+                                                      style: TextStyle(
+                                                          fontSize: 15,
+                                                          fontFamily: 'pop',
+                                                          fontWeight:
+                                                              FontWeight
+                                                                  .w500,
+                                                          color: state
+                                                                      .giftCardDetailsModel!
+                                                                      .card!
+                                                                      .trx![
+                                                                          index]
+                                                                      .type
+                                                                      .toString() ==
+                                                                  "Debit"
+                                                              ? Colors.red
+                                                              : Colors
+                                                                  .green),
                                                     )
                                                   ],
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                            ),
-                          ],
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
                         ),
-                      ),
+                      ],
                     ),
-                  );
-                }),
-          ),
-          bottomNavigationBar: CustomBottomBar(index: 3),
-        ),
+                  ),
+                ),
+              );
+            }),
       ),
+      bottomNavigationBar: CustomBottomBar(index: 3),
     );
   }
 
@@ -910,17 +899,14 @@ class _ShowGiftCardScreenState extends State<ShowGiftCardScreen> {
                     width: 20,
                     color: Colors.black,
                   ),
-                  const Padding(
+                   Padding(
                     padding: EdgeInsets.only(top: 7),
                     child: Text("Show\n Details",
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                             color: Color.fromRGBO(51, 51, 51, 1),
-                            fontFamily: 'Work Sans',
                             fontSize: 12,
-                            letterSpacing:
-                                0 /*percentages not used in flutter. defaulting to zero*/,
-                            fontWeight: FontWeight.normal,
+                            fontWeight: FontWeight.w500,
                             height: 1)),
                   )
                 ],
@@ -1078,16 +1064,14 @@ class _ShowGiftCardScreenState extends State<ShowGiftCardScreen> {
                     width: 20,
                     color: Colors.black,
                   ),
-                  const Padding(
+                   Padding(
                     padding: EdgeInsets.only(top: 7),
                     child: Text("Share",
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                             color: Color.fromRGBO(51, 51, 51, 1),
-                            fontFamily: 'Work Sans',
+
                             fontSize: 12,
-                            letterSpacing:
-                                0 /*percentages not used in flutter. defaulting to zero*/,
-                            fontWeight: FontWeight.normal,
+                           fontWeight: FontWeight.w500,
                             height: 1)),
                   )
                 ],
@@ -1286,19 +1270,16 @@ class _ShowGiftCardScreenState extends State<ShowGiftCardScreen> {
                     "images/trash.png",
                     height: 20,
                     width: 20,
-                    color: Colors.black,
+                    color: CustomColor.errorColor,
                   ),
-                  const Padding(
+                   Padding(
                     padding: EdgeInsets.only(top: 7),
                     child: Text("Delete",
-                        style: TextStyle(
-                            color: Color.fromRGBO(51, 51, 51, 1),
-                            fontFamily: 'Work Sans',
+                        style: GoogleFonts.inter(
+                            color: CustomColor.errorColor,
                             fontSize: 12,
-                            letterSpacing:
-                                0 /*percentages not used in flutter. defaulting to zero*/,
-                            fontWeight: FontWeight.normal,
-                            height: 1)),
+                            fontWeight: FontWeight.w500,
+                          )),
                   )
                 ],
               ),

@@ -26,6 +26,8 @@ class DashboardModel {
   Transaction? transaction;
   List<Notification>? notifications;
   String? profileimage;
+  String? bankName;
+  String? bankAddress;
   The3Dsconf? the3Dsconf;
   Sof? sof;
 
@@ -49,6 +51,8 @@ class DashboardModel {
     this.notifications,
     this.profileimage,
     this.the3Dsconf,
+    this.bankName,
+    this.bankAddress,
     this.sof,
   });
 
@@ -71,6 +75,8 @@ class DashboardModel {
     transaction: json["transaction"] == null ? null : Transaction.fromJson(json["transaction"]),
     notifications: json["notifications"] == null ? [] : List<Notification>.from(json["notifications"]!.map((x) => Notification.fromJson(x))),
     profileimage: json["profileimage"],
+    bankName: json["bank_name"],
+    bankAddress: json["bank_address"],
     the3Dsconf: json["3dsconf"] == null ? null : The3Dsconf.fromJson(json["3dsconf"]),
     sof: json["sof"] == null ? null : Sof.fromJson(json["sof"]),
   );

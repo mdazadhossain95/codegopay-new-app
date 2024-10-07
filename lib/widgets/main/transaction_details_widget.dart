@@ -79,14 +79,7 @@ class TransactionDetailsWidget extends StatelessWidget {
                     color: CustomColor.black,
                   ),
                 ),
-                InkWell(
-                  onTap: () {},
-                  child: CustomImageWidget(
-                    imagePath: StaticAssets.info,
-                    imageType: 'svg',
-                    height: 24,
-                  ),
-                ),
+                SizedBox(width: 20,)
               ],
             ),
           ),

@@ -10,6 +10,7 @@ import '../Screens/Dashboard_screen/create_iban_screen.dart';
 import '../Screens/Dashboard_screen/deposit_screen.dart';
 import '../Screens/Dashboard_screen/iban_kyc_screen.dart';
 import '../Screens/Dashboard_screen/transaction_screen.dart';
+import '../Screens/Profile_screen/source_of_wealth_screen.dart';
 import '../Screens/Sign_up_screens/Pending_screen.dart';
 import 'package:codegopay/Screens/Sign_up_screens/Setpin_screen.dart';
 import 'package:codegopay/Screens/Sign_up_screens/kyc/kyc_screen.dart';
@@ -106,14 +107,14 @@ Route generatroutecustomRoute(
     //     duration: const Duration(milliseconds: 300),
     //     reverseDuration: const Duration(milliseconds: 200),
     //   );
-    // case 'Step4':
-    //   return PageTransition(
-    //     child: const StepfourScreen(),
-    //     type: PageTransitionType.bottomToTop,
-    //     alignment: Alignment.center,
-    //     duration: const Duration(milliseconds: 300),
-    //     reverseDuration: const Duration(milliseconds: 200),
-    //   );
+    case 'Step4':
+      return PageTransition(
+        child: const SourceOfWealthScreen(),
+        type: PageTransitionType.rightToLeftWithFade,
+        alignment: Alignment.center,
+        duration: const Duration(milliseconds: 300),
+        reverseDuration: const Duration(milliseconds: 200),
+      );
 
     case 'pending':
       return PageTransition(
@@ -486,14 +487,14 @@ Route generatroutecustomRoute(
         duration: const Duration(milliseconds: 300),
         reverseDuration: const Duration(milliseconds: 200),
       );
-      case 'depositScreen':
-      return PageTransition(
-        child: const DepositScreen(),
-        type: PageTransitionType.rightToLeft,
-        alignment: Alignment.center,
-        duration: const Duration(milliseconds: 300),
-        reverseDuration: const Duration(milliseconds: 200),
-      );
+      // case 'depositScreen':
+      // return PageTransition(
+      //   child: const DepositScreen(),
+      //   type: PageTransitionType.rightToLeft,
+      //   alignment: Alignment.center,
+      //   duration: const Duration(milliseconds: 300),
+      //   reverseDuration: const Duration(milliseconds: 200),
+      // );
       case 'profileScreen':
       return PageTransition(
         child: const ProfileScreen(),

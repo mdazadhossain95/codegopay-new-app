@@ -11,9 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../widgets/buttons/custom_floating_action_button.dart';
+import '../Dashboard_screen/deposit_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -178,7 +180,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 Container(
                                   margin: const EdgeInsets.only(left: 10),
-                                  padding: EdgeInsets.all(16),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 10),
                                   decoration: BoxDecoration(
                                       color: CustomColor
                                           .profileImageContainerColor,
@@ -188,6 +191,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 4),
+                                        decoration: BoxDecoration(
+                                            color: Color(0xffE3FFEA)
+                                                .withOpacity(0.1),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            border: Border.all(
+                                                color: Color(0xffAEEBBD))),
+                                        child: Text(
+                                          state.profileModel!.planName!,
+                                          style: GoogleFonts.inter(
+                                              color: Color(0xff34C759),
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
                                       Row(
                                         children: [
                                           CustomImageWidget(
@@ -245,13 +269,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      Text(
-                                        state.profileModel!.planName!,
-                                        style: GoogleFonts.inter(
-                                            color: CustomColor.green,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500),
-                                      ),
                                       if (state.profileModel!.needShowUpgrade ==
                                           1)
                                         const SizedBox(
@@ -285,7 +302,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.only(top: 20, bottom: 8),
                             child: Text(
-                              "Details",
+                              "My Address",
                               style: GoogleFonts.inter(
                                   color: CustomColor.black,
                                   fontSize: 16,
@@ -294,18 +311,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           InkWell(
                             onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                elevation: 5,
-                                builder: (context) {
-                                  return BottomSheetContentStep4(
-                                    iban: state.profileModel!.iban!,
-                                    name:
-                                        "${state.profileModel!.name!} ${state.profileModel!.surname!}",
-                                    address:
-                                        "${state.profileModel!.address!}\n${state.profileModel!.city!} ${state.profileModel!.countryName!}",
-                                  );
-                                },
+
+                              var data = state.profileModel!;
+
+                              Navigator.push(
+                                context,
+                                PageTransition(
+                                  child: DashboardDepositScreen(
+                                    name: data.name!,
+                                    iban: data.iban!,
+                                    bic: data.bic!,
+                                    bankName: data.bankName!,
+                                    bankAddress: data.bankAddress!,
+                                  ),
+                                  type: PageTransitionType.rightToLeft,
+                                  alignment: Alignment.center,
+                                  duration: const Duration(milliseconds: 300),
+                                  reverseDuration:
+                                      const Duration(milliseconds: 200),
+                                ),
                               );
                             },
                             child: Container(
@@ -422,7 +446,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               child: Container(
                                 margin: const EdgeInsets.only(bottom: 16),
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 16),
+                                    horizontal: 12, vertical: 12),
                                 decoration: BoxDecoration(
                                   color: Color(0xffFFFCF0),
                                   borderRadius: BorderRadius.circular(16),
@@ -453,22 +477,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         const SizedBox(
                                           width: 10,
                                         ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              label!,
-                                              style: GoogleFonts.inter(
-                                                  color: CustomColor.black,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            SizedBox(
-                                              width: 250,
-                                              child: Text(
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                label!,
+                                                style: GoogleFonts.inter(
+                                                    color: CustomColor.black,
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              Text(
                                                 message!,
                                                 overflow: TextOverflow.ellipsis,
+                                                maxLines: 3,
                                                 style: GoogleFonts.inter(
                                                     color: CustomColor.black
                                                         .withOpacity(0.7),
@@ -476,8 +501,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     fontWeight:
                                                         FontWeight.w400),
                                               ),
-                                            )
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -525,22 +550,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         const SizedBox(
                                           width: 10,
                                         ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              label!,
-                                              style: GoogleFonts.inter(
-                                                  color: CustomColor.black,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            SizedBox(
-                                              width: 250,
-                                              child: Text(
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                label!,
+                                                style: GoogleFonts.inter(
+                                                    color: CustomColor.black,
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              Text(
                                                 message!,
-                                                maxLines: 2,
+                                                maxLines: 3,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: GoogleFonts.inter(
                                                     color: CustomColor.black
@@ -549,8 +574,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     fontWeight:
                                                         FontWeight.w400),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         )
                                       ],
                                     ),
@@ -558,7 +583,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                             ),
-
                           Padding(
                             padding: const EdgeInsets.only(bottom: 5, left: 5),
                             child: Text(
@@ -577,8 +601,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               color: CustomColor.whiteColor,
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
-                                color: CustomColor.primaryInputHintBorderColor
-                              ),
+                                  color:
+                                      CustomColor.primaryInputHintBorderColor),
                               boxShadow: [
                                 BoxShadow(
                                   color: Color(0x0D000000),
@@ -627,14 +651,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   color: CustomColor.black.withOpacity(0.2),
                                 ),
                                 InkWell(
-                                  onTap: (){
+                                  onTap: () {
                                     _profileBloc.add(LogoutEvent());
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.all(4.0),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Row(
                                           children: [
@@ -655,17 +681,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             ),
                                           ],
                                         ),
-
-                                       Container()
-
+                                        Container()
                                       ],
                                     ),
                                   ),
                                 ),
-
-
-
-
                               ],
                             ),
                           )
@@ -866,13 +886,11 @@ class CustomActionButton extends StatelessWidget {
                 ),
               ],
             ),
-
             CustomImageWidget(
               imagePath: StaticAssets.arrowRight,
               imageType: 'svg',
               height: 24,
             ),
-
           ],
         ),
       ),

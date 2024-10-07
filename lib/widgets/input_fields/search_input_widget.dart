@@ -38,7 +38,7 @@ class SearchInputWidget extends StatelessWidget {
         filled: true,
         fillColor: CustomColor.transactionFromContainerColor,
         border: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(1000)),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
           borderSide: const BorderSide(
             color: CustomColor.dashboardProfileBorderColor,
             width: 1,
@@ -49,14 +49,14 @@ class SearchInputWidget extends StatelessWidget {
             color: CustomColor.dashboardProfileBorderColor,
             width: 1,
           ),
-          borderRadius: const BorderRadius.all(Radius.circular(1000)),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: CustomColor.dashboardProfileBorderColor,
             width: 1,
           ),
-          borderRadius: const BorderRadius.all(Radius.circular(1000)),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
       ),
       onChanged: onSearchChanged,

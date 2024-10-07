@@ -78,6 +78,7 @@ class StaticAssets {
   static const String contactUs = 'assets/svg/contact-us.svg';
   static const String logout = 'assets/svg/logout.svg';
   static const String forgotPassword = 'assets/svg/forgot-password.svg';
+  static const String profile = 'assets/svg/profile.svg';
 
   //png image
   static const String errorDialog = 'assets/svg/dialog-warning.svg';

@@ -170,8 +170,8 @@ class _HubPopupContentState extends State<HubPopupContent>
                           ),
 
                           HubContainerWidget(
-                            title: "My Profile",
-                            imagePath: StaticAssets.addPeople,
+                            title: "Profile",
+                            imagePath: StaticAssets.profile,
                             isHubContainerBorderColor: false,
                             onTap: () {
                               Navigator.pushNamedAndRemoveUntil(context,

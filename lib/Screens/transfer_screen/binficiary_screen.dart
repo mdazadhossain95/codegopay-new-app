@@ -103,7 +103,7 @@ class _BeneficiaryListScreenState extends State<BeneficiaryListScreen> {
                             _filteredBeneficiaries.isNotEmpty
                                 ? SearchInputWidget(
                                     controller: _searchController,
-                                    hintText: "Search Here",
+                                    hintText: "Search",
                                     onSearchChanged: (value) {
                                       _filterBeneficiaries(value);
                                     },

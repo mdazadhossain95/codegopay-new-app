@@ -8,4 +8,5 @@ class ImagesRes {
 
   static const String PLUGIN_NAME = 'codegopay';
   static const String PLUGIN_VERSION = '2.0.0+1';
+  static const String T_ICON = 'images/investment/t_icon.png';
 }

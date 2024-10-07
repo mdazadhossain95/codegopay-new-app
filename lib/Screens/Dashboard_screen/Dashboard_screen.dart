@@ -35,10 +35,12 @@ import '../../widgets/main/transaction_details_widget.dart';
 import '../../widgets/toast/toast_helper.dart';
 import '../Profile_screen/Profile_screen.dart';
 import '../Profile_screen/bloc/profile_bloc.dart';
+import '../crypto_screen/Deposit_coin.dart';
 import '../no_network_connection/updateapp_screen.dart';
 import '../transfer_screen/binficiary_screen.dart';
 import '../transfer_screen/send_money.dart';
 import 'bloc/dashboard_bloc.dart';
+import 'deposit_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -699,11 +701,36 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                         .arrowDownLeft,
                                                     buttonText: "Deposit",
                                                     onPressed: () {
-                                                      Navigator
-                                                          .pushNamedAndRemoveUntil(
-                                                              context,
-                                                              'depositScreen',
-                                                              (route) => true);
+                                                      var data =
+                                                          state.dashboardModel!;
+                                                      Navigator.push(
+                                                        context,
+                                                        PageTransition(
+                                                          child:
+                                                              DashboardDepositScreen(
+                                                            name: data.name!,
+                                                            iban: data.iban!,
+                                                            bic: data.bic!,
+                                                            bankName:
+                                                                data.bankName!,
+                                                            bankAddress: data
+                                                                .bankAddress!,
+                                                          ),
+                                                          type:
+                                                              PageTransitionType
+                                                                  .rightToLeft,
+                                                          alignment:
+                                                              Alignment.center,
+                                                          duration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      300),
+                                                          reverseDuration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      200),
+                                                        ),
+                                                      );
                                                     },
                                                   ),
                                                 ),
@@ -1265,8 +1292,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                         .only(
                                                                         top: 5),
                                                                     child: Text(
-                                                                      Strings
-                                                                          .addBeneficiary,
+                                                                      "Beneficiary",
                                                                       maxLines:
                                                                           2,
                                                                       textAlign:

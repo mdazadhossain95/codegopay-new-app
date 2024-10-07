@@ -145,9 +145,13 @@ class _MasterNodeDashboardScreenState extends State<MasterNodeDashboardScreen> {
                                     children: [
                                       Row(
                                         children: [
-                                          Image.asset(
-                                            "images/investment/t_icon.png",
-                                            height: 60,
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 8),
+                                            child: Image.asset(
+                                              "images/investment/t_icon.png",
+                                              height: 40,
+                                            ),
                                           ),
                                           Column(
                                             crossAxisAlignment:
@@ -178,8 +182,14 @@ class _MasterNodeDashboardScreenState extends State<MasterNodeDashboardScreen> {
                                       ),
                                       Container(
                                         alignment: Alignment.centerRight,
-                                        padding:
-                                            const EdgeInsets.only(right: 10),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 8),
+                                        decoration: BoxDecoration(
+                                            color: Color(0xff8F8F8F),
+                                            borderRadius: BorderRadius.circular(8)
+                                        ),
+                                        // padding:
+                                        //     const EdgeInsets.only(right: 10),
                                         child: Image.asset(
                                           "images/investment/masternode.png",
                                           height: 24,

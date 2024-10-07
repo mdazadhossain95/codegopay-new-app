@@ -30,6 +30,8 @@ class ProfileModel {
     String? planName;
     int? needShowUpgrade;
     String? planurl;
+    String? bankName;
+    String? bankAddress;
     Sof? sof;
 
     ProfileModel({
@@ -53,6 +55,8 @@ class ProfileModel {
         this.helpFaq,
         this.planName,
         this.needShowUpgrade,
+        this.bankName,
+        this.bankAddress,
         this.sof,
     });
 
@@ -75,6 +79,8 @@ class ProfileModel {
         profileimage: json["profileimage"],
         contactUs: json["contact_us"],
         helpFaq: json["help_faq"],
+        bankName: json["bank_name"],
+        bankAddress: json["bank_address"],
         planName: json["plan_name"] ?? '',
         needShowUpgrade: json["need_show_upgrade"],
         sof: json["sof"] == null ? null : Sof.fromJson(json["sof"]),
@@ -98,6 +104,8 @@ class ProfileModel {
         "profileimage": profileimage,
         "contact_us": contactUs,
         "help_faq": helpFaq,
+        "bank_name": bankName,
+        "bank_address": bankAddress,
         "plan_name": planName,
         "need_show_upgrade": needShowUpgrade,
         "sof": sof?.toJson(),

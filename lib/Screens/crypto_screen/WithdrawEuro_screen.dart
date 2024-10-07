@@ -12,7 +12,6 @@ import 'package:page_transition/page_transition.dart';
 
 import '../../constant_string/User.dart';
 import '../../utils/assets.dart';
-import '../../utils/custom_scroll_behavior.dart';
 import '../../utils/input_fields/custom_color.dart';
 import '../../widgets/buttons/custom_icon_button_widget.dart';
 import '../../widgets/buttons/default_back_button_widget.dart';

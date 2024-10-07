@@ -34,6 +34,8 @@ class ProfileState {
           iban: '',
           name: '',
           planurl: '',
+          bankAddress: "",
+          bankName: '',
           profileimage:
               'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRp0xKoXUryp0JZ1Sxp-99eQiQcFrmA1M1qbQ&usqp=CAU',
           risk: '',
@@ -43,7 +45,8 @@ class ProfileState {
           sof: Sof(sourceOfWealthMsg: "", label: "", sourceOfWealth: 0)),
       statusModel: StatusModel(message: '', status: 222),
       logoutModel: LogoutModel(status: 222, message: ""),
-      changePasswordModel: ChangePasswordModel(status: 222, message: "", requestId: ""),
+      changePasswordModel:
+          ChangePasswordModel(status: 222, message: "", requestId: ""),
     );
   }
 

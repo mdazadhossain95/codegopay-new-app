@@ -1,17 +1,12 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:codegopay/Screens/transfer_screen/binficiary_screen.dart';
 import 'package:codegopay/Screens/transfer_screen/bloc/transfer_bloc.dart';
-import 'package:codegopay/cutom_weidget/binficary_textfield.dart';
-import 'package:codegopay/cutom_weidget/custom_navigationBar.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
 import 'package:codegopay/cutom_weidget/text_uploadimages.dart';
 import 'package:codegopay/utils/input_fields/custom_color.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:page_transition/page_transition.dart';
 
 import '../../widgets/buttons/default_back_button_widget.dart';
 import '../../widgets/buttons/primary_button_widget.dart';
@@ -111,7 +106,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                           ),
                         ),
                         Container(
-                          height: 41,
+                          height: 50,
                           padding: EdgeInsets.all(4),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(16),
@@ -127,7 +122,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                                     });
                                   },
                                   child: Container(
-                                    height: 41,
+                                    height: 42,
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(16),
@@ -156,7 +151,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                                     });
                                   },
                                   child: Container(
-                                    height: 41,
+                                    height: 42,
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(16),

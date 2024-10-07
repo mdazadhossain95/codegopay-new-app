@@ -4,26 +4,36 @@ import 'package:codegopay/constant_string/User.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
 import 'package:codegopay/utils/input_fields/custom_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../utils/assets.dart';
 import '../../widgets/buttons/default_back_button_widget.dart';
 import '../../widgets/custom_image_widget.dart';
 
-class DepositScreen extends StatefulWidget {
-  const DepositScreen({super.key});
+class DashboardDepositScreen extends StatefulWidget {
+  DashboardDepositScreen(
+      {super.key,
+      required this.name,
+      required this.iban,
+      required this.bic,
+      required this.bankName,
+      required this.bankAddress});
+
+  String name, iban, bic, bankName, bankAddress;
 
   @override
-  State<DepositScreen> createState() => _DepositScreenState();
+  State<DashboardDepositScreen> createState() => _DashboardDepositScreenState();
 }
 
-class _DepositScreenState extends State<DepositScreen> {
+class _DashboardDepositScreenState extends State<DashboardDepositScreen>
+    with SingleTickerProviderStateMixin {
   final DashboardBloc _dashboardBloc = DashboardBloc();
 
   @override
   void initState() {
     super.initState();
-    _dashboardBloc.add(DashboarddataEvent());
+    // _dashboardBloc.add(DashboarddataEvent());
     User.Screen = 'Notification Screen';
   }
 
@@ -92,7 +102,7 @@ class _DepositScreenState extends State<DepositScreen> {
                                 InkWell(
                                   onTap: () {},
                                   child: Text(
-                                    "Share",
+                                    "",
                                     style: GoogleFonts.inter(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 13,
@@ -111,60 +121,72 @@ class _DepositScreenState extends State<DepositScreen> {
                             child: Column(
                               children: [
                                 BeneficiaryInfoWidget(
-                                  label:  "Beneficiary",
-                                  title:  "Ranjit Singh",
-                                  onCopy: () {},
+                                  label: "Beneficiary",
+                                  title: widget.name ?? "",
+                                  onCopy: () {
+
+                                    copyToClipboard(context, widget.name);
+                                  },
                                 ),
                                 BeneficiaryInfoWidget(
                                   label: "IBAN",
-                                  title: "AE485378957393845739",
-                                  onCopy: () {},
+                                  title: widget.iban ?? "",
+                                  onCopy: () {
+
+                                    copyToClipboard(context, widget.iban);
+                                  },
                                 ),
                                 BeneficiaryInfoWidget(
                                   label: "BIC/SWIFT Code",
-                                  title: "REVOLT21",
-                                  onCopy: () {},
+                                  title: widget.bic ?? "",
+                                  onCopy: () {
+                                    copyToClipboard(context, widget.bic);
+                                  },
                                 ),
                                 BeneficiaryInfoWidget(
                                   label: "Bank and Name Address",
-                                  title: "Etihad Airways Centre 5th Floor Abu Dhabi, UAE",
-                                  onCopy: () {},
+                                  title:
+                                      "${widget.bankName}\n${widget.bankAddress}" ??
+                                          "",
+                                  onCopy: () {
+                                    copyToClipboard(context,  "${widget.bankName}\n${widget.bankAddress}");
+                                  },
                                 ),
                               ],
                             ),
                           ),
-
                           Container(
                             padding: EdgeInsets.all(16),
                             margin: EdgeInsets.symmetric(vertical: 10),
                             decoration: BoxDecoration(
                                 color: CustomColor.whiteColor,
                                 borderRadius: BorderRadius.circular(16)),
-
                             child: Column(
                               children: [
                                 Container(
                                   padding: EdgeInsets.all(8),
-                                  child:
-                                  Row(
+                                  child: Row(
                                     children: [
                                       Container(
-                                        margin:EdgeInsets.only(right: 10),
+                                          margin: EdgeInsets.only(right: 10),
                                           padding: EdgeInsets.all(10),
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(12.0),
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
                                             color: CustomColor.primaryColor,
                                           ),
                                           child: CustomImageWidget(
-                                            imagePath: StaticAssets.shieldDollar,
+                                            imagePath:
+                                                StaticAssets.shieldDollar,
                                             imageType: 'svg',
                                             height: 30,
                                           )),
-
                                       Expanded(
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               "Protected Deposit",
@@ -175,9 +197,10 @@ class _DepositScreenState extends State<DepositScreen> {
                                               ),
                                             ),
                                             Text(
-                                              "Your money is protected by the Lithuanian Deposit Guarantee Scheme. Learn more.",
+                                              "Your money is protected by the Lithuanian Deposit Guarantee Scheme.",
                                               style: GoogleFonts.inter(
-                                                color: CustomColor.primaryTextHintColor,
+                                                color: CustomColor
+                                                    .primaryTextHintColor,
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w400,
                                               ),
@@ -185,26 +208,23 @@ class _DepositScreenState extends State<DepositScreen> {
                                           ],
                                         ),
                                       ),
-
-
-
-
                                     ],
                                   ),
                                 ),
                                 Divider(
-                                  color: CustomColor.dashboardProfileBorderColor,
+                                  color:
+                                      CustomColor.dashboardProfileBorderColor,
                                 ),
                                 Container(
                                   padding: EdgeInsets.all(8),
-                                  child:
-                                  Row(
+                                  child: Row(
                                     children: [
                                       Container(
-                                        margin:EdgeInsets.only(right: 10),
+                                          margin: EdgeInsets.only(right: 10),
                                           padding: EdgeInsets.all(10),
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(12.0),
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
                                             color: CustomColor.primaryColor,
                                           ),
                                           child: CustomImageWidget(
@@ -212,11 +232,12 @@ class _DepositScreenState extends State<DepositScreen> {
                                             imageType: 'svg',
                                             height: 30,
                                           )),
-
                                       Expanded(
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               "Cross-platform transfer",
@@ -229,7 +250,8 @@ class _DepositScreenState extends State<DepositScreen> {
                                             Text(
                                               "Receive transfers from Euro bank into your Revolut Payments Account using these details.",
                                               style: GoogleFonts.inter(
-                                                color: CustomColor.primaryTextHintColor,
+                                                color: CustomColor
+                                                    .primaryTextHintColor,
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w400,
                                               ),
@@ -237,10 +259,6 @@ class _DepositScreenState extends State<DepositScreen> {
                                           ],
                                         ),
                                       ),
-
-
-
-
                                     ],
                                   ),
                                 ),
@@ -283,15 +301,28 @@ class _DepositScreenState extends State<DepositScreen> {
   }
 }
 
+void copyToClipboard(BuildContext context, String textToCopy) {
+  // Copy the text to the clipboard
+  Clipboard.setData(ClipboardData(text: textToCopy)).then((_) {
+    // Show a SnackBar to indicate that the text was copied
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Copied to clipboard!'),
+        duration: Duration(seconds: 2), // Show for 2 seconds
+      ),
+    );
+  });
+}
+
 class BeneficiaryInfoWidget extends StatelessWidget {
   final String label;
-  final String title;
+  String? title;
   VoidCallback onCopy;
 
   BeneficiaryInfoWidget({
     super.key,
     required this.label,
-    required this.title,
+    this.title = "",
     required this.onCopy,
   });
 
@@ -299,7 +330,6 @@ class BeneficiaryInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0),
-
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -318,12 +348,15 @@ class BeneficiaryInfoWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: Text(
-                  title,
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 18,
-                    color: CustomColor.transactionDetailsTextColor,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: Text(
+                    title!,
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                      color: CustomColor.transactionDetailsTextColor,
+                    ),
                   ),
                 ),
               ),
@@ -332,7 +365,7 @@ class BeneficiaryInfoWidget extends StatelessWidget {
                 child: CustomImageWidget(
                   imagePath: StaticAssets.copy,
                   imageType: 'svg',
-                  height: 24,
+                  height: 18,
                 ),
               ),
             ],
