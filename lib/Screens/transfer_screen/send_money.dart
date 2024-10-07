@@ -87,63 +87,6 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
     }
   }
 
-  // matchFaces() {
-  //   if (image1.bitmap == null ||
-  //       image1.bitmap == "" ||
-  //       image2.bitmap == null ||
-  //       image2.bitmap == "") return;
-  //   setState(() => _similarity = "Processing...");
-  //   var request = Regula.MatchFacesRequest();
-  //   request.images = [image1, image2];
-  //   Regula.FaceSDK.matchFaces(jsonEncode(request)).then((value) {
-  //     var response = Regula.MatchFacesResponse.fromJson(json.decode(value));
-  //     Regula.FaceSDK.matchFacesSimilarityThresholdSplit(
-  //             jsonEncode(response!.results), 0.75)
-  //         .then((str) {
-  //       var split = Regula.MatchFacesSimilarityThresholdSplit.fromJson(
-  //           json.decode(str));
-  //       setState(() => _similarity = split!.matchedFaces.length > 0
-  //           ? ((split.matchedFaces[0]!.similarity! * 100).toStringAsFixed(2))
-  //           : "error");
-  //
-  //       debugPrint("object22 " + _similarity);
-  //
-  //       if (double.parse(_similarity) > 90.00) {
-  //         _transferBloc.add(SendmoneyEvent(
-  //             amount: _amount.text,
-  //             paymentoption: instant ? 'sepa instant' : 'sepa normal',
-  //             refrence: _refrence.text,
-  //             uniquid: widget.id,
-  //         iban: ibanid));
-  //       } else {
-  //         AwesomeDialog(
-  //           context: context,
-  //           dialogType: DialogType.error,
-  //           animType: AnimType.rightSlide,
-  //           desc: 'Your face not match',
-  //           btnCancelText: 'OK',
-  //           buttonsTextStyle: const TextStyle(
-  //               fontSize: 14,
-  //               fontFamily: 'pop',
-  //               fontWeight: FontWeight.w600,
-  //               color: Colors.white),
-  //           btnCancelOnPress: () {},
-  //         ).show();
-  //       }
-  //     });
-  //   });
-  // }
-
-  // Future<void> initPlatformState() async {
-  //   Regula.FaceSDK.init().then((json) {
-  //     var response = jsonDecode(json);
-  //     if (!response["success"]) {
-  //       debugPrint("Init failed: ");
-  //       debugPrint(json);
-  //     }
-  //   });
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -159,22 +102,9 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
       bloc: _transferBloc,
       listener: (context, TransferState state) {
         if (state.sendmoneyModel?.status == 0) {
-          AwesomeDialog(
-            context: context,
-            dialogType: DialogType.error,
-            animType: AnimType.rightSlide,
-            desc: state.sendmoneyModel?.message,
-            btnCancelText: 'OK',
-            buttonsTextStyle: const TextStyle(
-                fontSize: 14,
-                fontFamily: 'pop',
-                fontWeight: FontWeight.w600,
-                color: Colors.white),
-            btnCancelOnPress: () {},
-          ).show();
 
           CustomToast.showError(
-              context, "Transfer Confirmation", state.sendmoneyModel!.message!);
+              context, "Sorry!", state.sendmoneyModel!.message!);
         } else if (state.sendmoneyModel?.status == 1) {
           Navigator.push(
               context,
@@ -198,7 +128,6 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
               ));
         }
 
-        // TODO: implement listener
       },
       child: BlocBuilder(
         bloc: _transferBloc,
@@ -260,14 +189,14 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                                   children: [
                                     AmountInputField(
                                       controller: _amount,
-                                      // Your TextEditingController
                                       label: "Transfer Amount",
                                       // Custom label
                                       currencySymbol: '€',
                                       autofocus: true,
+                                      minAmount: 0,
                                     ),
                                     const SizedBox(
-                                      height: 10,
+                                      height: 20,
                                     ),
                                     DefaultInputFieldWithTitleWidget(
                                       controller: _refrence,
