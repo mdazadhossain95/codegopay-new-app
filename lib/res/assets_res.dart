@@ -8,4 +8,7 @@ class AssetsRes {
 
   static const String PLUGIN_NAME = 'codegopay';
   static const String PLUGIN_VERSION = '2.0.0+1';
+  static const String SUCCESS_DIALOG = 'assets/images/success-dialog.png';
+  static const String ERROR_DIALOG = 'assets/svg/error-dialog.svg';
+  static const String WARNING_DIALOG = 'assets/svg/warning-dialog.svg';
 }

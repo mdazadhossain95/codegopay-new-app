@@ -8,10 +8,10 @@ import 'package:codegopay/utils/input_fields/custom_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:screenshot/screenshot.dart';
 import '../../utils/assets.dart';
 import '../../widgets/buttons/default_back_button_widget.dart';
 import '../../widgets/custom_image_widget.dart';
+import '../../widgets/toast/custom_dialog_widget.dart';
 import '../../widgets/toast/toast_util.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -39,19 +39,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
           bloc: _dashboardBloc,
           listener: (context, DashboardState state) async {
             if (state.statusModel?.status == 0) {
-              AwesomeDialog(
-                context: context,
-                dialogType: DialogType.error,
-                animType: AnimType.rightSlide,
-                desc: state.statusModel?.message,
-                btnCancelText: 'OK',
-                buttonsTextStyle: const TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'pop',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
-                btnCancelOnPress: () {},
-              ).show();
+              CustomToast.showError(
+                  context, "Sorry!", state.statusModel!.message!);
             }
           },
           child: BlocBuilder(
@@ -137,35 +126,19 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       },
                                       child: InkWell(
                                         onTap: () {
-                                          AwesomeDialog(
-                                            context: context,
-                                            dialogType: DialogType.info,
-                                            animType: AnimType.scale,
-                                            desc: state
-                                                .dashboardModel!
-                                                .notifications![index]
-                                                .description,
-                                            btnCancelText: 'OK',
-                                            btnCancelColor:
-                                            const Color(0xff10245C),
-                                            buttonsTextStyle: const TextStyle(
-                                                fontSize: 14,
-                                                fontFamily: 'pop',
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.white),
-                                            btnCancelOnPress: () {},
-                                          ).show();
-
-                                          // CustomToast.showSuccess(
-                                          //   context,
-                                          //   "This this a title!",
-                                          //   "This is a sub title",
-                                          // );
+                                          CustomDialogWidget.showWarningDialog(
+                                              context: context,
+                                              title: state.dashboardModel!
+                                                  .notifications![index].title!,
+                                              subTitle: state
+                                                  .dashboardModel!
+                                                  .notifications![index]
+                                                  .description!,
+                                              btnOkText: 'Ok');
                                         },
                                         child: Container(
                                           margin:
                                               const EdgeInsets.only(bottom: 12),
-                                          // Spacing between each item
                                           padding: const EdgeInsets.all(16),
                                           decoration: BoxDecoration(
                                             color: CustomColor.whiteColor,
@@ -207,8 +180,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      notification.title ??
-                                                          "Title",
+                                                      state
+                                                          .dashboardModel!
+                                                          .notifications![index]
+                                                          .title!,
                                                       style: GoogleFonts.inter(
                                                         fontSize: 14,
                                                         fontWeight:
@@ -217,25 +192,40 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                             CustomColor.black,
                                                       ),
                                                     ),
-                                                    SizedBox(
-                                                      child: Text(
-                                                        notification
-                                                                .description ??
-                                                            "Subtitle",
-                                                        maxLines: 2,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style:
-                                                            GoogleFonts.inter(
-                                                          fontSize: 13,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          color: CustomColor
-                                                              .subtitleTextColor,
-                                                        ),
+                                                    Text(
+                                                      state
+                                                          .dashboardModel!
+                                                          .notifications![index]
+                                                          .description!,
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: GoogleFonts.inter(
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: CustomColor
+                                                            .subtitleTextColor,
                                                       ),
                                                     ),
                                                   ],
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 70,
+                                                child: Text(
+                                                  state
+                                                      .dashboardModel!
+                                                      .notifications![index]
+                                                      .date!,
+                                                  textAlign: TextAlign.right,
+                                                  maxLines: 3,
+                                                  style: GoogleFonts.inter(
+                                                    fontSize: 8,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: CustomColor.black
+                                                        .withOpacity(0.6),
+                                                  ),
                                                 ),
                                               ),
                                             ],

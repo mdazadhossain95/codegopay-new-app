@@ -19,16 +19,17 @@ class CustomDialogWidget {
   }) {
     AwesomeDialog(
       context: context,
-      dialogType: DialogType.success,
+      dialogType: DialogType.noHeader,
       animType: AnimType.rightSlide,
       dismissOnTouchOutside: dismissOnTouchOutside,
-      body: _customBodyWidget(
-          image: StaticAssets.dialogWarning,
+      body: _customBodySuccessWidget(
+          image: StaticAssets.successDialog,
           title: title,
           subTitle: subTitle,
           color: CustomColor.green.withOpacity(0.2)),
       btnOkText: btnOkText ?? 'Great!',
       btnOkOnPress: btnOkOnPress ?? () {},
+      btnOkColor: CustomColor.primaryColor,
     ).show();
   }
 
@@ -37,8 +38,8 @@ class CustomDialogWidget {
     required BuildContext context,
     required String title,
     required String subTitle,
-    required VoidCallback onTap,
-    required String btnText,
+    String? btnOkText,
+    VoidCallback? btnOkOnPress,
     bool dismissOnTouchOutside = true,
   }) {
     AwesomeDialog(
@@ -48,18 +49,12 @@ class CustomDialogWidget {
       animType: AnimType.rightSlide,
       dismissOnTouchOutside: dismissOnTouchOutside,
       body: _customBodyWidget(
-          image: StaticAssets.dialogWarning,
+          image: StaticAssets.errorDialog,
           title: title,
           subTitle: subTitle,
           color: CustomColor.errorColor.withOpacity(0.2)),
-      // btnOkText: btnOkText ?? 'Retry',
-      // btnCancelText: btnCancelText ?? 'Cancel',
-      btnOk: PrimaryButtonWidget(
-        onPressed: onTap,
-        buttonText: btnText,
-      ),
-      // btnOkOnPress: btnOkOnPress ?? () {},
-      // btnCancelOnPress: btnCancelOnPress,
+      btnOkText: btnOkText ?? 'Retry',
+      btnOkOnPress: btnOkOnPress ?? () {},
     ).show();
   }
 
@@ -74,17 +69,18 @@ class CustomDialogWidget {
   }) {
     AwesomeDialog(
       context: context,
-      dialogType: DialogType.infoReverse,
+      dialogType: DialogType.noHeader,
       animType: AnimType.topSlide,
       dismissOnTouchOutside: dismissOnTouchOutside,
       body: _customBodyWidget(
-          image: StaticAssets.dialogWarning,
+          image: StaticAssets.warningDialog,
           title: title,
           subTitle: subTitle,
           color: CustomColor.green.withOpacity(0.2)),
       btnOkText: btnOkText ?? 'Close',
       dialogBackgroundColor: CustomColor.whiteColor,
       btnOkOnPress: btnOkOnPress ?? () {},
+      btnOkColor: CustomColor.primaryColor,
     ).show();
   }
 
@@ -101,11 +97,11 @@ class CustomDialogWidget {
   }) {
     AwesomeDialog(
       context: context,
-      dialogType: DialogType.warning,
+      dialogType: DialogType.noHeader,
       animType: AnimType.bottomSlide,
       dismissOnTouchOutside: dismissOnTouchOutside,
       body: _customBodyWidget(
-          image: StaticAssets.dialogWarning,
+          image: StaticAssets.warningDialog,
           title: title,
           subTitle: subTitle,
           color: CustomColor.green.withOpacity(0.2)),
@@ -113,6 +109,7 @@ class CustomDialogWidget {
       btnCancelText: btnCancelText ?? 'Cancel',
       btnOkOnPress: btnOkOnPress ?? () {},
       btnCancelOnPress: btnCancelOnPress,
+      btnOkColor: CustomColor.primaryColor,
     ).show();
   }
 
@@ -130,30 +127,70 @@ class CustomDialogWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
 
         children: [
-          Container(
-            alignment: Alignment.center,
-            width: 56,
+          CustomImageWidget(
+            imagePath: image,
+            imageType: 'svg',
             height: 56,
-            margin: EdgeInsets.all(8),
-            // padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: CustomImageWidget(
-              imagePath: image,
-              imageType: 'svg',
-              height: 30,
-              width: 30,
+            width: 56,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.inter(
+                color: CustomColor.black,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: GoogleFonts.inter(
-              color: CustomColor.black,
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
+          Padding(
+            padding: const EdgeInsets.only(top: 5),
+            child: Text(
+              subTitle,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.inter(
+                color: CustomColor.black,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  static Widget _customBodySuccessWidget(
+      {required String image,
+        required String title,
+        required Color color,
+        required String subTitle}) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        // mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+
+        children: [
+          Image.asset(
+           image,
+            height: 95,
+            width: 95,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.inter(
+                color: CustomColor.black,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
           Padding(

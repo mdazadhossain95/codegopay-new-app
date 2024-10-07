@@ -79,9 +79,11 @@ class StaticAssets {
   static const String logout = 'assets/svg/logout.svg';
   static const String forgotPassword = 'assets/svg/forgot-password.svg';
   static const String profile = 'assets/svg/profile.svg';
+  static const String errorDialog = 'assets/svg/error-dialog.svg';
+  static const String warningDialog = 'assets/svg/warning-dialog.svg';
 
   //png image
-  static const String errorDialog = 'assets/svg/dialog-warning.svg';
+  static const String successDialog = 'assets/images/success-dialog.png';
   static const String dashboardNotification = 'assets/images/dashboard-notification.png';
 
 

@@ -105,8 +105,11 @@ flutter:
   assets:
     - assets/gifs/
     - assets/images/
+    - assets/images/success-dialog.png
     - assets/logo/
     - assets/svg/
+    - assets/svg/error-dialog.svg
+    - assets/svg/warning-dialog.svg
     - assets/videos/
     - images/
     - images/card/
