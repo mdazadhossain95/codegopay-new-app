@@ -1,18 +1,26 @@
 import 'dart:convert';
 import 'dart:ui' as ui;
 import 'package:codegopay/Screens/login_screen/reset_password_screen.dart';
+import 'package:codegopay/utils/assets.dart';
+import 'package:codegopay/utils/input_fields/custom_color.dart';
+import 'package:codegopay/widgets/custom_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // import 'package:flutter_face_api/face_api.dart' hide Image;
 import 'package:flutter_face_api/flutter_face_api.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../../../cutom_weidget/cutom_progress_bar.dart';
+import '../../utils/custom_style.dart';
 import '../../utils/user_data_manager.dart';
+import '../../widgets/buttons/default_back_button_widget.dart';
+import '../../widgets/buttons/primary_button_widget.dart';
+import '../../widgets/main_logo_widget.dart';
 import '../Profile_screen/bloc/profile_bloc.dart';
 import '../Sign_up_screens/bloc/signup_bloc.dart';
 
@@ -251,6 +259,7 @@ class _ForgotPasswordFaceVerificationScreenState
         }
       },
       child: Scaffold(
+        backgroundColor: CustomColor.scaffoldBg,
         body: SafeArea(
           bottom: false,
           child: BlocBuilder(
@@ -261,107 +270,65 @@ class _ForgotPasswordFaceVerificationScreenState
                 child: Container(
                   width: double.maxFinite,
                   height: double.maxFinite,
-                  padding: const EdgeInsets.only(left: 25, right: 25, top: 40),
-                  child: ListView(
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 40),
+                  child: Column(
                     // mainAxisAlignment: MainAxisAlignment.start,
                     // crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, 'login', (route) => false);
-                        },
-                        child: Container(
-                          width: 24,
-                          height: 24,
-                          alignment: Alignment.topLeft,
-                          child: Image.asset(
-                            'images/backarrow.png',
-                            width: 24,
-                            height: 24,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.asset(
-                          'images/applogo.png',
-                          height: 100,
-                        ),
-                      ),
-                      _uploadProofIdentity(context),
-                      const Text(
-                        "Let's Verify facial biometric",
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontFamily: 'pop',
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xff2C2C2C),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        widget.message,
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontFamily: 'pop',
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xff2C2C2C),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Column(
-                        // shrinkWrap: true,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const SizedBox(height: 30),
-                          _similarity == "nil"
-                              ? Container(
-                                  height: 60,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.9,
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff10245C),
-                                    borderRadius: BorderRadius.circular(11),
-                                  ),
-                                  child: ElevatedButton(
-                                    onPressed: startLiveness,
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.transparent,
-                                      elevation: 0,
-                                      shadowColor: Colors.transparent,
-                                      minimumSize: const ui.Size.fromHeight(40),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(11),
-                                      ),
-                                    ),
-                                    child: const Text(
-                                      'Continue',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 15,
-                                        fontFamily: 'pop',
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : Container(),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              _similarity,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: _similarity == "Processing..."
-                                    ? Colors.black
-                                    : Colors.transparent,
+                          DefaultBackButtonWidget(onTap: () {
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, 'login', (route) => false);
+                          }),
+                          Container()
+                        ],
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            MainLogoWidget(
+                              height: 100,
+                              width: 150,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 40),
+                              child: CustomImageWidget(
+                                imagePath: StaticAssets.fingerprint,
+                                imageType: 'svg',
                               ),
                             ),
+                            Text(
+                              "Let's Verify facial biometric",
+                              style: CustomStyle.loginTitleStyle,
+                            ),
+                            const SizedBox(height: 20),
+                            Text(
+                              widget.message,
+                              style: CustomStyle.loginSubTitleStyle,
+                            ),
+                            const SizedBox(height: 10),
+                          ],
+                        ),
+                      ),
+                      if (_similarity == "nil")
+                        PrimaryButtonWidget(
+                          onPressed: startLiveness,
+                          buttonText: 'Continue',
+                        ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          _similarity,
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.inter(
+                            fontSize: 18,
+                            color: _similarity == "Processing..."
+                                ? CustomColor.black
+                                : Colors.transparent,
                           ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
@@ -374,23 +341,4 @@ class _ForgotPasswordFaceVerificationScreenState
     );
   }
 
-  Widget _uploadProofIdentity(BuildContext context) {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.all(20.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Image.asset(
-              "images/face-id.png",
-              height: 250,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }

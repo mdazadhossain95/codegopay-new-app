@@ -122,10 +122,7 @@ class _LoginVerifyScreenState extends State<LoginVerifyScreen> {
                                   DefaultBackButtonWidget(onTap: () {
                                     Navigator.pop(context);
                                   }),
-                                  CustomIconButtonWidget(onTap: () {
-                                    // Navigator.pushNamedAndRemoveUntil(context,
-                                    //     'WelcomeScreen', (route) => false);
-                                  }),
+                                  Container()
                                 ],
                               ),
                               const SizedBox(

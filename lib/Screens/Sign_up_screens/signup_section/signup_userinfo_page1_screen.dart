@@ -93,7 +93,7 @@ class _SignupUserInfoPage1ScreenState extends State<SignupUserInfoPage1Screen> {
                   child: ListView(
                     shrinkWrap: true,
                     children: [
-                      inputselect(
+                      InputSelect(
                         controller: _nationalityController,
                         hint: 'Select country',
                         label: 'Nationality',

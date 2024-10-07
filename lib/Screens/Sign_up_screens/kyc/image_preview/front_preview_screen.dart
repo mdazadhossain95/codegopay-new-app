@@ -78,12 +78,7 @@ class _FrontPreviewScreenState extends State<FrontPreviewScreen> {
                           DefaultBackButtonWidget(onTap: () {
                             Navigator.pop(context);
                           }),
-                          CustomIconButtonWidget(
-                            onTap: () {
-                              // Navigator.pushNamedAndRemoveUntil(context,
-                              //     'WelcomeScreen', (route) => false);
-                            },
-                          ),
+                          Container()
                         ],
                       ),
                       Column(

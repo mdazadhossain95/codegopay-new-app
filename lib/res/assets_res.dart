@@ -31,6 +31,7 @@ class AssetsRes {
   static const String DEPOSIT = 'assets/svg/deposit.svg';
   static const String DIALOG_WARNING = 'assets/svg/dialog-warning.svg';
   static const String ERROR_ICON = 'assets/svg/error-icon.svg';
+  static const String FORGOT_PASSWORD = 'assets/svg/forgot-password.svg';
   static const String GIFT_CARDS = 'assets/svg/gift-cards.svg';
   static const String HOME = 'assets/svg/home.svg';
   static const String INVESTMENT = 'assets/svg/investment.svg';

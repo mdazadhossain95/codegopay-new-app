@@ -65,12 +65,7 @@ class _AddressPreviewScreenState extends State<AddressPreviewScreen> {
                           DefaultBackButtonWidget(onTap: () {
                             Navigator.pop(context);
                           }),
-                          CustomIconButtonWidget(
-                            onTap: () {
-                              // Navigator.pushNamedAndRemoveUntil(context,
-                              //     'WelcomeScreen', (route) => false);
-                            },
-                          ),
+                          Container()
                         ],
                       ),
                       Column(

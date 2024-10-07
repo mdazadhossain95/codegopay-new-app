@@ -157,10 +157,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   Navigator.pushNamedAndRemoveUntil(context,
                                       'WelcomeScreen', (route) => false);
                                 }),
-                                CustomIconButtonWidget(onTap: () {
-                                  // Navigator.pushNamedAndRemoveUntil(context,
-                                  //     'WelcomeScreen', (route) => false);
-                                }),
+                               Container(),
                               ],
                             ),
                             const SizedBox(

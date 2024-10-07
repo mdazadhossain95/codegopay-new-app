@@ -129,6 +129,7 @@ flutter:
     - assets/svg/deposit.svg
     - assets/svg/dialog-warning.svg
     - assets/svg/error-icon.svg
+    - assets/svg/forgot-password.svg
     - assets/svg/gift-cards.svg
     - assets/svg/home.svg
     - assets/svg/investment.svg

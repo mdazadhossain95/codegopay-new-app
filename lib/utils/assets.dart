@@ -77,11 +77,11 @@ class StaticAssets {
   static const String lock = 'assets/svg/lock.svg';
   static const String contactUs = 'assets/svg/contact-us.svg';
   static const String logout = 'assets/svg/logout.svg';
+  static const String forgotPassword = 'assets/svg/forgot-password.svg';
 
   //png image
   static const String errorDialog = 'assets/svg/dialog-warning.svg';
   static const String dashboardNotification = 'assets/images/dashboard-notification.png';
-
 
 
 }

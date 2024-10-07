@@ -65,12 +65,7 @@ class _BackPreviewScreenState extends State<BackPreviewScreen> {
                           DefaultBackButtonWidget(onTap: () {
                             Navigator.pop(context);
                           }),
-                          CustomIconButtonWidget(
-                            onTap: () {
-                              // Navigator.pushNamedAndRemoveUntil(context,
-                              //     'WelcomeScreen', (route) => false);
-                            },
-                          ),
+                          Container()
                         ],
                       ),
                       _buildImagePreview(widget.title, widget.idCapture),

@@ -24,6 +24,12 @@ import 'package:page_transition/page_transition.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
+import '../../utils/custom_style.dart';
+import '../../utils/input_fields/custom_color.dart';
+import '../../utils/input_fields/custom_pincode_input_field_widget.dart';
+import '../../utils/strings.dart';
+import '../../widgets/buttons/default_back_button_widget.dart';
+import '../../widgets/buttons/primary_button_widget.dart';
 import '../Dashboard_screen/bloc/dashboard_bloc.dart';
 import 'forgot_password_face_verification_screen.dart';
 
@@ -230,274 +236,160 @@ class _ForgotPasswordOtpScreenState extends State<ForgotPasswordOtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: const SystemUiOverlayStyle(
-            statusBarIconBrightness: Brightness.dark,
-            statusBarBrightness: Brightness.light,
-            statusBarColor: Colors.white,
-            systemNavigationBarIconBrightness: Brightness.dark,
-            systemNavigationBarColor: Colors.white),
-        child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
-          child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              body: BlocListener(
-                  bloc: _signupBloc,
-                  listener: (context, SignupState state) {
-                    if (state.forgotPasswordOtpModel?.status == 0) {
-                      AwesomeDialog(
-                        context: context,
-                        dialogType: DialogType.error,
-                        animType: AnimType.rightSlide,
-                        dismissOnTouchOutside: true,
-                        desc: state.forgotPasswordOtpModel?.message,
-                        btnCancelText: 'OK',
-                        buttonsTextStyle: const TextStyle(
-                            fontSize: 14,
-                            fontFamily: 'pop',
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white),
-                        btnCancelOnPress: () {
-                          Navigator.pop(context);
-                        },
-                      ).show();
-                    }
-
-                    if (state.forgotPasswordOtpModel?.isBiometric == 1) {
-                      Navigator.push(
-                        context,
-                        PageTransition(
-                          child: ForgotPasswordFaceVerificationScreen(
-                            userId: widget.userId,
-                            message: state.forgotPasswordOtpModel!.message!,
-                            profileImage:
-                                state.forgotPasswordOtpModel!.profileimage!,
-                          ),
-                          type: PageTransitionType.fade,
-                          alignment: Alignment.center,
-                          duration: const Duration(milliseconds: 300),
-                          reverseDuration: const Duration(milliseconds: 200),
-                        ),
-                      );
-                    } else  if (state.forgotPasswordOtpModel?.isBiometric == 0) {
-                      Navigator.push(
-                        context,
-                        PageTransition(
-                          child: ResetPasswordScreen(
-                            userId: widget.userId,
-                            message: state.forgotPasswordOtpModel!.message!,
-                          ),
-                          type: PageTransitionType.fade,
-                          alignment: Alignment.center,
-                          duration: const Duration(milliseconds: 300),
-                          reverseDuration: const Duration(milliseconds: 200),
-                        ),
-                      );
-                    }
+    return Scaffold(
+        backgroundColor: CustomColor.scaffoldBg,
+        resizeToAvoidBottomInset: false,
+        body: BlocListener(
+            bloc: _signupBloc,
+            listener: (context, SignupState state) {
+              if (state.forgotPasswordOtpModel?.status == 0) {
+                AwesomeDialog(
+                  context: context,
+                  dialogType: DialogType.error,
+                  animType: AnimType.rightSlide,
+                  dismissOnTouchOutside: true,
+                  desc: state.forgotPasswordOtpModel?.message,
+                  btnCancelText: 'OK',
+                  buttonsTextStyle: const TextStyle(
+                      fontSize: 14,
+                      fontFamily: 'pop',
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white),
+                  btnCancelOnPress: () {
+                    Navigator.pop(context);
                   },
-                  child: BlocBuilder(
-                      bloc: _signupBloc,
-                      builder: (context, SignupState state) {
-                        return SafeArea(
-                          child: ProgressHUD(
-                            inAsyncCall: state.isloading,
-                            child: Container(
-                              width: double.maxFinite,
-                              height: double.maxFinite,
-                              padding: const EdgeInsets.only(
-                                  left: 25, right: 25, top: 40),
+                ).show();
+              }
+
+              if (state.forgotPasswordOtpModel?.isBiometric == 1) {
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    child: ForgotPasswordFaceVerificationScreen(
+                      userId: widget.userId,
+                      message: state.forgotPasswordOtpModel!.message!,
+                      profileImage:
+                          state.forgotPasswordOtpModel!.profileimage!,
+                    ),
+                    type: PageTransitionType.fade,
+                    alignment: Alignment.center,
+                    duration: const Duration(milliseconds: 300),
+                    reverseDuration: const Duration(milliseconds: 200),
+                  ),
+                );
+              } else  if (state.forgotPasswordOtpModel?.isBiometric == 0) {
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    child: ResetPasswordScreen(
+                      userId: widget.userId,
+                      message: state.forgotPasswordOtpModel!.message!,
+                    ),
+                    type: PageTransitionType.fade,
+                    alignment: Alignment.center,
+                    duration: const Duration(milliseconds: 300),
+                    reverseDuration: const Duration(milliseconds: 200),
+                  ),
+                );
+              }
+            },
+            child: BlocBuilder(
+                bloc: _signupBloc,
+                builder: (context, SignupState state) {
+                  return SafeArea(
+                    child: ProgressHUD(
+                      inAsyncCall: state.isloading,
+                      child: Container(
+                        width: double.maxFinite,
+                        height: double.maxFinite,
+                        padding: const EdgeInsets.only(
+                            left: 16, right: 16, top: 40),
+                        child: Column(
+                          children: [
+                            Expanded(
                               child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.start,
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.start,
                                 children: [
-                                  Expanded(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Container(
-                                            width: 24,
-                                            height: 24,
-                                            alignment: Alignment.topLeft,
-                                            child: Image.asset(
-                                              'images/backarrow.png',
-                                              width: 24,
-                                              height: 24,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 100),
-                                        Container(
-                                          alignment: Alignment.center,
-                                          child: const Text(
-                                            'Get Your Code',
-                                            style: TextStyle(
-                                                fontSize: 22,
-                                                fontFamily: 'pop',
-                                                fontWeight: FontWeight.w600,
-                                                color: Color(0xff2C2C2C)),
-                                          ),
-                                        ),
-                                        Container(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            widget.message,
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                fontFamily: 'pop',
-                                                fontWeight: FontWeight.w600,
-                                                color: Color(0xff2C2C2C)),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 32,
-                                        ),
-                                        Form(
-                                            key: _formkey,
-                                            child: Container(
-                                              margin:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 30),
-                                              child: PinCodeTextField(
-                                                appContext: context,
-                                                pastedTextStyle:
-                                                    const TextStyle(
-                                                        color:
-                                                            Color(0xff090B78),
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 14,
-                                                        fontFamily: 'pop'),
-                                                length: 4,
-                                                obscureText: true,
-                                                textStyle: const TextStyle(
-                                                    color: Color(0xff090B78),
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 14,
-                                                    fontFamily: 'pop'),
-
-                                                blinkWhenObscuring: true,
-                                                backgroundColor:
-                                                    Colors.transparent,
-
-                                                animationType:
-                                                    AnimationType.fade,
-                                                autoUnfocus: true,
-                                                autoFocus: true,
-                                                validator: (value) {
-                                                  return Validator
-                                                      .validateValues(
-                                                    value: value!,
-                                                  );
-                                                },
-                                                pinTheme: PinTheme(
-                                                  shape: PinCodeFieldShape.box,
-                                                  disabledColor:
-                                                      Colors.transparent,
-                                                  activeColor:
-                                                      const Color(0xff090B78),
-                                                  selectedColor:
-                                                      const Color(0xff090B78),
-                                                  inactiveColor:
-                                                      const Color(0xff090B78),
-                                                  inactiveFillColor:
-                                                      Colors.transparent,
-                                                  selectedFillColor:
-                                                      Colors.transparent,
-                                                  fieldOuterPadding:
-                                                      const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 4),
-                                                  borderWidth: 1,
-                                                  borderRadius:
-                                                      BorderRadius.circular(11),
-                                                  fieldHeight: 43,
-                                                  fieldWidth: 43,
-                                                  activeFillColor:
-                                                      Colors.transparent,
-                                                ),
-                                                cursorColor: Colors.white,
-                                                animationDuration:
-                                                    const Duration(
-                                                        milliseconds: 300),
-                                                enableActiveFill: true,
-                                                controller: _pincontrol,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-
-                                                onCompleted: (v) {
-                                                  debugPrint("Completed");
-                                                },
-                                                // onTap: () {
-                                                //   print("Pressed");
-                                                // },
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    completed = true;
-                                                  });
-                                                },
-                                                enablePinAutofill: false,
-                                                errorTextMargin:
-                                                    const EdgeInsets.only(
-                                                        top: 10),
-                                              ),
-                                            )),
-                                      ],
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      DefaultBackButtonWidget(onTap: () {
+                                        Navigator.pop(context);
+                                      }),
+                                      Container()
+                                    ],
+                                  ),
+                                  const SizedBox(height: 50),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      'Get Your Code?',
+                                      style:
+                                      CustomStyle.loginVerifyTitleTextStyle,
                                     ),
                                   ),
-                                  Container(
-                                    height: 60,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(11)),
-                                    child: ElevatedButton(
-                                        onPressed: () {
-                                          if (_formkey.currentState!
-                                              .validate()) {
-                                            _signupBloc.add(
-                                                ForgotPasswordOtpEvent(
-                                                    uniqueId: widget.uniqueId,
-                                                    userId: widget.userId,
-                                                    code: _pincontrol.text));
-                                          }
+                                  const SizedBox(
+                                    height: 32,
+                                  ),
+
+                                  Form(
+                                      key: _formkey,
+                                      child: CustomPinCodeInputFieldWidget(
+                                        appContext: context,
+                                        controller: _pincontrol,
+                                        onCompleted: (value) {
+                                          setState(() {
+                                            completed = true;
+                                          });
+                                          debugPrint('Completed: $value');
                                         },
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: completed
-                                                ? const Color(0xff10245C)
-                                                : const Color(0xffC4C4C4),
-                                            elevation: 0,
-                                            shadowColor: Colors.transparent,
-                                            minimumSize:
-                                                const Size.fromHeight(40),
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(11))),
-                                        child: const Text(
-                                          'Verify OTP',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 15,
-                                              fontFamily: 'pop',
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                        validator: (value) {
+                                          return Validator.validateValues(
+                                              value:
+                                              value!); // Replace with your validation logic
+                                        },
+                                      )),
+
+                                  Container(
+                                    alignment: Alignment.center,
+                                    padding:
+                                    EdgeInsets.symmetric(horizontal: 30),
+                                    child: Text(
+                                      widget.message,
+                                      textAlign: TextAlign.center,
+                                      style:
+                                      CustomStyle.setPinSubTitleTextStyle,
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
-                          ),
-                        );
-                      }))),
-        ));
+
+                            PrimaryButtonWidget(
+                              onPressed: completed
+                                  ? () {
+                                if (_formkey.currentState!
+                                    .validate()) {
+                                  _signupBloc.add(
+                                      ForgotPasswordOtpEvent(
+                                          uniqueId: widget.uniqueId,
+                                          userId: widget.userId,
+                                          code: _pincontrol.text));
+                                }
+                              }
+                                  : null,
+                              buttonText:  'Verify OTP',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                })));
   }
 }
 

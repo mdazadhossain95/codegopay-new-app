@@ -106,10 +106,7 @@ class _SignupEmailVerifyScreenState extends State<SignupEmailVerifyScreen> {
                                     DefaultBackButtonWidget(onTap: () {
                                       Navigator.pop(context);
                                     }),
-                                    CustomIconButtonWidget(onTap: () {
-                                      // Navigator.pushNamedAndRemoveUntil(context,
-                                      //     'WelcomeScreen', (route) => false);
-                                    }),
+                                  Container()
                                   ],
                                 ),
                                 const SizedBox(

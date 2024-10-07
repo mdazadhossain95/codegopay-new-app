@@ -181,10 +181,7 @@ class _TouchidScreenState extends State<TouchidScreen> {
                         DefaultBackButtonWidget(onTap: () {
                           Navigator.pop(context);
                         }),
-                        CustomIconButtonWidget(onTap: () {
-                          // Navigator.pushNamedAndRemoveUntil(context,
-                          //     'WelcomeScreen', (route) => false);
-                        }),
+                        Container()
                       ],
                     ),
                     Container(

@@ -63,7 +63,7 @@ class _KycSubmitScreenState extends State<KycSubmitScreen> {
                 child: Container(
                   width: double.maxFinite,
                   height: double.maxFinite,
-                  padding: const EdgeInsets.only(left: 25, right: 25, top: 40),
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 40),
                   child: Column(
                     children: [
                       Expanded(

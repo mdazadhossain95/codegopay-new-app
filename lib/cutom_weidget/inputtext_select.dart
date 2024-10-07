@@ -10,18 +10,16 @@ import 'package:google_fonts/google_fonts.dart';
 import '../utils/custom_style.dart';
 import '../utils/input_fields/custom_color.dart';
 import '../widgets/buttons/custom_icon_button_widget.dart';
+import '../widgets/custom_image_widget.dart';
 
-class inputselect extends StatefulWidget {
+class InputSelect extends StatefulWidget {
   final TextEditingController controller;
   final String label, hint, selectString;
-
   bool? nationality = true;
-
   final String? variable;
-
   final List listitems;
 
-  inputselect({
+  InputSelect({
     super.key,
     required this.controller,
     required this.label,
@@ -33,12 +31,14 @@ class inputselect extends StatefulWidget {
   });
 
   @override
-  State<inputselect> createState() => _inputselectState();
+  State<InputSelect> createState() => _InputSelectState();
 }
 
-class _inputselectState extends State<inputselect> {
+class _InputSelectState extends State<InputSelect> {
   FocusNode myFocusNode = FocusNode();
   bool bordershoww = false;
+  TextEditingController searchController = TextEditingController();
+  List filteredItems = [];
 
   @override
   void initState() {
@@ -46,6 +46,25 @@ class _inputselectState extends State<inputselect> {
     myFocusNode.addListener(() {
       setState(() {});
     });
+
+    // Initialize the filtered items list to show all items initially
+    filteredItems = widget.listitems;
+
+    searchController.addListener(() {
+      setState(() {
+        // Filter the list based on search input
+        filteredItems = widget.listitems
+            .where((item) =>
+            item.countryName.toLowerCase().contains(searchController.text.toLowerCase()))
+            .toList();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -111,32 +130,83 @@ class _inputselectState extends State<inputselect> {
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              CustomIconButtonWidget(onTap: () {
-                                // Navigator.pushNamedAndRemoveUntil(context,
-                                //     'WelcomeScreen', (route) => false);
-                              }),
+                              const SizedBox(
+                                width: 10,
+                              ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 20,
+                          const SizedBox(height: 20),
+                          // Search bar
+                          TextField(
+                            controller: searchController,
+                            decoration: InputDecoration(
+                              hintText: "Search Country",
+                              hintStyle: CustomStyle.loginInputTextHintStyle,
+                              filled: true,
+                              fillColor:CustomColor.primaryInputHintColor,
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: CustomColor.primaryInputHintBorderColor,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12)),
+                              errorBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: CustomColor.errorColor,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12)),
+                              focusedErrorBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: CustomColor.errorColor,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: CustomColor.primaryInputHintBorderColor,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12)),
+                              border: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: CustomColor.primaryInputHintBorderColor,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12)),
+                              disabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: CustomColor.primaryInputHintBorderColor,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12)),
+                              suffixIcon: Padding(
+                                padding: const EdgeInsets.all(14.0),
+                                child: CustomImageWidget(
+                                  imagePath: StaticAssets.searchMd,
+                                  imageType: 'svg',
+                                  height: 18,
+                                ),
+                              ),
+                            ),
                           ),
+                          const SizedBox(height: 10),
                           Expanded(
                             child: ListView.builder(
-                              itemCount: widget.listitems.length,
+                              itemCount: filteredItems.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return InkWell(
                                   onTap: () {
                                     Navigator.pop(context);
                                     widget.controller.text =
-                                        widget.listitems[index].countryName;
+                                        filteredItems[index].countryName;
                                     widget.nationality == true
-                                        ? User.Nationality =
-                                            widget.listitems[index].countryId
-                                        : User.Country =
-                                            widget.listitems[index].countryId;
-                                    User.Reciving_country =
-                                        widget.listitems[index].countryId;
-                                    bordershoww = true;
+                                        ? User.Nationality = filteredItems[index].countryId
+                                        : User.Country = filteredItems[index].countryId;
+                                    User.Reciving_country = filteredItems[index].countryId;
+                                    setState(() {
+                                      bordershoww = true;
+                                    });
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
@@ -152,8 +222,8 @@ class _inputselectState extends State<inputselect> {
                                       ),
                                     ),
                                     child: Text(
-                                      widget.listitems[index].countryName,
-                                      style:  GoogleFonts.inter(
+                                      filteredItems[index].countryName,
+                                      style: GoogleFonts.inter(
                                         color: CustomColor.black,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600,
@@ -163,7 +233,7 @@ class _inputselectState extends State<inputselect> {
                                 );
                               },
                             ),
-                          )
+                          ),
                         ],
                       ),
                     );
@@ -187,71 +257,70 @@ class _inputselectState extends State<inputselect> {
           },
           style: CustomStyle.loginInputTextStyle,
           decoration: InputDecoration(
-              errorStyle: TextStyle(color: CustomColor.errorColor),
-              contentPadding: const EdgeInsets.all(16),
-              hintText: widget.hint,
-              hintStyle: CustomStyle.loginInputTextHintStyle,
-              filled: true,
-              fillColor: myFocusNode.hasFocus
-                  ? CustomColor.whiteColor
-                  : CustomColor.primaryInputHintColor,
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: bordershoww
-                      ? CustomColor.primaryColor
-                      : CustomColor.primaryInputHintBorderColor,
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(11),
+            errorStyle: TextStyle(color: CustomColor.errorColor),
+            contentPadding: const EdgeInsets.all(16),
+            hintText: widget.hint,
+            hintStyle: CustomStyle.loginInputTextHintStyle,
+            filled: true,
+            fillColor: myFocusNode.hasFocus
+                ? CustomColor.whiteColor
+                : CustomColor.primaryInputHintColor,
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: bordershoww
+                    ? CustomColor.primaryColor
+                    : CustomColor.primaryInputHintBorderColor,
+                width: 1,
               ),
-              errorBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: CustomColor.errorColor,
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(11),
+              borderRadius: BorderRadius.circular(11),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: const BorderSide(
+                color: CustomColor.errorColor,
+                width: 1,
               ),
-              focusedErrorBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: CustomColor.errorColor,
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(11),
+              borderRadius: BorderRadius.circular(11),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: const BorderSide(
+                color: CustomColor.errorColor,
+                width: 1,
               ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: CustomColor.primaryColor,
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(11),
+              borderRadius: BorderRadius.circular(11),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(
+                color: CustomColor.primaryColor,
+                width: 1,
               ),
-              border: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: CustomColor.primaryColor,
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(11),
+              borderRadius: BorderRadius.circular(11),
+            ),
+            border: OutlineInputBorder(
+              borderSide: const BorderSide(
+                color: CustomColor.primaryColor,
+                width: 1,
               ),
-              disabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  color: CustomColor.primaryColor,
-                  width: 1,
-                ),
-                borderRadius: BorderRadius.circular(11),
+              borderRadius: BorderRadius.circular(11),
+            ),
+            disabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(
+                color: CustomColor.primaryColor,
+                width: 1,
               ),
-              enabled: true,
-              suffixIcon: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: SvgPicture.asset(
-                  StaticAssets.chevronDown,
-                  // width: 10,
-                  // height: 10,
-                  colorFilter: ColorFilter.mode(
-                   CustomColor.black, // Use API-provided color if available, otherwise use default
-                    BlendMode.srcIn,
-                  ),
+              borderRadius: BorderRadius.circular(11),
+            ),
+            enabled: true,
+            suffixIcon: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: SvgPicture.asset(
+                StaticAssets.chevronDown,
+                colorFilter: const ColorFilter.mode(
+                  CustomColor.black,
+                  BlendMode.srcIn,
                 ),
-              )),
+              ),
+            ),
+          ),
         ),
         const SizedBox(
           height: 10,
@@ -260,3 +329,4 @@ class _inputselectState extends State<inputselect> {
     );
   }
 }
+

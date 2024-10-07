@@ -9,15 +9,12 @@ import 'package:codegopay/utils/input_fields/custom_color.dart';
 import 'package:codegopay/utils/user_data_manager.dart';
 import 'package:codegopay/widgets/buttons/default_back_button_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:seon_sdk_flutter_plugin/seon_sdk_flutter_plugin.dart';
 
-import '../../cutom_weidget/input_textform.dart';
 import '../../utils/custom_style.dart';
-import '../../utils/input_fields/password_input_Field_widget.dart';
 import '../../utils/strings.dart';
 import '../../widgets/buttons/custom_icon_button_widget.dart';
 import '../../widgets/buttons/primary_button_widget.dart';
@@ -185,12 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Navigator.pushNamedAndRemoveUntil(
                                     context, 'WelcomeScreen', (route) => false);
                               }),
-                              CustomIconButtonWidget(
-                                onTap: () {
-                                  // Navigator.pushNamedAndRemoveUntil(context,
-                                  //     'WelcomeScreen', (route) => false);
-                                },
-                              ),
+                              Container()
                             ],
                           ),
                           const SizedBox(
@@ -280,7 +272,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   }
                                 : null,
                             // Disable button if fields are empty
-                            buttonText: 'Continue',
+                            buttonText: 'Log In',
                             // apiBackgroundColor: isButtonEnabled
                             //     ? const Color(0xff10245C)
                             //     : Colors.grey, // Change color if disabled

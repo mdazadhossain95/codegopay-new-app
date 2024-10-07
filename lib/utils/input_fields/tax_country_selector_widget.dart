@@ -8,9 +8,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../widgets/buttons/custom_icon_button_widget.dart';
+import '../../widgets/custom_image_widget.dart';
 import '../custom_style.dart';
 import 'custom_color.dart';
-
 
 class TextCountrySelectorWidget extends StatefulWidget {
   final TextEditingController controller;
@@ -34,18 +34,35 @@ class TextCountrySelectorWidget extends StatefulWidget {
   });
 
   @override
-  State<TextCountrySelectorWidget> createState() => _TextCountrySelectorWidgetState();
+  State<TextCountrySelectorWidget> createState() =>
+      _TextCountrySelectorWidgetState();
 }
 
 class _TextCountrySelectorWidgetState extends State<TextCountrySelectorWidget> {
   FocusNode myFocusNode = FocusNode();
   bool bordershoww = false;
+  TextEditingController searchController = TextEditingController();
+  List filteredItems = [];
 
   @override
   void initState() {
     super.initState();
     myFocusNode.addListener(() {
       setState(() {});
+    });
+
+    // Initialize the filtered items list to show all items initially
+    filteredItems = widget.listitems;
+
+    searchController.addListener(() {
+      setState(() {
+        // Filter the list based on search input
+        filteredItems = widget.listitems
+            .where((item) => item.countryName
+                .toLowerCase()
+                .contains(searchController.text.toLowerCase()))
+            .toList();
+      });
     });
   }
 
@@ -124,35 +141,95 @@ class _TextCountrySelectorWidgetState extends State<TextCountrySelectorWidget> {
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              CustomIconButtonWidget(onTap: () {
-                                // Navigator.pushNamedAndRemoveUntil(context,
-                                //     'WelcomeScreen', (route) => false);
-                              }),
+                              SizedBox(
+                                width: 20,
+                              )
                             ],
                           ),
                           const SizedBox(
                             height: 20,
                           ),
+                          // Search bar
+                          TextField(
+                            controller: searchController,
+                            decoration: InputDecoration(
+                              hintText: "Search Country",
+                              hintStyle: CustomStyle.loginInputTextHintStyle,
+                              filled: true,
+                              fillColor: CustomColor.primaryInputHintColor,
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        CustomColor.primaryInputHintBorderColor,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12)),
+                              errorBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: CustomColor.errorColor,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12)),
+                              focusedErrorBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: CustomColor.errorColor,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color:
+                                        CustomColor.primaryInputHintBorderColor,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12)),
+                              border: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color:
+                                        CustomColor.primaryInputHintBorderColor,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12)),
+                              disabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color:
+                                        CustomColor.primaryInputHintBorderColor,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12)),
+                              suffixIcon: Padding(
+                                padding: const EdgeInsets.all(14.0),
+                                child: CustomImageWidget(
+                                  imagePath: StaticAssets.searchMd,
+                                  imageType: 'svg',
+                                  height: 18,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
                           Expanded(
                             child: ListView.builder(
-                              itemCount: widget.listitems.length,
+                              itemCount: filteredItems.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return InkWell(
                                   onTap: () {
                                     Navigator.pop(context);
                                     widget.controller.text =
-                                        widget.listitems[index].countryName;
+                                        filteredItems[index].countryName;
 
                                     widget.nationality == true
                                         ? User.TaxCountry =
-                                        widget.listitems[index].countryId
+                                            filteredItems[index].countryId
                                         : User.TaxCountry =
-                                        widget.listitems[index].countryId;
+                                            filteredItems[index].countryId;
                                     User.TaxCountry =
-                                        widget.listitems[index].countryId;
+                                        filteredItems[index].countryId;
 
-                                    bordershoww = true;
-                                  },
+                                    setState(() {
+                                      bordershoww = true;
+                                    });
+                                    },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 20,
@@ -161,14 +238,15 @@ class _TextCountrySelectorWidgetState extends State<TextCountrySelectorWidget> {
                                     decoration: const BoxDecoration(
                                       border: Border(
                                         bottom: BorderSide(
-                                          color: CustomColor.primaryInputHintBorderColor,
+                                          color: CustomColor
+                                              .primaryInputHintBorderColor,
                                           width: 1,
                                         ),
                                       ),
                                     ),
                                     child: Text(
-                                      widget.listitems[index].countryName,
-                                      style:  GoogleFonts.inter(
+                                      filteredItems[index].countryName,
+                                      style: GoogleFonts.inter(
                                         color: CustomColor.black,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w600,
@@ -262,7 +340,8 @@ class _TextCountrySelectorWidgetState extends State<TextCountrySelectorWidget> {
                   // width: 10,
                   // height: 10,
                   colorFilter: ColorFilter.mode(
-                    CustomColor.black, // Use API-provided color if available, otherwise use default
+                    CustomColor.black,
+                    // Use API-provided color if available, otherwise use default
                     BlendMode.srcIn,
                   ),
                 ),

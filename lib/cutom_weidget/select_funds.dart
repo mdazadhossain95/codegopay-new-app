@@ -78,7 +78,7 @@ class _InputSelectFundsState extends State<InputSelectFunds> {
                 return StatefulBuilder(
                   builder: (BuildContext context, StateSetter setState) {
                     return Container(
-                      height: MediaQuery.of(context).size.height * 0.9,
+                      height: MediaQuery.of(context).size.height * 0.7,
                       padding: EdgeInsets.only(
                         top: 20,
                         right: 16,
@@ -105,10 +105,7 @@ class _InputSelectFundsState extends State<InputSelectFunds> {
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              CustomIconButtonWidget(onTap: () {
-                                // Navigator.pushNamedAndRemoveUntil(context,
-                                //     'WelcomeScreen', (route) => false);
-                              }),
+                             SizedBox(width: 25,)
                             ],
                           ),
                           const SizedBox(height: 20),

@@ -86,7 +86,7 @@ class _SetpinScreenState extends State<SetpinScreen> {
                         width: double.maxFinite,
                         height: double.maxFinite,
                         padding:
-                            const EdgeInsets.only(left: 25, right: 25, top: 40),
+                            const EdgeInsets.only(left: 16, right: 16, top: 40),
                         child: Column(
                           children: [
                             Expanded(
@@ -101,10 +101,7 @@ class _SetpinScreenState extends State<SetpinScreen> {
                                       DefaultBackButtonWidget(onTap: () {
                                         Navigator.pop(context);
                                       }),
-                                      CustomIconButtonWidget(onTap: () {
-                                        // Navigator.pushNamedAndRemoveUntil(context,
-                                        //     'WelcomeScreen', (route) => false);
-                                      }),
+                                      Container()
                                     ],
                                   ),
                                   const SizedBox(

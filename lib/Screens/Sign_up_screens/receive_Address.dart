@@ -104,7 +104,7 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
                               child: ListView(
                                 shrinkWrap: true,
                                 children: [
-                                  inputselect(
+                                  InputSelect(
                                     controller: _recivecountry,
                                     hint: ' ',
                                     label: 'Country',
