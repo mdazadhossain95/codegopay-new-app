@@ -213,69 +213,55 @@ class _TransferConfirmationScreenState
 
           state.isloading = true;
         } else if (state.pushModel?.status == 1) {
-          Navigator.pushNamedAndRemoveUntil(
-              context, "dashboard", (route) => false);
-        } else if (state.pushModel?.status == 0) {
-          // CustomToast.showError(
-          //     context, "Transfer Failed", state.pushModel!.message!);
-
-          // Error Dialog Example
-          // CustomDialogWidget.showErrorDialog(
-          //   context: context,
-          //   title: "Transfer Failed",
-          //   subTitle: state.pushModel!.message!,
-          //   onTap: () {}, btnText: 'Ok',
-          // );
-
-          // SuccessWidget(
-          //   imageType: SuccessImageType.error, // or ImageType.error, ImageType.warning
-          //   title: 'Transaction Failed!',
-          //   subTitle: state.pushModel!.message!,
-          //   btnText: 'Go back',
-          //   onTap: () {
-          //     Navigator.pop(context);
-          //   },
-          // );
-
-          Navigator.push(
+          Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
               builder: (context) => SuccessWidget(
-                imageType: SuccessImageType.error, // or ImageType.error, ImageType.warning
-                title: 'Transaction Failed!',
+                imageType: SuccessImageType.success,
+                title: 'Transaction Success',
                 subTitle: state.pushModel!.message!,
-                btnText: 'Go back',
+                btnText: 'Home',
                 onTap: () {
-                  Navigator.pop(context); // This will pop the SuccessWidget off the stack
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, "dashboard", (route) => false);
                 },
               ),
             ),
+            (route) => false,
           );
-
-
+        } else if (state.pushModel?.status == 0) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SuccessWidget(
+                imageType: SuccessImageType.error,
+                title: 'Transaction Failed!',
+                subTitle: state.pushModel!.message!,
+                btnText: 'Home',
+                onTap: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, "dashboard", (route) => false);
+                },
+              ),
+            ),
+            (route) => false,
+          );
         }
 
         if (state.regulaModel?.status == 0) {
           CustomToast.showError(
               context, "Sorry!!", state.regulaModel!.message!);
         } else if (state.regulaModel?.status == 1) {
-          AwesomeDialog(
+          CustomDialogWidget.showSuccessDialog(
             context: context,
-            dialogType: DialogType.success,
-            animType: AnimType.rightSlide,
-            dismissOnTouchOutside: false,
-            desc: state.regulaModel?.message,
-            btnCancelText: 'OK',
-            buttonsTextStyle: const TextStyle(
-                fontSize: 14,
-                fontFamily: 'pop',
-                fontWeight: FontWeight.w600,
-                color: Colors.white),
+            title: "Hey!",
+            subTitle: state.regulaModel!.message!,
+            btnOkText: "ok",
             btnOkOnPress: () {
               Navigator.pushNamedAndRemoveUntil(
                   context, 'dashboard', (route) => false);
             },
-          ).show();
+          );
         }
 
         if (state.statusModel?.status == 0) {
@@ -419,59 +405,6 @@ class _TransferConfirmationScreenState
                                         label: "Payment Type",
                                         value: widget.type,
                                       ),
-                                      // const SizedBox(
-                                      //   height: 30,
-                                      // ),
-                                      // Container(
-                                      //   margin:
-                                      //       const EdgeInsets.symmetric(horizontal: 20),
-                                      //   child: HorizontalSlidableButton(
-                                      //     width: MediaQuery.of(context).size.width / 3,
-                                      //     buttonWidth: 60.0,
-                                      //     isRestart: true,
-                                      //     color: const Color(0xffE4E3E3),
-                                      //     borderRadius: BorderRadius.circular(11),
-                                      //     buttonColor: const Color(0xff10245C),
-                                      //     dismissible: false,
-                                      //     label: const Center(
-                                      //         child: Text(
-                                      //       'Send',
-                                      //       style: TextStyle(
-                                      //           color: Colors.white,
-                                      //           fontSize: 15,
-                                      //           fontWeight: FontWeight.w500),
-                                      //     )),
-                                      //     child: const Padding(
-                                      //       padding: EdgeInsets.all(8.0),
-                                      //       child: Row(
-                                      //         mainAxisAlignment:
-                                      //             MainAxisAlignment.center,
-                                      //         children: [
-                                      //           Text(
-                                      //             'Swipe',
-                                      //             style: TextStyle(
-                                      //                 color: Colors.white,
-                                      //                 fontSize: 15,
-                                      //                 fontWeight: FontWeight.w500),
-                                      //           )
-                                      //         ],
-                                      //       ),
-                                      //     ),
-                                      //     onChanged: (position) {
-                                      //       setState(() {
-                                      //         if (position ==
-                                      //             SlidableButtonPosition.end) {
-                                      //           _transferBloc.add(
-                                      //               ApproveibanTransactionEvent(
-                                      //                   uniqueId: widget.id,
-                                      //                   completed: 'Completed',
-                                      //                   lat: lat.toString(),
-                                      //                   long: long.toString()));
-                                      //         } else {}
-                                      //       });
-                                      //     },
-                                      //   ),
-                                      // )
                                     ],
                                   ),
                                 ),

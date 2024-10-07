@@ -48,13 +48,26 @@ class _SuccessWidgetState extends State<SuccessWidget> {
   String _getImagePath() {
     switch (widget.imageType) {
       case SuccessImageType.success:
-        return StaticAssets.successIcon; // Assuming you have a success icon
+        return StaticAssets.successDialog; // Assuming you have a success icon
       case SuccessImageType.error:
-        return StaticAssets.errorIcon; // Assuming you have an error icon
+        return StaticAssets.errorDialog; // Assuming you have an error icon
       case SuccessImageType.warning:
-        return StaticAssets.errorIcon; // Assuming you have a warning icon
+        return StaticAssets.warningDialog; // Assuming you have a warning icon
       default:
-        return StaticAssets.errorIcon; // Fallback icon if needed
+        return StaticAssets.warningDialog; // Fallback icon if needed
+    }
+  }
+
+  String _getImageData() {
+    switch (widget.imageType) {
+      case SuccessImageType.success:
+        return ""; // Assuming you have a success icon
+      case SuccessImageType.error:
+        return 'svg'; // Assuming you have an error icon
+      case SuccessImageType.warning:
+        return 'svg'; // Assuming you have a warning icon
+      default:
+        return 'svg'; // Fallback icon if needed
     }
   }
 
@@ -69,13 +82,16 @@ class _SuccessWidgetState extends State<SuccessWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CustomImageWidget(
-                imagePath: _getImagePath(), // Call the method to get the correct image path
-                imageType: 'svg', // Assuming all are SVG, adjust as necessary
+                imagePath: _getImagePath(),
+                imageType: _getImageData(),
               ),
-              Text(
-                widget.title,
-                textAlign: TextAlign.center,
-                style: CustomStyle.loginTitleStyle,
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Text(
+                  widget.title,
+                  textAlign: TextAlign.center,
+                  style: CustomStyle.loginTitleStyle,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 10),
