@@ -32,7 +32,9 @@ import '../../widgets/main/hub_popup_content.dart';
 import '../../widgets/main/iban_container_widget.dart';
 import '../../widgets/main/transaction_card_widget.dart';
 import '../../widgets/main/transaction_details_widget.dart';
+import '../../widgets/toast/custom_dialog_widget.dart';
 import '../../widgets/toast/toast_helper.dart';
+import '../../widgets/toast/toast_util.dart';
 import '../Profile_screen/Profile_screen.dart';
 import '../Profile_screen/bloc/profile_bloc.dart';
 import '../crypto_screen/Deposit_coin.dart';
@@ -249,36 +251,22 @@ class _DashboardScreenState extends State<DashboardScreen>
                   }
 
                   if (state.statusModel?.status == 0) {
-                    AwesomeDialog(
-                      context: context,
-                      dialogType: DialogType.error,
-                      animType: AnimType.rightSlide,
-                      desc: state.statusModel?.message,
-                      btnCancelText: 'OK',
-                      buttonsTextStyle: const TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'pop',
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white),
-                      btnCancelOnPress: () {},
-                    ).show();
+                    CustomDialogWidget.showErrorDialog(
+                        context: context,
+                        title: "Sorry",
+                        subTitle: state.statusModel!.message!,
+                        btnOkText: 'Ok');
                   }
 
                   if (state.transactionApprovedModel?.status == 1) {
-                    AwesomeDialog(
-                      context: context,
-                      dialogType: DialogType.success,
-                      animType: AnimType.rightSlide,
-                      desc: state.transactionApprovedModel?.message,
-                      btnCancelText: 'OK',
-                      btnCancelColor: Colors.green,
-                      buttonsTextStyle: const TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'pop',
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white),
-                      btnCancelOnPress: () {},
-                    ).show();
+
+
+                    CustomDialogWidget.showSuccessDialog(
+                        context: context,
+                        title: "Hey!",
+                        subTitle: state.transactionApprovedModel!.message!,
+                        btnOkText: 'Ok');
+
                   }
 
                   //iban list
@@ -1453,55 +1441,65 @@ class _DashboardScreenState extends State<DashboardScreen>
                                       ),
                                     ),
                                     if (sof == 1)
-                                      Container(
-                                        margin: EdgeInsets.only(
-                                            left: 16, right: 16, top: 12),
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(52.58),
-                                            color: CustomColor.errorColor
-                                                .withOpacity(0.2),
-                                            border: Border.all(
-                                                color: CustomColor.whiteColor,
-                                                width: 2)),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              margin: EdgeInsets.symmetric(
-                                                  horizontal: 10, vertical: 10),
-                                              padding: EdgeInsets.all(8),
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: CustomColor.errorColor,
-                                              ),
-                                              child: CustomImageWidget(
-                                                imagePath: StaticAssets.warning,
-                                                imageType: 'svg',
-                                                height: 16,
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Padding(
-                                                padding:
-                                                    EdgeInsets.only(right: 8),
-                                                child: Text(
-                                                  label!,
-                                                  textAlign: TextAlign.left,
-                                                  style: GoogleFonts.inter(
-                                                      color: CustomColor
-                                                          .errorColor,
-                                                      fontSize: 10,
-                                                      fontWeight:
-                                                          FontWeight.w600),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.pushNamedAndRemoveUntil(
+                                              context,
+                                              'profileScreen',
+                                              (route) => false);
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.only(
+                                              left: 16, right: 16, top: 12),
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(52.58),
+                                              color: CustomColor.errorColor
+                                                  .withOpacity(0.2),
+                                              border: Border.all(
+                                                  color: CustomColor.whiteColor,
+                                                  width: 2)),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal: 10,
+                                                    vertical: 10),
+                                                padding: EdgeInsets.all(8),
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: CustomColor.errorColor,
+                                                ),
+                                                child: CustomImageWidget(
+                                                  imagePath:
+                                                      StaticAssets.warning,
+                                                  imageType: 'svg',
+                                                  height: 16,
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                              Expanded(
+                                                child: Padding(
+                                                  padding:
+                                                      EdgeInsets.only(right: 8),
+                                                  child: Text(
+                                                    label!,
+                                                    textAlign: TextAlign.left,
+                                                    style: GoogleFonts.inter(
+                                                        color: CustomColor
+                                                            .errorColor,
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     state.dashboardModel?.the3Dsconf!.status! ==
@@ -2736,19 +2734,15 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   paymentConfirmation(RemoteMessage message) {
     try {
-      AwesomeDialog(
+      CustomDialogWidget.showWarningDialog(
           context: context,
-          dismissOnTouchOutside: true,
-          dialogType: DialogType.success,
-          animType: AnimType.rightSlide,
           title: message.notification!.title!,
-          desc: message.notification!.body!,
-          btnOkText: "ok",
-          btnOkColor: Colors.green,
+          subTitle: message.notification!.body!,
+          btnOkText: 'Ok',
           btnOkOnPress: () {
             Navigator.pushNamedAndRemoveUntil(
                 context, 'dashboard', (route) => false);
-          }).show();
+          });
     } catch (e) {
       print("confirmation message");
     }
@@ -2768,7 +2762,7 @@ class _DashboardScreenState extends State<DashboardScreen>
         isDismissible: true,
         enableDrag: true,
         isScrollControlled: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         barrierColor: Colors.black.withOpacity(0.7),
         useRootNavigator: true,
         builder: (context) {

@@ -141,15 +141,15 @@ class _HubPopupContentState extends State<HubPopupContent>
                                   'beneficiaryListScreen', (route) => false);
                             },
                           ),
-                          HubContainerWidget(
-                            title: "Cards",
-                            imagePath: StaticAssets.cards,
-                            isHubContainerBorderColor: false,
-                            onTap: () {
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context, 'cardScreen', (route) => false);
-                            },
-                          ),
+                          // HubContainerWidget(
+                          //   title: "Cards",
+                          //   imagePath: StaticAssets.cards,
+                          //   isHubContainerBorderColor: false,
+                          //   onTap: () {
+                          //     Navigator.pushNamedAndRemoveUntil(
+                          //         context, 'cardScreen', (route) => false);
+                          //   },
+                          // ),
                           HubContainerWidget(
                             title: "Gift Cards",
                             imagePath: StaticAssets.giftCards,
@@ -160,7 +160,7 @@ class _HubPopupContentState extends State<HubPopupContent>
                             },
                           ),
                           HubContainerWidget(
-                            title: "My Beneficiary",
+                            title: "Beneficiary",
                             imagePath: StaticAssets.addPeople,
                             isHubContainerBorderColor: false,
                             onTap: () {
