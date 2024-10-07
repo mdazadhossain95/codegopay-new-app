@@ -18,8 +18,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'dart:developer' as log;
 
+import '../../utils/assets.dart';
 import '../../widgets/buttons/custom_floating_action_button.dart';
+import '../../widgets/buttons/primary_button_widget.dart';
+import '../../widgets/buttons/secondary_button_widget.dart';
+import '../../widgets/custom_image_widget.dart';
 import '../../widgets/input_fields/crypto_search_input_field.dart';
+import '../../widgets/toast/toast_util.dart';
 
 class CryptoScreen extends StatefulWidget {
   const CryptoScreen({super.key});
@@ -88,50 +93,9 @@ class _CryptoScreenState extends State<CryptoScreen> {
               }
 
               if (state.statusModel?.status == 0) {
-                AwesomeDialog(
-                  context: context,
-                  dialogType: DialogType.error,
-                  animType: AnimType.rightSlide,
-                  desc: state.statusModel?.message,
-                  btnCancelText: 'OK',
-                  buttonsTextStyle: const TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'pop',
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
-                  btnCancelOnPress: () {},
-                ).show();
+                CustomToast.showError(
+                    context, "Sorry!", state.statusModel!.message!);
               }
-
-              // if (state.ibanDepositEurToCryptoModel?.status == 1) {
-              //   String body = state.ibanDepositEurToCryptoModel!.body!;
-              //   String title = state.ibanDepositEurToCryptoModel!.title!;
-              //   String uniqueId =
-              //       state.ibanDepositEurToCryptoModel!.uniqueId!;
-              //
-              //   print("check iban deposit check");
-              //
-              //  ApproveEurotocrypto(
-              //     body: body,
-              //     title: title,
-              //     uniqueId: uniqueId,
-              //   );
-              //
-              // } else if(state.ibanDepositEurToCryptoModel?.status == 0){
-              //   AwesomeDialog(
-              //     context: context,
-              //     dialogType: DialogType.error,
-              //     animType: AnimType.rightSlide,
-              //     desc: state.ibanDepositEurToCryptoModel?.message,
-              //     btnCancelText: 'OK',
-              //     buttonsTextStyle: const TextStyle(
-              //         fontSize: 14,
-              //         fontFamily: 'pop',
-              //         fontWeight: FontWeight.w600,
-              //         color: Colors.white),
-              //     btnCancelOnPress: () {},
-              //   ).show();
-              // }
             },
             child: BlocBuilder(
                 bloc: _cryptoBloc,
@@ -218,18 +182,6 @@ class _CryptoScreenState extends State<CryptoScreen> {
                                           RichText(
                                             text: TextSpan(
                                               children: [
-                                                // TextSpan(
-                                                //   text:    state.coins!,
-                                                //   style: GoogleFonts
-                                                //       .inter(
-                                                //     color: CustomColor
-                                                //         .inputFieldTitleTextColor,
-                                                //     fontSize: 36,
-                                                //     fontWeight:
-                                                //     FontWeight
-                                                //         .w500,
-                                                //   ),
-                                                // ),
                                                 TextSpan(
                                                   text:
                                                       state.coins!.portfolio! ??
@@ -978,7 +930,7 @@ class _CryptoScreenState extends State<CryptoScreen> {
         pageBuilder: (BuildContext buildContext, Animation<double> animation,
             Animation<double> secondaryAnimation) {
           return Container(
-            color: Colors.white,
+            color: CustomColor.scaffoldBg,
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: Center(
@@ -992,27 +944,33 @@ class _CryptoScreenState extends State<CryptoScreen> {
                         child: ScrollConfiguration(
                           behavior: CustomScrollBehavior(),
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 18, right: 18),
+                            padding: const EdgeInsets.only(left: 16, right: 16),
                             child: ListView(
                               // crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 const SizedBox(height: 20),
                                 Text(
                                   message.notification!.title!,
-                                  style: const TextStyle(
+                                  style: GoogleFonts.inter(
                                     fontSize: 18,
                                     color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: 'pop',
+                                    fontWeight: FontWeight.w500,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
                                 const SizedBox(height: 40),
-                                Image.asset(
-                                  'images/bell.png',
-                                  color: const Color(0xff090B78),
-                                  width: 100,
-                                  height: 100,
+                                Container(
+                                  padding: const EdgeInsets.all(16),
+                                  margin: const EdgeInsets.only(right: 10),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: CustomColor.notificationBellBgColor,
+                                  ),
+                                  child: CustomImageWidget(
+                                    imagePath: StaticAssets.notificationBell,
+                                    imageType: 'svg',
+                                    height: 100,
+                                  ),
                                 ),
                                 const SizedBox(height: 40),
                                 Container(
@@ -1029,11 +987,10 @@ class _CryptoScreenState extends State<CryptoScreen> {
                                       Text(
                                         message.notification!.body!,
                                         textAlign: TextAlign.center,
-                                        style: const TextStyle(
+                                        style: GoogleFonts.inter(
                                           fontSize: 14,
                                           color: Colors.black,
                                           fontWeight: FontWeight.w500,
-                                          fontFamily: 'pop',
                                         ),
                                       ),
                                       const SizedBox(
@@ -1043,46 +1000,19 @@ class _CryptoScreenState extends State<CryptoScreen> {
                                   ),
                                 ),
                                 const SizedBox(height: 100),
-                                Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(100),
-                                      gradient: const LinearGradient(colors: [
-                                        Color(0xff090B78),
-                                        Color(0xff090B78)
-                                      ])),
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      _cryptoBloc.add(ApproveMoveWalletsEvent(
-                                        uniqueId: message.data['unique_id'],
-                                        completed: 'Completed',
-                                      ));
-                                      Navigator.popUntil(
-                                          context, (route) => route.isFirst);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15.0)),
-                                        backgroundColor: Colors.transparent,
-                                        elevation: 0,
-                                        shadowColor: Colors.transparent,
-                                        minimumSize: const Size.fromHeight(50)),
-                                    child: const Text(
-                                      "Confirm",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontFamily: 'pop',
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ),
+                                PrimaryButtonWidget(
+                                  onPressed: () {
+                                    _cryptoBloc.add(ApproveMoveWalletsEvent(
+                                      uniqueId: message.data['unique_id'],
+                                      completed: 'Completed',
+                                    ));
+                                    Navigator.popUntil(
+                                        context, (route) => route.isFirst);
+                                  },
+                                  buttonText: 'Confirm',
                                 ),
-                                const SizedBox(height: 50),
-                                InkWell(
-                                  onTap: () {
+                                SecondaryButtonWidget(
+                                  onPressed: () {
                                     Navigator.popUntil(
                                         context, (route) => route.isFirst);
                                     _cryptoBloc.add(ApproveMoveWalletsEvent(
@@ -1090,21 +1020,9 @@ class _CryptoScreenState extends State<CryptoScreen> {
                                       completed: 'Canceled',
                                     ));
                                   },
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    width: double.infinity,
-                                    height: 40,
-                                    child: Text(
-                                      'Cancel',
-                                      style: TextStyle(
-                                        color: Colors.black.withOpacity(0.7),
-                                        fontSize: 16,
-                                        decoration: TextDecoration.underline,
-                                        fontFamily: 'pop',
-                                      ),
-                                    ),
-                                  ),
-                                )
+                                  buttonText: "Cancel",
+                                  apiBackgroundColor: CustomColor.whiteColor,
+                                ),
                               ],
                             ),
                           ),
@@ -1136,7 +1054,7 @@ class _CryptoScreenState extends State<CryptoScreen> {
         pageBuilder: (BuildContext buildContext, Animation<double> animation,
             Animation<double> secondaryAnimation) {
           return Container(
-            color: Colors.white,
+            color: CustomColor.scaffoldBg,
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: Center(
@@ -1150,27 +1068,33 @@ class _CryptoScreenState extends State<CryptoScreen> {
                         child: ScrollConfiguration(
                           behavior: CustomScrollBehavior(),
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 18, right: 18),
+                            padding: const EdgeInsets.only(left: 16, right: 16),
                             child: ListView(
                               // crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 const SizedBox(height: 20),
                                 Text(
                                   message.notification!.title!,
-                                  style: const TextStyle(
+                                  style: GoogleFonts.inter(
                                     fontSize: 18,
                                     color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: 'pop',
+                                    fontWeight: FontWeight.w500,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
                                 const SizedBox(height: 40),
-                                Image.asset(
-                                  'images/bell.png',
-                                  color: const Color(0xff090B78),
-                                  width: 100,
-                                  height: 100,
+                                Container(
+                                  padding: const EdgeInsets.all(16),
+                                  margin: const EdgeInsets.only(right: 10),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: CustomColor.notificationBellBgColor,
+                                  ),
+                                  child: CustomImageWidget(
+                                    imagePath: StaticAssets.notificationBell,
+                                    imageType: 'svg',
+                                    height: 100,
+                                  ),
                                 ),
                                 const SizedBox(height: 40),
                                 Container(
@@ -1187,11 +1111,10 @@ class _CryptoScreenState extends State<CryptoScreen> {
                                       Text(
                                         message.notification!.body!,
                                         textAlign: TextAlign.center,
-                                        style: const TextStyle(
+                                        style: GoogleFonts.inter(
                                           fontSize: 14,
                                           color: Colors.black,
                                           fontWeight: FontWeight.w500,
-                                          fontFamily: 'pop',
                                         ),
                                       ),
                                       const SizedBox(
@@ -1201,46 +1124,19 @@ class _CryptoScreenState extends State<CryptoScreen> {
                                   ),
                                 ),
                                 const SizedBox(height: 100),
-                                Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(100),
-                                      gradient: const LinearGradient(colors: [
-                                        Color(0xff090B78),
-                                        Color(0xff090B78)
-                                      ])),
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      _cryptoBloc.add(ApproveTransactionEvent(
-                                        uniqueId: message.data['unique_id'],
-                                        completed: 'Completed',
-                                      ));
-                                      Navigator.popUntil(
-                                          context, (route) => route.isFirst);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15.0)),
-                                        backgroundColor: Colors.transparent,
-                                        elevation: 0,
-                                        shadowColor: Colors.transparent,
-                                        minimumSize: const Size.fromHeight(50)),
-                                    child: const Text(
-                                      "Confirm",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontFamily: 'pop',
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ),
+                                PrimaryButtonWidget(
+                                  onPressed: () {
+                                    _cryptoBloc.add(ApproveTransactionEvent(
+                                      uniqueId: message.data['unique_id'],
+                                      completed: 'Completed',
+                                    ));
+                                    Navigator.popUntil(
+                                        context, (route) => route.isFirst);
+                                  },
+                                  buttonText: 'Confirm',
                                 ),
-                                const SizedBox(height: 50),
-                                InkWell(
-                                  onTap: () {
+                                SecondaryButtonWidget(
+                                  onPressed: () {
                                     Navigator.popUntil(
                                         context, (route) => route.isFirst);
                                     _cryptoBloc.add(ApproveTransactionEvent(
@@ -1248,21 +1144,9 @@ class _CryptoScreenState extends State<CryptoScreen> {
                                       completed: 'Canceled',
                                     ));
                                   },
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    width: double.infinity,
-                                    height: 40,
-                                    child: Text(
-                                      'Cancel',
-                                      style: TextStyle(
-                                        color: Colors.black.withOpacity(0.7),
-                                        fontSize: 16,
-                                        decoration: TextDecoration.underline,
-                                        fontFamily: 'pop',
-                                      ),
-                                    ),
-                                  ),
-                                )
+                                  buttonText: "Cancel",
+                                  apiBackgroundColor: CustomColor.whiteColor,
+                                ),
                               ],
                             ),
                           ),

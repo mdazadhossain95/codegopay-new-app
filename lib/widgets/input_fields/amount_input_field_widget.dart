@@ -56,7 +56,7 @@ class AmountInputField extends StatelessWidget {
               minAmount: minAmount,
             );
           },
-          onChanged: (v) {},
+          onChanged: onChanged,
           style: GoogleFonts.inter(
             fontSize: 40,
             fontWeight: FontWeight.w500,

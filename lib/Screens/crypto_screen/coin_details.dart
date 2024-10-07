@@ -1,19 +1,13 @@
 import 'dart:async';
 
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:codegopay/Models/Crypto_coins_model.dart';
 import 'package:codegopay/Screens/crypto_screen/Buy_screen.dart';
 import 'package:codegopay/Screens/crypto_screen/Deposit_coin.dart';
 import 'package:codegopay/Screens/crypto_screen/Send_coin.dart';
 import 'package:codegopay/Screens/crypto_screen/bloc/crypto_bloc.dart';
-import 'package:codegopay/Screens/crypto_screen/stake_screen.dart';
 import 'package:codegopay/Screens/crypto_screen/staking_overivew.dart';
-import 'package:codegopay/cutom_weidget/custom_navigationBar.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
@@ -559,61 +553,6 @@ class _CoinDetailsState extends State<CoinDetails> {
                                   ),
                                 ],
                               ),
-                              state.coindetailsModel!.isCstaking == 0
-                                  ? Container()
-                                  : ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          PageTransition(
-                                            type: PageTransitionType.scale,
-                                            alignment: Alignment.center,
-                                            isIos: true,
-                                            duration: const Duration(
-                                                microseconds: 500),
-                                            child: StakingOverviewScreen(
-                                                symbol: widget.symbol),
-                                          ),
-                                        ).then((value) {
-                                          _cryptoBloc.add(StakeOverviewEvent(
-                                              symbol: widget.symbol));
-                                        });
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        elevation: 0,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(40)),
-                                        backgroundColor:
-                                            CustomColor.primaryColor,
-                                        minimumSize: const Size.fromHeight(55),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          CustomImageWidget(
-                                            imagePath: StaticAssets.stak,
-                                            imageType: 'svg',
-                                            height: 22,
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            state.coindetailsModel!
-                                                    .stakingProfit! ??
-                                                "",
-                                            style: GoogleFonts.inter(
-                                              color: CustomColor.whiteColor,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ],
-                                      )),
                               Padding(
                                 padding:
                                     const EdgeInsets.only(bottom: 10, top: 15),

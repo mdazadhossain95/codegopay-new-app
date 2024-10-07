@@ -17,6 +17,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../widgets/buttons/default_back_button_widget.dart';
 import '../../widgets/buttons/primary_button_widget.dart';
 import '../../widgets/input_fields/defult_input_field_with_title_widget.dart';
+import '../../widgets/toast/toast_util.dart';
 
 // ignore: must_be_immutable
 class SendCoinScreen extends StatefulWidget {
@@ -39,6 +40,7 @@ class SendCoinScreen extends StatefulWidget {
 class _DepositScreenState extends State<SendCoinScreen> {
   final CryptoBloc _cryptoBloc = CryptoBloc();
   final _formKey = GlobalKey<FormState>();
+  bool active = false;
 
   final TextEditingController _amount = TextEditingController();
   final TextEditingController _address = TextEditingController();
@@ -86,19 +88,8 @@ class _DepositScreenState extends State<SendCoinScreen> {
           bloc: _cryptoBloc,
           listener: (context, CryptoState state) async {
             if (state.statusModel?.status == 0) {
-              AwesomeDialog(
-                context: context,
-                dialogType: DialogType.error,
-                animType: AnimType.rightSlide,
-                desc: state.statusModel?.message,
-                btnCancelText: 'OK',
-                buttonsTextStyle: const TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'pop',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
-                btnCancelOnPress: () {},
-              ).show();
+              CustomToast.showError(
+                  context, "Sorry!", state.statusModel!.message!);
             }
           },
           child: BlocBuilder(
@@ -251,19 +242,15 @@ class _DepositScreenState extends State<SendCoinScreen> {
                                                   BorderRadius.circular(10),
                                               color: network == i
                                                   ? CustomColor.blue
-                                                  : CustomColor
-                                                  .whiteColor, border: Border.all(
-                                            color: network == i
-                                                ? CustomColor
-                                                .blueBorder
-                                                : CustomColor
-                                                .whiteColor,
-                                          ),
-
+                                                  : CustomColor.whiteColor,
+                                              border: Border.all(
+                                                color: network == i
+                                                    ? CustomColor.blueBorder
+                                                    : CustomColor.whiteColor,
+                                              ),
                                               boxShadow: [
                                                 BoxShadow(
-                                                  color:
-                                                  Color(0x0D000000),
+                                                  color: Color(0x0D000000),
                                                   offset: Offset(0, 2),
                                                   blurRadius: 4,
                                                 ),
@@ -272,23 +259,18 @@ class _DepositScreenState extends State<SendCoinScreen> {
                                             '${state.sendNetwork!.network![i].network}',
                                             style: GoogleFonts.inter(
                                                 color: network == i
-                                                    ? CustomColor
-                                                    .whiteColor
+                                                    ? CustomColor.whiteColor
                                                     : CustomColor.black,
                                                 fontSize: 14,
-                                                fontWeight:
-                                                FontWeight.w400),
+                                                fontWeight: FontWeight.w400),
                                           )),
                                     ),
                                 ],
                               )),
-                        
                           Form(
                             key: _formKey,
                             child: Column(
                               children: [
-
-
                                 DefaultInputFieldWithTitleWidget(
                                   controller: _amount,
                                   title: 'Amount',
@@ -297,7 +279,13 @@ class _DepositScreenState extends State<SendCoinScreen> {
                                   keyboardType: TextInputType.number,
                                   autofocus: false,
                                   isPassword: false,
-
+                                  onChanged: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      setState(() {
+                                        active = true;
+                                      });
+                                    }
+                                  },
                                   suffixIcon: Container(
                                     width: 20,
                                     alignment: Alignment.center,
@@ -333,21 +321,26 @@ class _DepositScreenState extends State<SendCoinScreen> {
                                   title: 'Address',
                                   hint: 'Enter Address',
                                   isEmail: false,
-                                  keyboardType: TextInputType.number,
+                                  keyboardType: TextInputType.text,
                                   autofocus: false,
                                   isPassword: false,
-
+                                  onChanged: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      setState(() {
+                                        active = true;
+                                      });
+                                    }
+                                  },
                                   suffixIcon: Container(
                                     width: 20,
                                     alignment: Alignment.center,
                                     child: InkWell(
                                       onTap: () async {
                                         var result =
-                                        await BarcodeScanner.scan();
+                                            await BarcodeScanner.scan();
 
                                         setState(() {
-                                          _address.text =
-                                              result.rawContent;
+                                          _address.text = result.rawContent;
                                         });
                                       },
                                       child: Text(
@@ -360,27 +353,26 @@ class _DepositScreenState extends State<SendCoinScreen> {
                                     ),
                                   ),
                                 ),
-
                               ],
                             ),
                           ),
                           const SizedBox(
                             height: 30,
                           ),
-
-
                           PrimaryButtonWidget(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                _cryptoBloc.add(SendCoinEvent(
-                                    address: _address.text,
-                                    amount: _amount.text,
-                                    currencyId: widget.symbol,
-                                    network: state.sendNetwork!
-                                        .network![network].network));
-                              }
-                            }
-                                ,
+                            onPressed: active
+                                ? () {
+                                    if (_formKey.currentState!.validate()) {
+                                      active = false;
+                                      _cryptoBloc.add(SendCoinEvent(
+                                          address: _address.text,
+                                          amount: _amount.text,
+                                          currencyId: widget.symbol,
+                                          network: state.sendNetwork!
+                                              .network![network].network));
+                                    }
+                                  }
+                                : null,
                             buttonText: 'Send',
                           ),
                         ],

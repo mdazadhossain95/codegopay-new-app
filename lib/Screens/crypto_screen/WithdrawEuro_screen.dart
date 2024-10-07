@@ -37,11 +37,32 @@ class _WithdrawEuroState extends State<WithdrawEuro> {
 
   final TextEditingController _textEditingController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
+  bool active = false;
+
   @override
   void initState() {
     _cryptoBloc.add(getibanlistEvent());
-    super.initState();
     User.Screen = 'Move Euro';
+
+    super.initState();
+    _textEditingController.addListener(_updateButtonState);
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.removeListener(_updateButtonState);
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
+  void _updateButtonState() {
+    if (_formKey.currentState?.validate() ?? false) {
+      setState(() {
+        active = _textEditingController.text.isNotEmpty;
+      });
+    }
   }
 
   @override
@@ -145,17 +166,22 @@ class _WithdrawEuroState extends State<WithdrawEuro> {
                         //   height: 20,
                         // ),
 
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 16),
-                          child: AmountInputField(
-                            controller: _textEditingController,
-                            label: widget.isBuy
-                                ? 'Deposit Amount'
-                                : 'Withdraw Amount',
-                            currencySymbol: widget.symbol.toUpperCase(),
-                            autofocus: false,
-                            readOnly: true,
-                            minAmount: 0,
+                        Form(
+                          key: _formKey,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 16),
+                            child: AmountInputField(
+                                controller: _textEditingController,
+                                label: widget.isBuy
+                                    ? 'Deposit Amount'
+                                    : 'Withdraw Amount',
+                                currencySymbol: widget.symbol.toUpperCase(),
+                                autofocus: false,
+                                readOnly: true,
+                                minAmount: 0,
+                                onChanged: (value) {
+                                  _updateButtonState();
+                                }),
                           ),
                         ),
                         const SizedBox(
@@ -276,140 +302,166 @@ class _WithdrawEuroState extends State<WithdrawEuro> {
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: 16),
                           child: PrimaryButtonWidget(
-                            onPressed: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  isDismissible: true,
-                                  enableDrag: true,
-                                  isScrollControlled: true,
-                                  backgroundColor: CustomColor.whiteColor,
-                                  barrierColor: Colors.black.withOpacity(0.7),
-                                  useRootNavigator: true,
-                                  builder: (context) {
-                                    return StatefulBuilder(builder: (buildContext,
-                                        StateSetter
-                                            setStater /*You can rename this!*/) {
-                                      return Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.5,
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 16, vertical: 10),
-                                          decoration: const BoxDecoration(
-                                            color: CustomColor.whiteColor,
-                                            borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(12),
-                                                topRight: Radius.circular(12)),
-                                          ),
-                                          child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    CustomIconButtonWidget(
-                                                      onTap: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      svgAssetPath: StaticAssets
-                                                          .closeBlack, // Replace with your asset path
-                                                    ),
-                                                    Text(
-                                                      'Select IBAN',
-                                                      style: GoogleFonts.inter(
-                                                        color: CustomColor
-                                                            .primaryColor,
-                                                        fontSize: 17,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(width: 20),
-                                                  ],
-                                                ),
-                                                const SizedBox(
-                                                  height: 20,
-                                                ),
-                                                Expanded(
-                                                  child: ListView.builder(
-                                                    itemCount: state
-                                                        .ibanlistModel!
-                                                        .ibaninfo!
-                                                        .length,
-                                                    itemBuilder:
-                                                        (BuildContext context,
-                                                            int index) {
-                                                      return InkWell(
-                                                        onTap: () {
-                                                          Navigator.pop(
-                                                              context);
-
-                                                          widget.isBuy == false
-                                                              ? _cryptoBloc.add(MovetoIbanEvent(
-                                                                  ibanid: state
-                                                                      .ibanlistModel!
-                                                                      .ibaninfo![
-                                                                          index]
-                                                                      .ibanId,
-                                                                  amount:
-                                                                      _textEditingController
-                                                                          .text))
-                                                              : _cryptoBloc.add(MoveEurotocryptoEvent(
-                                                                  ibanid: state
-                                                                      .ibanlistModel!
-                                                                      .ibaninfo![
-                                                                          index]
-                                                                      .ibanId,
-                                                                  amount:
-                                                                      _textEditingController
-                                                                          .text));
-                                                        },
-                                                        child: Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      20,
-                                                                  vertical: 20),
-                                                          decoration:
-                                                              const BoxDecoration(
-                                                            border: Border(
-                                                              bottom:
-                                                                  BorderSide(
+                            onPressed: active
+                                ? () {
+                                    active = false;
+                                    if (_formKey.currentState!.validate()) {
+                                      showModalBottomSheet(
+                                          context: context,
+                                          isDismissible: true,
+                                          enableDrag: true,
+                                          isScrollControlled: true,
+                                          backgroundColor:
+                                              CustomColor.whiteColor,
+                                          barrierColor:
+                                              Colors.black.withOpacity(0.7),
+                                          useRootNavigator: true,
+                                          builder: (context) {
+                                            return StatefulBuilder(builder:
+                                                (buildContext,
+                                                    StateSetter
+                                                        setStater /*You can rename this!*/) {
+                                              return Container(
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height *
+                                                      0.5,
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 16,
+                                                      vertical: 10),
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    color:
+                                                        CustomColor.whiteColor,
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                            topLeft: Radius
+                                                                .circular(12),
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    12)),
+                                                  ),
+                                                  child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            CustomIconButtonWidget(
+                                                              onTap: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              svgAssetPath:
+                                                                  StaticAssets
+                                                                      .closeBlack, // Replace with your asset path
+                                                            ),
+                                                            Text(
+                                                              'Select IBAN',
+                                                              style: GoogleFonts
+                                                                  .inter(
                                                                 color: CustomColor
-                                                                    .primaryInputHintBorderColor,
-                                                                width: 1,
+                                                                    .primaryColor,
+                                                                fontSize: 17,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
                                                               ),
                                                             ),
-                                                          ),
-                                                          child: Text(
-                                                            state
-                                                                .ibanlistModel!
-                                                                .ibaninfo![
-                                                                    index]
-                                                                .label!,
-                                                            style: GoogleFonts
-                                                                .inter(
-                                                              color: CustomColor
-                                                                  .black,
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                            ),
-                                                          ),
+                                                            const SizedBox(
+                                                                width: 20),
+                                                          ],
                                                         ),
-                                                      );
-                                                    },
-                                                  ),
-                                                )
-                                              ]));
-                                    });
-                                  });
-                            },
+                                                        const SizedBox(
+                                                          height: 20,
+                                                        ),
+                                                        Expanded(
+                                                          child:
+                                                              ListView.builder(
+                                                            itemCount: state
+                                                                .ibanlistModel!
+                                                                .ibaninfo!
+                                                                .length,
+                                                            itemBuilder:
+                                                                (BuildContext
+                                                                        context,
+                                                                    int index) {
+                                                              return InkWell(
+                                                                onTap: () {
+                                                                  Navigator.pop(
+                                                                      context);
+
+                                                                  widget.isBuy ==
+                                                                          false
+                                                                      ? _cryptoBloc.add(MovetoIbanEvent(
+                                                                          ibanid: state
+                                                                              .ibanlistModel!
+                                                                              .ibaninfo![
+                                                                                  index]
+                                                                              .ibanId,
+                                                                          amount: _textEditingController
+                                                                              .text))
+                                                                      : _cryptoBloc.add(MoveEurotocryptoEvent(
+                                                                          ibanid: state
+                                                                              .ibanlistModel!
+                                                                              .ibaninfo![
+                                                                                  index]
+                                                                              .ibanId,
+                                                                          amount:
+                                                                              _textEditingController.text));
+                                                                },
+                                                                child:
+                                                                    Container(
+                                                                  padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                      horizontal:
+                                                                          20,
+                                                                      vertical:
+                                                                          20),
+                                                                  decoration:
+                                                                      const BoxDecoration(
+                                                                    border:
+                                                                        Border(
+                                                                      bottom:
+                                                                          BorderSide(
+                                                                        color: CustomColor
+                                                                            .primaryInputHintBorderColor,
+                                                                        width:
+                                                                            1,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  child: Text(
+                                                                    state
+                                                                        .ibanlistModel!
+                                                                        .ibaninfo![
+                                                                            index]
+                                                                        .label!,
+                                                                    style: GoogleFonts
+                                                                        .inter(
+                                                                      color: CustomColor
+                                                                          .black,
+                                                                      fontSize:
+                                                                          14,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            },
+                                                          ),
+                                                        )
+                                                      ]));
+                                            });
+                                          });
+                                    }
+                                  }
+                                : null,
                             buttonText: 'Next',
                           ),
                         ),

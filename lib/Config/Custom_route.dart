@@ -11,7 +11,6 @@ import '../Screens/Dashboard_screen/deposit_screen.dart';
 import '../Screens/Dashboard_screen/iban_kyc_screen.dart';
 import '../Screens/Dashboard_screen/transaction_screen.dart';
 import '../Screens/Profile_screen/source_of_wealth_screen.dart';
-import '../Screens/Sign_up_screens/Pending_screen.dart';
 import 'package:codegopay/Screens/Sign_up_screens/Setpin_screen.dart';
 import 'package:codegopay/Screens/Sign_up_screens/kyc/kyc_screen.dart';
 import 'package:codegopay/Screens/Sign_up_screens/plan_screen.dart';
@@ -116,23 +115,6 @@ Route generatroutecustomRoute(
         reverseDuration: const Duration(milliseconds: 200),
       );
 
-    case 'pending':
-      return PageTransition(
-        child: const PendingScreen(),
-        type: PageTransitionType.bottomToTop,
-        alignment: Alignment.center,
-        duration: const Duration(milliseconds: 300),
-        reverseDuration: const Duration(milliseconds: 200),
-      );
-
-    // case 'Rejected':
-    //   return PageTransition(
-    //     child: const RejectedScreen(),
-    //     type: PageTransitionType.bottomToTop,
-    //     alignment: Alignment.center,
-    //     duration: const Duration(milliseconds: 300),
-    //     reverseDuration: const Duration(milliseconds: 200),
-    //   );
 
     case 'Shippingaddress':
       return PageTransition(

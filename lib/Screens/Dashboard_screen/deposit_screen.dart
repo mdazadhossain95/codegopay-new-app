@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../utils/assets.dart';
 import '../../widgets/buttons/default_back_button_widget.dart';
 import '../../widgets/custom_image_widget.dart';
+import '../../widgets/toast/toast_util.dart';
 
 class DashboardDepositScreen extends StatefulWidget {
   DashboardDepositScreen(
@@ -45,19 +46,8 @@ class _DashboardDepositScreenState extends State<DashboardDepositScreen>
           bloc: _dashboardBloc,
           listener: (context, DashboardState state) async {
             if (state.statusModel?.status == 0) {
-              AwesomeDialog(
-                context: context,
-                dialogType: DialogType.error,
-                animType: AnimType.rightSlide,
-                desc: state.statusModel?.message,
-                btnCancelText: 'OK',
-                buttonsTextStyle: const TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'pop',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
-                btnCancelOnPress: () {},
-              ).show();
+              CustomToast.showError(
+                  context, "Sorry!", state.statusModel!.message!);
             }
           },
           child: BlocBuilder(
@@ -124,7 +114,6 @@ class _DashboardDepositScreenState extends State<DashboardDepositScreen>
                                   label: "Beneficiary",
                                   title: widget.name ?? "",
                                   onCopy: () {
-
                                     copyToClipboard(context, widget.name);
                                   },
                                 ),
@@ -132,7 +121,6 @@ class _DashboardDepositScreenState extends State<DashboardDepositScreen>
                                   label: "IBAN",
                                   title: widget.iban ?? "",
                                   onCopy: () {
-
                                     copyToClipboard(context, widget.iban);
                                   },
                                 ),
@@ -149,7 +137,8 @@ class _DashboardDepositScreenState extends State<DashboardDepositScreen>
                                       "${widget.bankName}\n${widget.bankAddress}" ??
                                           "",
                                   onCopy: () {
-                                    copyToClipboard(context,  "${widget.bankName}\n${widget.bankAddress}");
+                                    copyToClipboard(context,
+                                        "${widget.bankName}\n${widget.bankAddress}");
                                   },
                                 ),
                               ],
