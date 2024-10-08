@@ -94,7 +94,6 @@ class _InvestmentScreenState extends State<InvestmentScreen> {
                                   children: [
                                     appBarSection(context, state),
                                     Container(
-
                                       padding: const EdgeInsets.only(
                                           left: 16, right: 16, top: 16),
                                       alignment: Alignment.center,
@@ -108,10 +107,9 @@ class _InvestmentScreenState extends State<InvestmentScreen> {
                                             alignment: Alignment.topRight,
                                             image: AssetImage(
                                               // "images/investment/t_icon.png",
-                                             StaticAssets.stake,
+                                              StaticAssets.stake,
                                             ),
                                             scale: 2,
-
                                           )),
                                       child: Column(
                                         children: [
@@ -276,10 +274,11 @@ class _InvestmentScreenState extends State<InvestmentScreen> {
                                           left: 16, right: 16, top: 16),
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(16),
-                                        ),
-                                        color: CustomColor.hubContainerBgColor,
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(16),
+                                          ),
+                                          color:
+                                              CustomColor.hubContainerBgColor,
                                           image: DecorationImage(
                                             alignment: Alignment.bottomRight,
                                             image: AssetImage(
@@ -287,9 +286,7 @@ class _InvestmentScreenState extends State<InvestmentScreen> {
                                               StaticAssets.masternode,
                                             ),
                                             scale: 1,
-
-                                          )
-                                      ),
+                                          )),
                                       child: Column(
                                         children: [
                                           Row(

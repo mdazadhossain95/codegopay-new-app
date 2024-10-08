@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:codegopay/utils/assets.dart';
 import 'package:codegopay/widgets/custom_image_widget.dart';
@@ -259,14 +258,11 @@ class _DashboardScreenState extends State<DashboardScreen>
                   }
 
                   if (state.transactionApprovedModel?.status == 1) {
-
-
                     CustomDialogWidget.showSuccessDialog(
                         context: context,
                         title: "Hey!",
                         subTitle: state.transactionApprovedModel!.message!,
                         btnOkText: 'Ok');
-
                   }
 
                   //iban list
@@ -459,20 +455,20 @@ class _DashboardScreenState extends State<DashboardScreen>
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      margin: EdgeInsets.only(bottom: 16),
+                                      // margin: EdgeInsets.only(bottom: 16),
                                       padding: EdgeInsets.only(
-                                          left: 16,
-                                          right: 16,
-                                          top: 16,
-                                          bottom: 16),
-                                      decoration: BoxDecoration(
-                                        color: CustomColor
-                                            .dashboardTopContainerColor,
-                                        borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(16),
-                                          bottomRight: Radius.circular(16),
-                                        ),
+                                        left: 16,
+                                        right: 16,
+                                        top: 16,
                                       ),
+                                      // decoration: BoxDecoration(
+                                      //   color: CustomColor
+                                      //       .dashboardTopContainerColor,
+                                      //   borderRadius: BorderRadius.only(
+                                      //     bottomLeft: Radius.circular(16),
+                                      //     bottomRight: Radius.circular(16),
+                                      //   ),
+                                      // ),
                                       child: Column(
                                         children: [
                                           _appBarSectionWidget(
@@ -979,7 +975,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                                               margin: const EdgeInsets.only(
                                                   left: 16,
                                                   right: 16,
-                                                  bottom: 10),
+                                                  top: 12,
+                                                  bottom: 0),
                                               decoration: BoxDecoration(
                                                 color: CustomColor.primaryColor,
                                                 borderRadius:
@@ -1035,7 +1032,9 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                     .start,
                                                             children: [
                                                               Text(
-                                                                state.dashboardModel!.notifications![
+                                                                state
+                                                                    .dashboardModel!
+                                                                    .notifications![
                                                                         0]
                                                                     .title!,
                                                                 style:
@@ -1053,7 +1052,9 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                 height: 2,
                                                               ),
                                                               Text(
-                                                                state.dashboardModel!.notifications![
+                                                                state
+                                                                    .dashboardModel!
+                                                                    .notifications![
                                                                         0]
                                                                     .description!,
                                                                 overflow:
@@ -1063,7 +1064,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                 style:
                                                                     GoogleFonts
                                                                         .inter(
-                                                                      color: Color(0xffAFB6CD),
+                                                                  color: Color(
+                                                                      0xffAFB6CD),
                                                                   fontSize: 13,
                                                                   fontWeight:
                                                                       FontWeight
@@ -1071,20 +1073,24 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                 ),
                                                               ),
                                                               Text(
-                                                                state.dashboardModel!.notifications![
-                                                                0].date!,
+                                                                state
+                                                                    .dashboardModel!
+                                                                    .notifications![
+                                                                        0]
+                                                                    .date!,
                                                                 overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
+                                                                    TextOverflow
+                                                                        .ellipsis,
                                                                 maxLines: 2,
                                                                 style:
-                                                                GoogleFonts
-                                                                    .inter(
-                                                                  color: Color(0xffAFB6CD),
+                                                                    GoogleFonts
+                                                                        .inter(
+                                                                  color: Color(
+                                                                      0xffAFB6CD),
                                                                   fontSize: 11,
                                                                   fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                                      FontWeight
+                                                                          .w500,
                                                                 ),
                                                               ),
                                                             ],
@@ -1144,10 +1150,16 @@ class _DashboardScreenState extends State<DashboardScreen>
                                     /*end Notification*/
 
                                     Container(
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 16),
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 16),
+                                      margin: EdgeInsets.only(
+                                          left: 16,
+                                          right: 16,
+                                          top: 14,
+                                          bottom: 0),
+                                      padding: EdgeInsets.only(
+                                          left: 16,
+                                          right: 16,
+                                          top: 14,
+                                          bottom: 8),
                                       decoration: BoxDecoration(
                                           color: CustomColor.whiteColor,
                                           borderRadius:
@@ -1158,7 +1170,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                         children: [
                                           Padding(
                                             padding: const EdgeInsets.only(
-                                                bottom: 18),
+                                                bottom: 8),
                                             child: Text(
                                               Strings.yourQuickPayments,
                                               style: GoogleFonts.inter(
@@ -1185,7 +1197,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                             },
                                             child: SizedBox(
                                               width: double.infinity,
-                                              height: 90,
+                                              height: 80,
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
@@ -1519,73 +1531,68 @@ class _DashboardScreenState extends State<DashboardScreen>
                                           ),
                                         ),
                                       ),
-                                    state.dashboardModel?.the3Dsconf!.status! ==
-                                            1
-                                        ? InkWell(
-                                            onTap: () {
-                                              String? uniqueId = state
-                                                  .dashboardModel
-                                                  ?.the3Dsconf!
-                                                  .uniqueId
-                                                  .toString();
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      TrxConfirmationScreen(
-                                                          uniqueId: uniqueId!),
-                                                ),
-                                              );
-                                            },
-                                            child: Container(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              margin: const EdgeInsets.only(
-                                                  top: 5, left: 16, right: 16),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 20,
-                                                      vertical: 5),
-                                              decoration: BoxDecoration(
-                                                  color:
-                                                      const Color(0xffFFD058),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          52.58),
-                                                  border: Border.all(
-                                                      color: CustomColor
-                                                          .whiteColor,
-                                                      width: 2)),
-                                              child: Container(
-                                                margin:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 10),
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 20),
-                                                child: Text(
-                                                  state.dashboardModel
-                                                          ?.the3Dsconf!.body
-                                                          .toString() ??
-                                                      "",
-                                                  textAlign: TextAlign.center,
-                                                  style: const TextStyle(
-                                                    color: Color(0xFFFF6B00),
-                                                    fontFamily: 'Poppins',
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
+
+                                    if (state.dashboardModel?.the3Dsconf!
+                                            .status! ==
+                                        1)
+                                      InkWell(
+                                        onTap: () {
+                                          String? uniqueId = state
+                                              .dashboardModel
+                                              ?.the3Dsconf!
+                                              .uniqueId
+                                              .toString();
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  TrxConfirmationScreen(
+                                                      uniqueId: uniqueId!),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          margin: const EdgeInsets.only(
+                                              left: 16, right: 16),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20, vertical: 5),
+                                          decoration: BoxDecoration(
+                                              color: const Color(0xffFFD058),
+                                              borderRadius:
+                                                  BorderRadius.circular(52.58),
+                                              border: Border.all(
+                                                  color: CustomColor.whiteColor,
+                                                  width: 2)),
+                                          child: Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                vertical: 10),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20),
+                                            child: Text(
+                                              state.dashboardModel?.the3Dsconf!
+                                                      .body
+                                                      .toString() ??
+                                                  "",
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                color: Color(0xFFFF6B00),
+                                                fontFamily: 'Poppins',
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                          )
-                                        : const Padding(
-                                            padding: EdgeInsets.zero,
                                           ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
+                                        ),
+                                      ),
+
+                                    if (state.dashboardModel?.the3Dsconf!
+                                            .status! ==
+                                        1)
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
                                     Container(
                                         margin: const EdgeInsets.only(
                                             left: 16, right: 16, top: 10),
