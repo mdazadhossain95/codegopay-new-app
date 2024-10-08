@@ -47,7 +47,7 @@ class Strings {
   static const String addressProofSubTitle1 = 'Securely access your bank account to manage finances, view transactions, and transfer funds.';
   static const String biometricTitle = 'Let’s Verify your Biometric';
   static const String biometricSubTitle = 'In order to completed your registration Please Verify your Biometric';
-  static const String yourQuickPayments = 'Your Quick Payments';
+  static const String yourQuickPayments = 'Your Quick Payment';
   static const String addBeneficiary = 'Add Beneficiary';
   static const String createIbanTitle = 'Create Virtual IBAN';
   static const String createIbanSubTitle = 'Easily generate virtual IBANs for seamless international transactions.';

@@ -50,10 +50,6 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                   context, "Sorry!", state.statusModel!.message!);
             }
 
-            if (state.statusModel?.status == 1) {
-              CustomToast.showSuccess(
-                  context, "Sorry!", state.statusModel!.message!);
-            }
 
           },
           child: BlocBuilder(

@@ -483,6 +483,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                   ? false
                                                   : true),
                                           Container(
+                                            // height: 139,
                                             padding: EdgeInsets.all(16),
                                             decoration: BoxDecoration(
                                               color: CustomColor.whiteColor,
@@ -522,7 +523,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                         padding:
                                                             const EdgeInsets
                                                                 .only(
-                                                                bottom: 5),
+                                                                bottom: 12),
                                                         child: Text(
                                                           'YOUR BALANCE',
                                                           style:
@@ -570,10 +571,10 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                         ),
                                                       ),
                                                       Container(
-                                                        width: 180,
+                                                        // width: 180,
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(top: 5),
+                                                                .only(top: 12),
                                                         child: Row(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
@@ -1034,7 +1035,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                     .start,
                                                             children: [
                                                               Text(
-                                                                notificationList[
+                                                                state.dashboardModel!.notifications![
                                                                         0]
                                                                     .title!,
                                                                 style:
@@ -1052,7 +1053,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                 height: 2,
                                                               ),
                                                               Text(
-                                                                notificationList[
+                                                                state.dashboardModel!.notifications![
                                                                         0]
                                                                     .description!,
                                                                 overflow:
@@ -1068,6 +1069,24 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w500,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                state.dashboardModel!.notifications![
+                                                                0].date!,
+                                                                overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                                maxLines: 2,
+                                                                style:
+                                                                GoogleFonts
+                                                                    .inter(
+                                                                  color: CustomColor
+                                                                      .black.withOpacity(0.5),
+                                                                  fontSize: 11,
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
                                                                 ),
                                                               ),
                                                             ],
@@ -1141,7 +1160,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                         children: [
                                           Padding(
                                             padding: const EdgeInsets.only(
-                                                bottom: 15),
+                                                bottom: 18),
                                             child: Text(
                                               Strings.yourQuickPayments,
                                               style: GoogleFonts.inter(
@@ -1588,7 +1607,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                       .spaceBetween,
                                               children: [
                                                 Text(
-                                                  "Sepa TRX",
+                                                  "Transactions",
                                                   style: GoogleFonts.inter(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w500,
