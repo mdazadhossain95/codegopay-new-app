@@ -11,10 +11,9 @@ import '../../../Config/bloc/app_respotary.dart';
 import '../../utils/custom_style.dart';
 import '../../utils/input_fields/custom_color.dart';
 import '../../utils/input_fields/custom_pincode_input_field_widget.dart';
-import '../../utils/strings.dart';
-import '../../widgets/buttons/custom_icon_button_widget.dart';
 import '../../widgets/buttons/default_back_button_widget.dart';
 import '../../widgets/buttons/primary_button_widget.dart';
+import '../../widgets/toast/toast_util.dart';
 import 'bloc/profile_bloc.dart';
 
 class ChangePasswordOtpScreen extends StatefulWidget {
@@ -53,38 +52,14 @@ class _ChangePasswordOtpScreenState extends State<ChangePasswordOtpScreen> {
         bloc: _profileBloc,
         listener: (context, ProfileState state) {
           if (state.statusModel?.status == 0) {
-            AwesomeDialog(
-              context: context,
-              dialogType: DialogType.error,
-              animType: AnimType.rightSlide,
-              desc: state.statusModel?.message,
-              btnCancelText: 'OK',
-              buttonsTextStyle: const TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'pop',
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white),
-              btnCancelOnPress: () {},
-            ).show();
+            CustomToast.showError(
+                context, "Sorry!", state.statusModel!.message!);
           } else if (state.statusModel?.status == 1) {
-            AwesomeDialog(
-              context: context,
-              dialogType: DialogType.success,
-              animType: AnimType.rightSlide,
-              dismissOnTouchOutside: false,
-              desc: state.statusModel?.message,
-              btnCancelText: 'OK',
-              btnCancelColor: Colors.green,
-              buttonsTextStyle: const TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'pop',
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white),
-              btnCancelOnPress: () {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, 'dashboard', (route) => false);
-              },
-            ).show();
+            CustomToast.showSuccess(
+                context, "Thank You!", state.statusModel!.message!);
+
+            Navigator.pushNamedAndRemoveUntil(
+                context, 'profileScreen', (route) => false);
           }
         },
         child: Scaffold(
@@ -101,19 +76,17 @@ class _ChangePasswordOtpScreenState extends State<ChangePasswordOtpScreen> {
                       width: double.maxFinite,
                       height: double.maxFinite,
                       padding:
-                      const EdgeInsets.only(left: 16, right: 16, top: 30),
+                          const EdgeInsets.only(left: 16, right: 16, top: 30),
                       child: Column(
                         children: [
-
                           Expanded(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     DefaultBackButtonWidget(onTap: () {
                                       Navigator.pop(context);
@@ -129,13 +102,12 @@ class _ChangePasswordOtpScreenState extends State<ChangePasswordOtpScreen> {
                                   child: Text(
                                     "What's the code?",
                                     style:
-                                    CustomStyle.loginVerifyTitleTextStyle,
+                                        CustomStyle.loginVerifyTitleTextStyle,
                                   ),
                                 ),
                                 const SizedBox(
                                   height: 32,
                                 ),
-
                                 Form(
                                     key: _formKey,
                                     child: CustomPinCodeInputFieldWidget(
@@ -150,19 +122,16 @@ class _ChangePasswordOtpScreenState extends State<ChangePasswordOtpScreen> {
                                       validator: (value) {
                                         return Validator.validateValues(
                                             value:
-                                            value!); // Replace with your validation logic
+                                                value!); // Replace with your validation logic
                                       },
                                     )),
-
                                 Container(
                                   alignment: Alignment.center,
-                                  padding:
-                                  EdgeInsets.symmetric(horizontal: 30),
+                                  padding: EdgeInsets.symmetric(horizontal: 30),
                                   child: Text(
                                     widget.message,
                                     textAlign: TextAlign.center,
-                                    style:
-                                    CustomStyle.setPinSubTitleTextStyle,
+                                    style: CustomStyle.setPinSubTitleTextStyle,
                                   ),
                                 ),
                                 const SizedBox(
@@ -171,21 +140,18 @@ class _ChangePasswordOtpScreenState extends State<ChangePasswordOtpScreen> {
                               ],
                             ),
                           ),
-
                           PrimaryButtonWidget(
                             onPressed: completed
                                 ? () {
-                              if (_formKey.currentState!.validate()) {
-                                _profileBloc.add(
-                                    ChangePasswordOtpEvent(
-                                        requestId: widget.requestId,
-                                        otp: _pinControl.text));
-                              }
-                            }
+                                    if (_formKey.currentState!.validate()) {
+                                      _profileBloc.add(ChangePasswordOtpEvent(
+                                          requestId: widget.requestId,
+                                          otp: _pinControl.text));
+                                    }
+                                  }
                                 : null,
                             buttonText: 'Verify',
                           ),
-
                           const SizedBox(
                             height: 30,
                           )

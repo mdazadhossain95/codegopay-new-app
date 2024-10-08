@@ -204,25 +204,23 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                         color: CustomColor
                                                             .subtitleTextColor,
                                                       ),
+                                                    ),  Text(
+                                                      state
+                                                          .dashboardModel!
+                                                          .notifications![index]
+                                                          .date!,
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: GoogleFonts.inter(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: CustomColor
+                                                            .subtitleTextColor,
+                                                      ),
                                                     ),
                                                   ],
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 70,
-                                                child: Text(
-                                                  state
-                                                      .dashboardModel!
-                                                      .notifications![index]
-                                                      .date!,
-                                                  textAlign: TextAlign.right,
-                                                  maxLines: 3,
-                                                  style: GoogleFonts.inter(
-                                                    fontSize: 8,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: CustomColor.black
-                                                        .withOpacity(0.6),
-                                                  ),
                                                 ),
                                               ),
                                             ],

@@ -92,8 +92,8 @@ class _SourceOfWealthScreenState extends State<SourceOfWealthScreen> {
               active = true;
               CustomToast.showSuccess(
                   context, "Thank You!", state.statusModel!.message!);
-              Navigator.pushNamedAndRemoveUntil(
-                  context, 'dashboard', (route) => false);
+              Navigator.pushNamedAndRemoveUntil(context,
+                  'profileScreen', (route) => false);
 
             } else if (state.statusModel?.status == 0) {
               active = true;

@@ -5,16 +5,15 @@ import 'package:codegopay/constant_string/User.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
 import 'package:codegopay/utils/input_fields/custom_color.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../utils/assets.dart';
-import '../../utils/input_fields/password_input_Field_widget.dart';
 import '../../widgets/buttons/primary_button_widget.dart';
 import '../../widgets/custom_image_widget.dart';
 import '../../widgets/input_fields/password_input_field_with_title_widget.dart';
+import '../../widgets/toast/toast_util.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -51,7 +50,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: CustomColor.notificationBgColor,
+        backgroundColor: CustomColor.notificationBgColor,
         resizeToAvoidBottomInset: false,
         body: BlocListener(
             bloc: _profileBloc,
@@ -73,19 +72,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   ),
                 );
               } else if (state.changePasswordModel?.status == 0) {
-                AwesomeDialog(
-                  context: context,
-                  dialogType: DialogType.error,
-                  animType: AnimType.rightSlide,
-                  desc: state.changePasswordModel?.message,
-                  btnCancelText: 'OK',
-                  buttonsTextStyle: const TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'pop',
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
-                  btnCancelOnPress: () {},
-                ).show();
+                CustomToast.showError(
+                    context, "Sorry!", state.changePasswordModel!.message!);
               }
             },
             child: BlocBuilder(
@@ -99,7 +87,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         width: double.maxFinite,
                         height: double.maxFinite,
                         padding:
-                        const EdgeInsets.only(left: 16, right: 16, top: 30),
+                            const EdgeInsets.only(left: 16, right: 16, top: 30),
                         child: ListView(
                           children: [
                             Row(
@@ -135,28 +123,23 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                             Form(
                                 key: _changePasswordFormKey,
                                 child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-
                                     PasswordInputFieldWithTitleWidget(
                                       controller: _oldPasswordController,
                                       hint: 'Enter your old password',
                                       title: 'Old Password',
                                       // Title above the password field
-                                      onChange: () {
-                                      },
+                                      onChange: () {},
                                     ),
                                     PasswordInputFieldWithTitleWidget(
                                       controller: _newPasswordController,
                                       hint: 'Enter your new password',
                                       title: 'New Password',
                                       // Title above the password field
-                                      onChange: () {
-                                      },
+                                      onChange: () {},
                                       validator: (value) {
-                                        if (value == null ||
-                                            value.isEmpty) {
+                                        if (value == null || value.isEmpty) {
                                           return "New Password cannot be empty";
                                         } else if (value.length < 6) {
                                           return "New Password must be at least 6 characters long";
@@ -169,30 +152,22 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                       hint: 'Re-enter your new password',
                                       title: 'Confirm Password',
                                       // Title above the password field
-                                      onChange: () {
-                                      },
+                                      onChange: () {},
                                     ),
                                   ],
                                 )),
                             const SizedBox(
                               height: 30,
                             ),
-
                             PrimaryButtonWidget(
                               onPressed: () {
-                                if (_changePasswordFormKey
-                                    .currentState!
+                                if (_changePasswordFormKey.currentState!
                                     .validate()) {
                                   _profileBloc.add(ChangePasswordEvent(
-                                      oldPassword:
-                                      _oldPasswordController
-                                          .text,
-                                      newPassword:
-                                      _newPasswordController
-                                          .text,
+                                      oldPassword: _oldPasswordController.text,
+                                      newPassword: _newPasswordController.text,
                                       confirmPassword:
-                                      _confirmPasswordController
-                                          .text));
+                                          _confirmPasswordController.text));
                                 }
                               },
                               buttonText: 'Submit',

@@ -1029,7 +1029,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                           child: Column(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
-                                                                    .center,
+                                                                    .start,
                                                             crossAxisAlignment:
                                                                 CrossAxisAlignment
                                                                     .start,
@@ -1046,7 +1046,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                   fontSize: 16,
                                                                   fontWeight:
                                                                       FontWeight
-                                                                          .w500,
+                                                                          .w600,
                                                                 ),
                                                               ),
                                                               const SizedBox(
@@ -1063,8 +1063,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                 style:
                                                                     GoogleFonts
                                                                         .inter(
-                                                                  color: CustomColor
-                                                                      .dashboardProfileBorderColor,
+                                                                      color: Color(0xffAFB6CD),
                                                                   fontSize: 13,
                                                                   fontWeight:
                                                                       FontWeight
@@ -1081,8 +1080,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                 style:
                                                                 GoogleFonts
                                                                     .inter(
-                                                                  color: CustomColor
-                                                                      .black.withOpacity(0.5),
+                                                                  color: Color(0xffAFB6CD),
                                                                   fontSize: 11,
                                                                   fontWeight:
                                                                   FontWeight
@@ -1380,27 +1378,27 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                           .circle,
                                                                       color: CustomColor
                                                                           .dashboardSendContainerColor,
-                                                                      border:
-                                                                          Border
-                                                                              .all(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        width:
-                                                                            1.0,
-                                                                      ),
-                                                                      boxShadow: [
-                                                                        BoxShadow(
-                                                                          color:
-                                                                              Color(0xFFEBDCFD),
-                                                                          spreadRadius:
-                                                                              2,
-                                                                          blurRadius:
-                                                                              0,
-                                                                          offset: Offset(
-                                                                              0,
-                                                                              0),
-                                                                        ),
-                                                                      ],
+                                                                      // border:
+                                                                      //     Border
+                                                                      //         .all(
+                                                                      //   color: Colors
+                                                                      //       .white,
+                                                                      //   width:
+                                                                      //       1.0,
+                                                                      // ),
+                                                                      // boxShadow: [
+                                                                      //   BoxShadow(
+                                                                      //     color:
+                                                                      //         Color(0xFFEBDCFD),
+                                                                      //     spreadRadius:
+                                                                      //         2,
+                                                                      //     blurRadius:
+                                                                      //         0,
+                                                                      //     offset: Offset(
+                                                                      //         0,
+                                                                      //         0),
+                                                                      //   ),
+                                                                      // ],
                                                                       image:
                                                                           DecorationImage(
                                                                         image:

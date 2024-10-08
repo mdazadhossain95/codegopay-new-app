@@ -1,20 +1,17 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:codegopay/Screens/Profile_screen/bloc/profile_bloc.dart';
 import 'package:codegopay/constant_string/User.dart';
-import 'package:codegopay/cutom_weidget/custom_navigationBar.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
 import 'package:codegopay/utils/assets.dart';
 import 'package:codegopay/utils/input_fields/custom_color.dart';
 import 'package:codegopay/widgets/custom_image_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../widgets/buttons/custom_floating_action_button.dart';
+import '../../widgets/toast/toast_util.dart';
 import '../Dashboard_screen/deposit_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -47,20 +44,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           bloc: _profileBloc,
           listener: (context, ProfileState state) {
             if (state.statusModel?.status == 0) {
-              AwesomeDialog(
-                context: context,
-                dialogType: DialogType.error,
-                animType: AnimType.rightSlide,
-                dismissOnTouchOutside: false,
-                desc: state.statusModel?.message,
-                btnCancelText: 'OK',
-                buttonsTextStyle: const TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'pop',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
-                btnCancelOnPress: () {},
-              ).show();
+              CustomToast.showError(
+                  context, "Sorry!", state.statusModel!.message!);
             }
 
             if (state.profileModel?.sof?.sourceOfWealth == 1) {
@@ -89,8 +74,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding:
                           EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                       child: ListView(
-                        // mainAxisAlignment: MainAxisAlignment.start,
-                        // crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
                             alignment: Alignment.center,
@@ -311,7 +294,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           InkWell(
                             onTap: () {
-
                               var data = state.profileModel!;
 
                               Navigator.push(
