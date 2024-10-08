@@ -1,11 +1,9 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:codegopay/Screens/transfer_screen/transfer_confirmation_screen.dart';
 import 'package:codegopay/constant_string/User.dart';
 import 'package:codegopay/utils/input_fields/custom_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-// import 'package:flutter_face_api/face_api.dart' as Regula;
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:codegopay/Screens/transfer_screen/bloc/transfer_bloc.dart';
@@ -37,12 +35,13 @@ class SendMoneyScreen extends StatefulWidget {
 class _SendMoneyScreenState extends State<SendMoneyScreen> {
   final TransferBloc _transferBloc = TransferBloc();
   bool instant = false;
+  final _formKey = GlobalKey<FormState>();
+  bool active = false;
   final TextEditingController _amount = TextEditingController();
   final TextEditingController _sePaSelectorController = TextEditingController();
   final TextEditingController _refrence = TextEditingController(text: '');
 
   SingleValueDropDownController _iban = new SingleValueDropDownController();
-  final _formkey = GlobalKey<FormState>();
 
   bool bordershoww = false;
   String? ibanid;
@@ -94,6 +93,22 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
 
     User.Screen = 'send money';
     _transferBloc.add(getibanlistEvent());
+    _amount.addListener(_updateButtonState);
+  }
+
+  @override
+  void dispose() {
+    _amount.removeListener(_updateButtonState);
+    _amount.dispose();
+    super.dispose();
+  }
+
+  void _updateButtonState() {
+    if (_formKey.currentState?.validate() ?? false) {
+      setState(() {
+        active = _formKey.currentState!.validate();
+      });
+    }
   }
 
   @override
@@ -102,7 +117,6 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
       bloc: _transferBloc,
       listener: (context, TransferState state) {
         if (state.sendmoneyModel?.status == 0) {
-
           CustomToast.showError(
               context, "Sorry!", state.sendmoneyModel!.message!);
         } else if (state.sendmoneyModel?.status == 1) {
@@ -127,7 +141,6 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                 reverseDuration: const Duration(milliseconds: 200),
               ));
         }
-
       },
       child: BlocBuilder(
         bloc: _transferBloc,
@@ -183,29 +196,33 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                                 image: widget.image!,
                               ),
                               Form(
-                                key: _formkey,
+                                key: _formKey,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     AmountInputField(
-                                      controller: _amount,
-                                      label: "Transfer Amount",
-                                      // Custom label
-                                      currencySymbol: '€',
-                                      autofocus: true,
-                                      minAmount: 0,
-                                    ),
+                                        controller: _amount,
+                                        label: "Transfer Amount",
+                                        // Custom label
+                                        currencySymbol: '€',
+                                        autofocus: true,
+                                        minAmount: 0,
+                                        onChanged: (value) {
+                                          _updateButtonState();
+                                        }),
                                     const SizedBox(
                                       height: 20,
                                     ),
                                     DefaultInputFieldWithTitleWidget(
-                                      controller: _refrence,
-                                      title: 'Reference',
-                                      hint: 'Reference',
-                                      isEmail: false,
-                                      keyboardType: TextInputType.name,
-                                      isPassword: false,
-                                    ),
+                                        controller: _refrence,
+                                        title: 'Reference',
+                                        hint: 'Reference',
+                                        isEmail: false,
+                                        keyboardType: TextInputType.name,
+                                        isPassword: false,
+                                        onChanged: (value) {
+                                          _updateButtonState();
+                                        }),
                                     state.ibanlistModel!.ibaninfo!.isNotEmpty
                                         ? DropDownTextField(
                                             controller: _iban,
@@ -323,6 +340,7 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                                             ],
                                             onChanged: (val) {
                                               print(val.value);
+                                              _updateButtonState();
 
                                               ibanid = val.value.toString();
 
@@ -416,6 +434,7 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                                                 .instant!,
                                             isSelected: instant,
                                             onTap: () {
+                                              _updateButtonState();
                                               setState(() {
                                                 instant = true;
                                               });
@@ -431,6 +450,7 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                                                 .sepatypesmodel!.types!.sepa!,
                                             isSelected: !instant,
                                             onTap: () {
+                                              _updateButtonState();
                                               setState(() {
                                                 instant = false;
                                               });
@@ -446,17 +466,21 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                           ),
                         ),
                         PrimaryButtonWidget(
-                          onPressed: () {
-                            if (_formkey.currentState!.validate()) {
-                              _transferBloc.add(SendmoneyEvent(
-                                  amount: _amount.text,
-                                  paymentoption:
-                                      instant ? 'sepa instant' : 'sepa normal',
-                                  refrence: _refrence.text,
-                                  uniquid: widget.id,
-                                  iban: ibanid));
-                            }
-                          },
+                          onPressed: active
+                              ? () {
+                                  if (_formKey.currentState!.validate()) {
+                                    active = false;
+                                    _transferBloc.add(SendmoneyEvent(
+                                        amount: _amount.text,
+                                        paymentoption: instant
+                                            ? 'sepa instant'
+                                            : 'sepa normal',
+                                        refrence: _refrence.text,
+                                        uniquid: widget.id,
+                                        iban: ibanid));
+                                  }
+                                }
+                              : null,
                           buttonText: 'Next',
                         ),
                       ],

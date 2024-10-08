@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:codegopay/Screens/transfer_screen/bloc/transfer_bloc.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
 import 'package:codegopay/cutom_weidget/text_uploadimages.dart';
@@ -11,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../widgets/buttons/default_back_button_widget.dart';
 import '../../widgets/buttons/primary_button_widget.dart';
 import '../../widgets/input_fields/defult_input_field_with_title_widget.dart';
+import '../../widgets/toast/toast_util.dart';
 
 class AddBeneficiaryScreen extends StatefulWidget {
   const AddBeneficiaryScreen({super.key});
@@ -52,19 +52,8 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
             Navigator.pushNamedAndRemoveUntil(
                 context, 'beneficiaryListScreen', (route) => false);
           } else if (state.statusModel?.status == 0) {
-            AwesomeDialog(
-              context: context,
-              dialogType: DialogType.error,
-              animType: AnimType.rightSlide,
-              desc: state.statusModel?.message,
-              btnCancelText: 'OK',
-              buttonsTextStyle: const TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'pop',
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white),
-              btnCancelOnPress: () {},
-            ).show();
+            CustomToast.showError(
+                context, "Sorry!", state.statusModel!.message!);
           }
         },
         child: BlocBuilder(
@@ -90,7 +79,6 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                                 Navigator.pushNamedAndRemoveUntil(context,
                                     'beneficiaryListScreen', (route) => false);
                               }),
-
                               Text(
                                 'Add Beneficiary',
                                 style: GoogleFonts.inter(
@@ -101,7 +89,6 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                               Container(
                                 width: 20,
                               )
-
                             ],
                           ),
                         ),

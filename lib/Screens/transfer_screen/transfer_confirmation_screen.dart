@@ -1,10 +1,7 @@
 import 'dart:convert';
 
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:codegopay/Screens/Dashboard_screen/Dashboard_screen.dart';
 import 'package:codegopay/Screens/transfer_screen/bloc/transfer_bloc.dart';
 import 'package:codegopay/constant_string/User.dart';
-import 'package:codegopay/cutom_weidget/custom_navigationBar.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
 import 'package:codegopay/widgets/toast/toast_util.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -14,7 +11,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_face_api/flutter_face_api.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:location/location.dart';
-import 'package:slidable_button/slidable_button.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -65,6 +61,7 @@ class _TransferConfirmationScreenState
   String userimage = '';
   String? kycid;
   double lat = 0, long = 0;
+  bool buttonActive = true;
   var uiImage1 = Image.asset('images/portrait.png'); // Placeholder image
   var uiImage2 = Image.asset('images/portrait.png');
 
@@ -207,12 +204,14 @@ class _TransferConfirmationScreenState
       bloc: _transferBloc,
       listener: (context, TransferState state) {
         if (state.pushModel?.status == 2) {
+          buttonActive = true;
           kycid = state.pushModel?.kycid;
 
           startLiveness();
 
           state.isloading = true;
         } else if (state.pushModel?.status == 1) {
+          buttonActive = true;
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -230,6 +229,7 @@ class _TransferConfirmationScreenState
             (route) => false,
           );
         } else if (state.pushModel?.status == 0) {
+          buttonActive = true;
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -249,9 +249,11 @@ class _TransferConfirmationScreenState
         }
 
         if (state.regulaModel?.status == 0) {
+          buttonActive = true;
           CustomToast.showError(
               context, "Sorry!!", state.regulaModel!.message!);
         } else if (state.regulaModel?.status == 1) {
+          buttonActive = true;
           CustomDialogWidget.showSuccessDialog(
             context: context,
             title: "Hey!",
@@ -265,8 +267,9 @@ class _TransferConfirmationScreenState
         }
 
         if (state.statusModel?.status == 0) {
+          buttonActive = true;
           CustomToast.showError(
-              context, "Transaction", state.statusModel!.message!);
+              context, "Sorry!!", state.statusModel!.message!);
         }
       },
       child: BlocBuilder(
@@ -414,13 +417,16 @@ class _TransferConfirmationScreenState
                         ),
                       ),
                       PrimaryButtonWidget(
-                        onPressed: () {
-                          _transferBloc.add(ApproveibanTransactionEvent(
-                              uniqueId: widget.id,
-                              completed: 'Completed',
-                              lat: lat.toString(),
-                              long: long.toString()));
-                        },
+                        onPressed: buttonActive
+                            ? () {
+                                buttonActive = false;
+                                _transferBloc.add(ApproveibanTransactionEvent(
+                                    uniqueId: widget.id,
+                                    completed: 'Completed',
+                                    lat: lat.toString(),
+                                    long: long.toString()));
+                              }
+                            : null,
                         buttonText: 'Transfer',
                       ),
                     ],

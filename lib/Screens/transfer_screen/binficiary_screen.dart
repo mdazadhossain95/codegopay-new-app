@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:codegopay/Screens/transfer_screen/send_money.dart';
 import 'package:codegopay/Screens/transfer_screen/bloc/transfer_bloc.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +13,7 @@ import '../../utils/strings.dart';
 import '../../widgets/buttons/default_back_button_widget.dart';
 import '../../widgets/custom_image_widget.dart';
 import '../../widgets/input_fields/search_input_widget.dart';
+import '../../widgets/toast/toast_util.dart';
 
 class BeneficiaryListScreen extends StatefulWidget {
   const BeneficiaryListScreen({super.key});
@@ -65,19 +65,8 @@ class _BeneficiaryListScreenState extends State<BeneficiaryListScreen> {
                 if (state.statusModel?.status == 1) {
                   _transferBloc.add(binficarylistEvent());
                 } else if (state.statusModel?.status == 0) {
-                  AwesomeDialog(
-                    context: context,
-                    dialogType: DialogType.error,
-                    animType: AnimType.rightSlide,
-                    desc: state.statusModel?.message,
-                    btnCancelText: 'OK',
-                    buttonsTextStyle: const TextStyle(
-                        fontSize: 14,
-                        fontFamily: 'pop',
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white),
-                    btnCancelOnPress: () {},
-                  ).show();
+                  CustomToast.showError(
+                      context, "Sorry!", state.statusModel!.message!);
                 }
               },
               child: BlocBuilder<TransferBloc, TransferState>(

@@ -108,8 +108,7 @@ class _CryptoScreenState extends State<CryptoScreen> {
                       child: StreamBuilder<Object>(
                           stream: streamController.stream.asBroadcastStream(
                         onListen: (subscription) async {
-                          await Future.delayed(
-                              const Duration(seconds: 10), () {
+                          await Future.delayed(const Duration(seconds: 10), () {
                             _cryptoBloc.add(RefreshGetcoinsEvent());
                           });
                         },
@@ -141,15 +140,21 @@ class _CryptoScreenState extends State<CryptoScreen> {
                                       16.0), // Rounded corners (16.dp)
                                   boxShadow: [
                                     BoxShadow(
-                                      color: CustomColor.black.withOpacity(0.1), // var(--sds-color-black-100) equivalent
-                                      offset: const Offset(0, 0.25), // var(--sds-size-depth-0) and var(--sds-size-depth-025)
-                                      blurRadius: 10, // var(--sds-size-depth-100)
+                                      color: CustomColor.black.withOpacity(0.1),
+                                      // var(--sds-color-black-100) equivalent
+                                      offset: const Offset(0, 0.25),
+                                      // var(--sds-size-depth-0) and var(--sds-size-depth-025)
+                                      blurRadius:
+                                          10, // var(--sds-size-depth-100)
                                     ),
                                     // Second shadow definition
                                     BoxShadow(
-                                      color: CustomColor.black.withOpacity(0.2), // var(--sds-color-black-200) equivalent
-                                      offset: const Offset(0, 0.25), // var(--sds-size-depth-0) and var(--sds-size-depth-025)
-                                      blurRadius: 10, // var(--sds-size-depth-100)
+                                      color: CustomColor.black.withOpacity(0.2),
+                                      // var(--sds-color-black-200) equivalent
+                                      offset: const Offset(0, 0.25),
+                                      // var(--sds-size-depth-0) and var(--sds-size-depth-025)
+                                      blurRadius:
+                                          10, // var(--sds-size-depth-100)
                                     ),
                                   ],
                                 ),
@@ -158,7 +163,6 @@ class _CryptoScreenState extends State<CryptoScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-
                                     Expanded(
                                       child: Column(
                                         mainAxisAlignment:
@@ -328,8 +332,8 @@ class _CryptoScreenState extends State<CryptoScreen> {
                                         child: Column(
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsets.only(bottom: 5),
-
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 5),
                                               child: CryptoSearchInputWidget(
                                                 controller: _search,
                                                 onChanged: (String v) {
@@ -352,9 +356,10 @@ class _CryptoScreenState extends State<CryptoScreen> {
 
                                                       final searc =
                                                           v.toLowerCase();
-                                                      return title
-                                                              .contains(searc) ||
-                                                          symbol.contains(searc);
+                                                      return title.contains(
+                                                              searc) ||
+                                                          symbol
+                                                              .contains(searc);
                                                     }).toList();
 
                                                     setState(() {
@@ -365,11 +370,9 @@ class _CryptoScreenState extends State<CryptoScreen> {
                                               ),
                                             ),
                                             Expanded(
-                                              child: CoinListView(
-                                                coins: state
-                                                    .coins!.coin!,
-                                              )
-                                            ),
+                                                child: CoinListView(
+                                              coins: state.coins!.coin!,
+                                            )),
                                           ],
                                         ),
                                       ),
@@ -1006,6 +1009,10 @@ class _CryptoScreenState extends State<CryptoScreen> {
                                       uniqueId: message.data['unique_id'],
                                       completed: 'Completed',
                                     ));
+                                    CustomToast.showSuccess(
+                                        context,
+                                        "Thank You!",
+                                        "Transaction has been confirmed");
                                     Navigator.popUntil(
                                         context, (route) => route.isFirst);
                                   },
@@ -1013,6 +1020,8 @@ class _CryptoScreenState extends State<CryptoScreen> {
                                 ),
                                 SecondaryButtonWidget(
                                   onPressed: () {
+                                    CustomToast.showError(context, "Sorry!!",
+                                        "Transaction has been cancelled");
                                     Navigator.popUntil(
                                         context, (route) => route.isFirst);
                                     _cryptoBloc.add(ApproveMoveWalletsEvent(
@@ -1130,6 +1139,10 @@ class _CryptoScreenState extends State<CryptoScreen> {
                                       uniqueId: message.data['unique_id'],
                                       completed: 'Completed',
                                     ));
+                                    CustomToast.showSuccess(
+                                        context,
+                                        "Thank You!",
+                                        "Transaction has been confirmed");
                                     Navigator.popUntil(
                                         context, (route) => route.isFirst);
                                   },
@@ -1137,6 +1150,8 @@ class _CryptoScreenState extends State<CryptoScreen> {
                                 ),
                                 SecondaryButtonWidget(
                                   onPressed: () {
+                                    CustomToast.showError(context, "Sorry!!",
+                                        "Transaction has been cancelled");
                                     Navigator.popUntil(
                                         context, (route) => route.isFirst);
                                     _cryptoBloc.add(ApproveTransactionEvent(
@@ -1219,23 +1234,21 @@ class CoinListView extends StatelessWidget {
                   Expanded(
                     child: Row(
                       children: [
-
                         coins[index].image!.isEmpty
                             ? Container()
                             : Container(
-                          width: 48,
-                          height: 48,
-                          margin: const EdgeInsets.only(right: 10),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: NetworkImage(coins[index].image!),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-
+                                width: 48,
+                                height: 48,
+                                margin: const EdgeInsets.only(right: 10),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    image: NetworkImage(coins[index].image!),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
                         Expanded(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
