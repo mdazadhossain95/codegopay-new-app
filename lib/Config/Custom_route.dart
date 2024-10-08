@@ -45,6 +45,7 @@ import '../Screens/card_screen_test/prepaid_card_activated_screen.dart';
 import '../Screens/crypto_screen/Crypto_screen.dart';
 import '../Screens/gift_card/buy_gift_card_confirm_details_screen.dart';
 import '../Screens/gift_card/show_gift_card_screen.dart';
+import '../Screens/investment/master_node_dashboard_screen.dart';
 import '../Screens/login_screen/forgot_password_screen.dart';
 import '../Screens/transfer_screen/add_binficary.dart';
 import '../Screens/transfer_screen/binficiary_screen.dart';
@@ -227,7 +228,7 @@ Route generatroutecustomRoute(
     case 'userGiftCardDetailsScreen':
       return PageTransition(
         child: const ShowGiftCardScreen(),
-        type: PageTransitionType.bottomToTop,
+        type: PageTransitionType.rightToLeft,
         alignment: Alignment.center,
         duration: const Duration(milliseconds: 300),
         reverseDuration: const Duration(milliseconds: 200),
@@ -469,14 +470,14 @@ Route generatroutecustomRoute(
         duration: const Duration(milliseconds: 300),
         reverseDuration: const Duration(milliseconds: 200),
       );
-      // case 'depositScreen':
-      // return PageTransition(
-      //   child: const DepositScreen(),
-      //   type: PageTransitionType.rightToLeft,
-      //   alignment: Alignment.center,
-      //   duration: const Duration(milliseconds: 300),
-      //   reverseDuration: const Duration(milliseconds: 200),
-      // );
+      case 'masterNodeScreen':
+      return PageTransition(
+        child: const MasterNodeDashboardScreen(),
+        type: PageTransitionType.rightToLeft,
+        alignment: Alignment.center,
+        duration: const Duration(milliseconds: 300),
+        reverseDuration: const Duration(milliseconds: 200),
+      );
       case 'profileScreen':
       return PageTransition(
         child: const ProfileScreen(),

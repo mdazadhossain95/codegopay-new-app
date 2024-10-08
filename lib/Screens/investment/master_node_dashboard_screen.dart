@@ -1,17 +1,15 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:codegopay/Screens/investment/bloc/investment_bloc.dart';
 import 'package:codegopay/Screens/investment/investment_screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:codegopay/Screens/Dashboard_screen/bloc/dashboard_bloc.dart';
 import 'package:codegopay/constant_string/User.dart';
-import 'package:codegopay/cutom_weidget/custom_navigationBar.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -20,13 +18,11 @@ import '../../utils/input_fields/custom_color.dart';
 import '../../widgets/buttons/default_back_button_widget.dart';
 import '../../widgets/buttons/primary_button_widget.dart';
 import '../../widgets/custom_image_widget.dart';
+import '../../widgets/toast/toast_util.dart';
 import 'master_node_details_screen.dart';
 
 class MasterNodeDashboardScreen extends StatefulWidget {
   const MasterNodeDashboardScreen({super.key});
-
-  // String profit;
-  // String time;
 
   @override
   State<MasterNodeDashboardScreen> createState() =>
@@ -60,19 +56,8 @@ class _MasterNodeDashboardScreenState extends State<MasterNodeDashboardScreen> {
           bloc: _investmentBloc,
           listener: (context, InvestmentState state) {
             if (state.statusModel?.status == 0) {
-              AwesomeDialog(
-                context: context,
-                dialogType: DialogType.error,
-                animType: AnimType.rightSlide,
-                desc: state.statusModel?.message,
-                btnCancelText: 'OK',
-                buttonsTextStyle: const TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'pop',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
-                btnCancelOnPress: () {},
-              ).show();
+              CustomToast.showError(
+                  context, "Sorry!", state.statusModel!.message!);
             }
           },
           child: BlocBuilder(
@@ -98,17 +83,10 @@ class _MasterNodeDashboardScreenState extends State<MasterNodeDashboardScreen> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       DefaultBackButtonWidget(onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          PageTransition(
-                                            type: PageTransitionType.scale,
-                                            alignment: Alignment.center,
-                                            isIos: true,
-                                            duration: const Duration(
-                                                microseconds: 500),
-                                            child: InvestmentScreen(),
-                                          ),
-                                        );
+                                        Navigator.pushNamedAndRemoveUntil(
+                                            context,
+                                            'investmentScreen',
+                                            (route) => false);
                                       }),
                                       Text(
                                         'MasterNode Dashboard',
@@ -186,8 +164,8 @@ class _MasterNodeDashboardScreenState extends State<MasterNodeDashboardScreen> {
                                             horizontal: 10, vertical: 8),
                                         decoration: BoxDecoration(
                                             color: Color(0xff8F8F8F),
-                                            borderRadius: BorderRadius.circular(8)
-                                        ),
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
                                         // padding:
                                         //     const EdgeInsets.only(right: 10),
                                         child: Image.asset(
@@ -254,6 +232,18 @@ class _MasterNodeDashboardScreenState extends State<MasterNodeDashboardScreen> {
                                 ),
                               ],
                             ),
+                            if (state.nodeLogsModel!.order!.isNotEmpty)
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Transactions',
+                                  textAlign: TextAlign.left,
+                                  style: GoogleFonts.inter(
+                                      color: CustomColor.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
                             Expanded(
                               child: ListView.builder(
                                   itemCount: state.nodeLogsModel?.order!.length,
@@ -269,8 +259,6 @@ class _MasterNodeDashboardScreenState extends State<MasterNodeDashboardScreen> {
                                             duration: const Duration(
                                                 microseconds: 500),
                                             child: MasterNodeDetailsScreen(
-                                              // profit: widget.profit,
-                                              // time: widget.time,
                                               orderId: state.nodeLogsModel!
                                                   .order![index].orderId!,
                                             ),
@@ -279,16 +267,17 @@ class _MasterNodeDashboardScreenState extends State<MasterNodeDashboardScreen> {
                                       },
                                       child: Padding(
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 7, vertical: 10),
+                                            vertical: 10),
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(
-                                            horizontal: 10,
+                                            horizontal: 5,
                                           ),
                                           decoration: const BoxDecoration(
                                             borderRadius: BorderRadius.all(
                                               Radius.circular(10),
                                             ),
-                                            color: Color(0xffF1EEEE),
+                                            color:
+                                                CustomColor.hubContainerBgColor,
                                           ),
                                           child: Column(
                                             children: [
@@ -336,108 +325,129 @@ class _MasterNodeDashboardScreenState extends State<MasterNodeDashboardScreen> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(vertical: 5),
-                                                    child: Column(
-                                                      children: [
-                                                        SfLinearGauge(
-                                                          axisTrackExtent: 0,
-                                                          showTicks: false,
-                                                          showLabels: false,
-                                                          barPointers: [
-                                                            LinearBarPointer(
-                                                              value: double.parse(state
-                                                                  .nodeLogsModel!
-                                                                  .order![index]
-                                                                  .profitPercentage!
-                                                                  .toString()),
-                                                              color: const Color(
-                                                                  0xff3F56D1),
-                                                            ),
-                                                          ],
-                                                          markerPointers: [
-                                                            LinearWidgetPointer(
-                                                              value: double.parse(state
-                                                                  .nodeLogsModel!
-                                                                  .order![index]
-                                                                  .profitPercentage!
-                                                                  .toString()),
-                                                              child:
-                                                                  Image.asset(
-                                                                "images/investment/t_icon.png",
-                                                                height: 14,
-                                                                width: 14,
+                                                  SizedBox(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.75,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          vertical: 5),
+                                                      child: Column(
+                                                        children: [
+                                                          SfLinearGauge(
+                                                            axisTrackExtent: 0,
+                                                            showTicks: false,
+                                                            showLabels: false,
+                                                            barPointers: [
+                                                              LinearBarPointer(
+                                                                value: double.parse(state
+                                                                    .nodeLogsModel!
+                                                                    .order![
+                                                                        index]
+                                                                    .profitPercentage!
+                                                                    .toString()),
+                                                                color: const Color(
+                                                                    0xff3F56D1),
                                                               ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Container(
-                                                          width: 260,
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      10),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Flexible(
-                                                                child: Text(
-                                                                  'Profit Generated ',
-                                                                  style:
-                                                                      GoogleFonts
-                                                                          .inter(
-                                                                    color: Color(
-                                                                        0xff000000),
-                                                                    fontSize: 6,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              Flexible(
-                                                                child: Text(
-                                                                  '${state.nodeLogsModel?.order![index].paidProfit}',
-                                                                  style:
-                                                                      GoogleFonts
-                                                                          .inter(
-                                                                    color: Color(
-                                                                        0xff000000),
-                                                                    fontSize: 8,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                  ),
+                                                            ],
+                                                            markerPointers: [
+                                                              LinearWidgetPointer(
+                                                                value: double.parse(state
+                                                                    .nodeLogsModel!
+                                                                    .order![
+                                                                        index]
+                                                                    .profitPercentage!
+                                                                    .toString()),
+                                                                child:
+                                                                    Image.asset(
+                                                                  "images/investment/t_icon.png",
+                                                                  height: 14,
+                                                                  width: 14,
                                                                 ),
                                                               ),
                                                             ],
                                                           ),
-                                                        )
-                                                      ],
+                                                          Container(
+                                                            width: 260,
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        10),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Flexible(
+                                                                  child: Text(
+                                                                    'Profit Generated ',
+                                                                    style: GoogleFonts
+                                                                        .inter(
+                                                                      color: Color(
+                                                                          0xff000000),
+                                                                      fontSize:
+                                                                          6,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                Flexible(
+                                                                  child: Text(
+                                                                    '${state.nodeLogsModel?.order![index].paidProfit}',
+                                                                    style: GoogleFonts
+                                                                        .inter(
+                                                                      color: Color(
+                                                                          0xff000000),
+                                                                      fontSize:
+                                                                          8,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
-                                                  Flexible(
-                                                    child: Container(
-                                                      alignment:
-                                                          Alignment.topRight,
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Text(
-                                                        '${state.nodeLogsModel?.order![index].profitPercentage}%',
-                                                        style:
-                                                            GoogleFonts.inter(
-                                                          color: Color.fromRGBO(
-                                                              16, 163, 13, 1),
-                                                          fontSize: 10,
-                                                          fontWeight:
-                                                              FontWeight.w500,
+                                                  Expanded(
+                                                    // width: MediaQuery.of(context).size.width * 0.6,
+                                                    // alignment:
+                                                    //     Alignment.centerRight,
+                                                    // padding:
+                                                    //     const EdgeInsets.all(
+                                                    //         8.0),
+                                                    child: Column(
+                                                      children: [
+                                                        Text(
+                                                          '${state.nodeLogsModel?.order![index].profitPercentage}%',
+                                                          maxLines: 4,
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style:
+                                                              GoogleFonts.inter(
+                                                            color: CustomColor
+                                                                .green,
+                                                            fontSize: 10,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
                                                         ),
-                                                      ),
+                                                        SizedBox(
+                                                          height: 20.h,
+                                                        )
+                                                      ],
                                                     ),
                                                   ),
                                                 ],
@@ -580,20 +590,7 @@ class _BottomSheetContentStep1State extends State<BottomSheetContentStep1> {
       bloc: _investmentBloc,
       listener: (context, InvestmentState state) {
         if (state.statusModel?.status == 0) {
-          AwesomeDialog(
-            context: context,
-            dialogType: DialogType.error,
-            dismissOnTouchOutside: false,
-            animType: AnimType.rightSlide,
-            desc: state.statusModel?.message,
-            btnCancelText: 'OK',
-            buttonsTextStyle: const TextStyle(
-                fontSize: 14,
-                fontFamily: 'pop',
-                fontWeight: FontWeight.w600,
-                color: Colors.white),
-            btnCancelOnPress: () {},
-          ).show();
+          CustomToast.showError(context, "Sorry!", state.statusModel!.message!);
         }
 
         if (state.buyMasterNodeModel?.status == 1) {
@@ -615,39 +612,10 @@ class _BottomSheetContentStep1State extends State<BottomSheetContentStep1> {
         }
 
         if (state.statusModel?.status == 1) {
-          AwesomeDialog(
-            context: context,
-            dialogType: DialogType.success,
-            dismissOnTouchOutside: false,
-            animType: AnimType.rightSlide,
-            desc: state.statusModel?.message,
-            btnCancelText: 'OK',
-            btnCancelColor: Colors.green,
-            buttonsTextStyle: const TextStyle(
-                fontSize: 14,
-                fontFamily: 'pop',
-                fontWeight: FontWeight.w600,
-                color: Colors.white),
-            btnCancelOnPress: () {
-              Navigator.push(
-                context,
-                PageTransition(
-                  type: PageTransitionType.scale,
-                  alignment: Alignment.center,
-                  isIos: true,
-                  duration: const Duration(microseconds: 500),
-                  child: MasterNodeDashboardScreen(
-                      // profit: state
-                      //     .nodeCheckModuleModel!
-                      //     .enduserMasternodeProfit!,
-                      // time: state
-                      //     .nodeCheckModuleModel!
-                      //     .period!,
-                      ),
-                ),
-              );
-            },
-          ).show();
+          CustomToast.showSuccess(
+              context, "Hey!!", state.statusModel!.message!);
+          Navigator.pushNamedAndRemoveUntil(
+              context, 'masterNodeScreen', (route) => false);
         }
       },
       child: BlocBuilder(
@@ -673,7 +641,6 @@ class _BottomSheetContentStep1State extends State<BottomSheetContentStep1> {
                     physics: const BouncingScrollPhysics(),
                     child: Column(
                       children: [
-
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -712,7 +679,7 @@ class _BottomSheetContentStep1State extends State<BottomSheetContentStep1> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                   Text(
+                                  Text(
                                     'how many masternodes\ndo you want to purchase?',
                                     textAlign: TextAlign.left,
                                     style: GoogleFonts.inter(
@@ -734,22 +701,19 @@ class _BottomSheetContentStep1State extends State<BottomSheetContentStep1> {
                                           borderRadius:
                                               BorderRadius.circular(12.0),
                                           borderSide: const BorderSide(
-                                              color: Colors.black,
-                                              width: 1.0),
+                                              color: Colors.black, width: 1.0),
                                         ),
                                         enabledBorder: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(12.0),
                                           borderSide: const BorderSide(
-                                              color: Colors.black,
-                                              width: 1.0),
+                                              color: Colors.black, width: 1.0),
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(12.0),
                                           borderSide: const BorderSide(
-                                              color: Colors.black,
-                                              width: 1.5),
+                                              color: Colors.black, width: 1.5),
                                         ),
                                         // hintText: '0',
                                       ),
@@ -765,8 +729,7 @@ class _BottomSheetContentStep1State extends State<BottomSheetContentStep1> {
                                             totalPaymentDays =
                                                 baseTotalPaymentDays;
                                             totalCostMasternode =
-                                                baseMasternodePrice *
-                                                    newValue;
+                                                baseMasternodePrice * newValue;
                                             ; // Already updated
                                           }
                                         });
@@ -790,7 +753,7 @@ class _BottomSheetContentStep1State extends State<BottomSheetContentStep1> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                   Text(
+                                  Text(
                                     'MasterNode Price',
                                     textAlign: TextAlign.left,
                                     style: GoogleFonts.inter(
@@ -817,7 +780,7 @@ class _BottomSheetContentStep1State extends State<BottomSheetContentStep1> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                   Text(
+                                  Text(
                                     'Profit per day',
                                     textAlign: TextAlign.left,
                                     style: GoogleFonts.inter(
@@ -844,7 +807,7 @@ class _BottomSheetContentStep1State extends State<BottomSheetContentStep1> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                   Text(
+                                  Text(
                                     'Total payment days',
                                     textAlign: TextAlign.left,
                                     style: GoogleFonts.inter(
@@ -871,7 +834,7 @@ class _BottomSheetContentStep1State extends State<BottomSheetContentStep1> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                   Text(
+                                  Text(
                                     'Total Cost Masternode',
                                     textAlign: TextAlign.left,
                                     style: GoogleFonts.inter(
@@ -891,11 +854,9 @@ class _BottomSheetContentStep1State extends State<BottomSheetContentStep1> {
                                   )
                                 ],
                               ),
-
                             ],
                           ),
                         ),
-
                         SizedBox(
                           height: 30,
                         ),
@@ -905,32 +866,38 @@ class _BottomSheetContentStep1State extends State<BottomSheetContentStep1> {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  _acceptTerms = !_acceptTerms; // Toggle the checkbox state
+                                  _acceptTerms =
+                                      !_acceptTerms; // Toggle the checkbox state
                                 });
                               },
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: _acceptTerms ? CustomColor.primaryColor : CustomColor.whiteColor, // Background color when checked
+                                  color: _acceptTerms
+                                      ? CustomColor.primaryColor
+                                      : CustomColor.whiteColor,
+                                  // Background color when checked
                                   border: Border.all(
-                                    color: _acceptTerms ? CustomColor.primaryColor : Color(0xFF798187), // Change border color based on state
+                                    color: _acceptTerms
+                                        ? CustomColor.primaryColor
+                                        : Color(0xFF798187),
+                                    // Change border color based on state
                                     width: 1.5, // Border width
                                   ),
-                                  borderRadius: BorderRadius.circular(4), // Custom border radius
+                                  borderRadius: BorderRadius.circular(
+                                      4), // Custom border radius
                                 ),
                                 width: 18, // Width of the checkbox container
                                 height: 18, // Height of the checkbox container
                                 child: _acceptTerms
                                     ? Icon(
-                                  Icons.check,
-                                  color: Colors.white, // Check color when checked
-                                  size: 14, // Size of the check icon
-                                )
+                                        Icons.check,
+                                        color: Colors.white,
+                                        // Check color when checked
+                                        size: 14, // Size of the check icon
+                                      )
                                     : null, // Empty when unchecked
                               ),
                             ),
-
-
-
                             Padding(
                               padding: const EdgeInsets.only(left: 5),
                               child: RichText(
@@ -946,15 +913,15 @@ class _BottomSheetContentStep1State extends State<BottomSheetContentStep1> {
                                     TextSpan(
                                       text: 'terms and agreement',
                                       style: GoogleFonts.inter(
-                                        color: CustomColor.black.withOpacity(0.6),
+                                        color:
+                                            CustomColor.black.withOpacity(0.6),
                                         fontSize: 14,
                                         fontWeight: FontWeight.normal,
                                         height: 1,
                                       ),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () async {
-                                          var url = state
-                                              .buyMasterNodeModel!
+                                          var url = state.buyMasterNodeModel!
                                               .termsCondition!;
                                           if (await canLaunchUrl(
                                               Uri.parse(url))) {
@@ -968,7 +935,6 @@ class _BottomSheetContentStep1State extends State<BottomSheetContentStep1> {
                                 ),
                               ),
                             ),
-
                           ],
                         ),
                         Padding(
@@ -976,10 +942,9 @@ class _BottomSheetContentStep1State extends State<BottomSheetContentStep1> {
                           child: PrimaryButtonWidget(
                             onPressed: _acceptTerms
                                 ? () {
-
-                              _investmentBloc.add(NodeOrderEvent(
-                                  numberOfNode: _selectedValue!));
-                            }
+                                    _investmentBloc.add(NodeOrderEvent(
+                                        numberOfNode: _selectedValue!));
+                                  }
                                 : null,
                             buttonText: 'Pay',
                             disabledColor: CustomColor.black.withOpacity(0.4),

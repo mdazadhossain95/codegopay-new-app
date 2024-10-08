@@ -81,6 +81,10 @@ class StaticAssets {
   static const String profile = 'assets/svg/profile.svg';
   static const String errorDialog = 'assets/svg/error-dialog.svg';
   static const String warningDialog = 'assets/svg/warning-dialog.svg';
+  static const String giftCardIcon = 'assets/svg/gift-card-icon.svg';
+  static const String showDetails = 'assets/svg/show-details.svg';
+  static const String share = 'assets/svg/share.svg';
+  static const String delete = 'assets/svg/delete.svg';
 
   //png image
   static const String successDialog = 'assets/images/success-dialog.png';

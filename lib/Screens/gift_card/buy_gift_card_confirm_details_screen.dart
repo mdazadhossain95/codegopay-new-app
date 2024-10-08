@@ -1,18 +1,15 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:codegopay/Screens/Dashboard_screen/bloc/dashboard_bloc.dart';
 import 'package:codegopay/constant_string/User.dart';
-import 'package:codegopay/utils/custom_scroll_behavior.dart';
 import 'package:codegopay/utils/input_fields/custom_color.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:screenshot/screenshot.dart';
 
-import '../../cutom_weidget/custom_navigationBar.dart';
 import '../../cutom_weidget/cutom_progress_bar.dart';
 import '../../widgets/buttons/default_back_button_widget.dart';
 import '../../widgets/buttons/primary_button_widget.dart';
+import '../../widgets/toast/toast_util.dart';
 
 class BuyGiftCardConfirmDetailsScreen extends StatefulWidget {
   BuyGiftCardConfirmDetailsScreen({super.key, required this.amount});
@@ -29,6 +26,7 @@ class _BuyGiftCardConfirmDetailsScreenState
   final DashboardBloc _buyGiftCardConfirmDetails = DashboardBloc();
 
   final FocusNode myFocusNode = FocusNode();
+  bool active = true;
 
   @override
   void initState() {
@@ -55,34 +53,14 @@ class _BuyGiftCardConfirmDetailsScreenState
         bloc: _buyGiftCardConfirmDetails,
         listener: (context, DashboardState state) {
           if (state.buyGiftCardConfirmModel?.status == 1) {
-            AwesomeDialog(
-                context: context,
-                dialogType: DialogType.success,
-                animType: AnimType.rightSlide,
-                dismissOnTouchOutside: false,
-                desc: state.buyGiftCardConfirmModel!.message,
-                buttonsTextStyle: const TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'pop',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
-                btnOkOnPress: () {
-                  Navigator.pushNamed(context, "buyGiftCardScreen");
-                }).show();
+            active = true;
+            CustomToast.showSuccess(
+                context, "Hey!!", state.buyGiftCardConfirmModel!.message!);
+            Navigator.pushNamed(context, "buyGiftCardScreen");
           } else if (state.buyGiftCardConfirmModel?.status == 0) {
-            AwesomeDialog(
-              context: context,
-              dialogType: DialogType.error,
-              animType: AnimType.rightSlide,
-              desc: state.buyGiftCardConfirmModel!.message,
-              btnCancelText: 'OK',
-              buttonsTextStyle: const TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'pop',
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white),
-              btnCancelOnPress: () {},
-            ).show();
+            active = true;
+            CustomToast.showError(
+                context, "Sorry!!", state.buyGiftCardConfirmModel!.message!);
           }
         },
         child: BlocBuilder(
@@ -307,10 +285,11 @@ class _BuyGiftCardConfirmDetailsScreenState
                       ],
                     )),
                       PrimaryButtonWidget(
-                        onPressed: () {
+                        onPressed: active ? () {
+                          active = false;
                           _buyGiftCardConfirmDetails
                               .add(GiftCardGetOrderConfirmEvent());
-                        },
+                        } : null,
                         buttonText: 'Order Confirm',
                       ),
                     ],

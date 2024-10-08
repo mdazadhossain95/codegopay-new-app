@@ -11,12 +11,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 
-import '../../cutom_weidget/custom_navigationBar.dart';
 import '../../cutom_weidget/cutom_progress_bar.dart';
 import '../../utils/input_fields/custom_color.dart';
 import '../../widgets/buttons/default_back_button_widget.dart';
 import '../../widgets/buttons/primary_button_widget.dart';
 import '../../widgets/input_fields/defult_input_field_with_title_widget.dart';
+import '../../widgets/toast/toast_util.dart';
 import 'buy_gift_card_confirm_details_screen.dart';
 
 class BuyGiftCardDetailsScreen extends StatefulWidget {
@@ -39,6 +39,7 @@ class _BuyGiftCardDetailsScreenState extends State<BuyGiftCardDetailsScreen> {
   final bool _detailsScreenPushed = false; // Track if details screen is pushed
 
   final _formKey = GlobalKey<FormState>();
+  bool active = false;
 
   bool flap = false;
 
@@ -48,12 +49,24 @@ class _BuyGiftCardDetailsScreenState extends State<BuyGiftCardDetailsScreen> {
 
     super.initState();
     _buyGiftCardGetType.add(GiftCardGetFeeTypeEvent());
+    _amountController.addListener(_updateButtonState);
   }
 
   @override
   void dispose() {
-    super.dispose();
     _buyGiftCardGetType.close();
+
+    _amountController.removeListener(_updateButtonState);
+    _amountController.dispose();
+    super.dispose();
+  }
+
+  void _updateButtonState() {
+    if (_formKey.currentState?.validate() ?? false) {
+      setState(() {
+        active = _formKey.currentState!.validate();
+      });
+    }
   }
 
   @override
@@ -71,26 +84,15 @@ class _BuyGiftCardDetailsScreenState extends State<BuyGiftCardDetailsScreen> {
                 child: BuyGiftCardConfirmDetailsScreen(
                   amount: _amountController.text,
                 ),
-                type: PageTransitionType.bottomToTop,
+                type: PageTransitionType.rightToLeft,
                 alignment: Alignment.center,
                 duration: const Duration(milliseconds: 300),
                 reverseDuration: const Duration(milliseconds: 200),
               ),
             );
           } else if (state.statusModel?.status == 0) {
-            AwesomeDialog(
-              context: context,
-              dialogType: DialogType.error,
-              animType: AnimType.rightSlide,
-              desc: state.statusModel!.message,
-              btnCancelText: 'OK',
-              buttonsTextStyle: const TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'pop',
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white),
-              btnCancelOnPress: () {},
-            ).show();
+            CustomToast.showError(
+                context, "Sorry!", state.statusModel!.message!);
           }
         },
         child: BlocBuilder(
@@ -177,14 +179,16 @@ class _BuyGiftCardDetailsScreenState extends State<BuyGiftCardDetailsScreen> {
                                         _selectIbanController),
                                   ),
                                   DefaultInputFieldWithTitleWidget(
-                                    controller: _amountController,
-                                    title: 'Amount',
-                                    hint: 'Enter Amount',
-                                    isEmail: false,
-                                    keyboardType: TextInputType.number,
-                                    autofocus: false,
-                                    isPassword: false,
-                                  ),
+                                      controller: _amountController,
+                                      title: 'Amount',
+                                      hint: 'Enter Amount',
+                                      isEmail: false,
+                                      keyboardType: TextInputType.number,
+                                      autofocus: false,
+                                      isPassword: false,)
+                                      // onChanged: (value) {
+                                      //   _updateButtonState();
+                                      // }),
                                 ],
                               ),
                             ),
@@ -192,12 +196,14 @@ class _BuyGiftCardDetailsScreenState extends State<BuyGiftCardDetailsScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 20),
                             child: PrimaryButtonWidget(
-                              onPressed: () {
-                                UserDataManager().giftCardAmountSave(_amountController.text);
+                              onPressed: active
+                                  ? () {
+                                active = false;
+                                UserDataManager()
+                                    .giftCardAmountSave(_amountController.text);
                                 _buyGiftCardGetType.add(GiftCardGetFeeDataEvent(
                                     amount: _amountController.text));
-
-                              },
+                              } : null,
                               buttonText: 'Submit',
                             ),
                           ),
@@ -249,6 +255,7 @@ class _BuyGiftCardDetailsScreenState extends State<BuyGiftCardDetailsScreen> {
             ),
           ),
           onChanged: (newValue) {
+            _updateButtonState();
             debugPrint(newValue);
             controller.text = newValue ?? '';
             UserDataManager().giftCardSave(controller.text);
@@ -311,6 +318,7 @@ class _BuyGiftCardDetailsScreenState extends State<BuyGiftCardDetailsScreen> {
             ),
           ),
           onChanged: (selectedValue) {
+            _updateButtonState();
             if (selectedValue != null) {
               final selectedIban = ibanList.isNotEmpty
                   ? ibanList.firstWhere((iban) => iban.ibanId == selectedValue)

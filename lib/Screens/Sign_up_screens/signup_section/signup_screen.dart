@@ -22,6 +22,7 @@ import '../../../widgets/buttons/default_back_button_widget.dart';
 import '../../../widgets/buttons/primary_button_widget.dart';
 import '../../../widgets/input_fields/defult_input_field_with_title_widget.dart';
 import '../../../widgets/input_fields/password_input_field_with_title_widget.dart';
+import '../../../widgets/toast/toast_util.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -104,19 +105,9 @@ class _SignupScreenState extends State<SignupScreen> {
           bloc: _signupBloc,
           listener: (context, SignupState state) {
             if (state.statusModel?.status == 0) {
-              AwesomeDialog(
-                context: context,
-                dialogType: DialogType.error,
-                animType: AnimType.rightSlide,
-                desc: state.statusModel?.message,
-                btnCancelText: 'OK',
-                buttonsTextStyle: const TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'pop',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
-                btnCancelOnPress: () {},
-              ).show();
+
+              CustomToast.showError(
+                  context, "Sorry!", state.statusModel!.message!);
             }
 
             if (state.userSignupAccountModel!.status == 1) {

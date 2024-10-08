@@ -22,6 +22,7 @@ import 'package:codegopay/Models/card_ordermodel.dart';
 import 'package:codegopay/Models/debit_card_model.dart';
 import 'package:codegopay/Models/debitcardinfo_model.dart';
 import 'package:codegopay/Models/download_transaction_model.dart';
+import 'package:codegopay/Models/gift_card/gift_card_delete_model.dart';
 import 'package:codegopay/Models/gift_card/gift_card_details_model.dart';
 import 'package:codegopay/Models/gift_card/gift_card_get_fee_type_model.dart';
 import 'package:codegopay/Models/gift_card/gift_card_share_model.dart';
@@ -1058,7 +1059,7 @@ class DashboardRespotary {
 
       debugPrint(jsonResponse.toString());
 
-      return GiftCardDetailsModel.fromJson(jsonResponse);
+      return GiftCardDeleteModel.fromJson(jsonResponse);
     } on ApiException catch (e) {
       debugPrint(e.toString());
       // ignore: use_rethrow_when_possible

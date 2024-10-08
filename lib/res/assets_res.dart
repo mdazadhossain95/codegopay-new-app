@@ -12,6 +12,10 @@ class AssetsRes {
   static const String MASTERNODE = 'assets/images/masternode.png';
   static const String STAKE = 'assets/images/stake.png';
   static const String SUCCESS_DIALOG = 'assets/images/success-dialog.png';
+  static const String DELETE = 'assets/svg/delete.svg';
   static const String ERROR_DIALOG = 'assets/svg/error-dialog.svg';
+  static const String GIFT_CARD_ICON = 'assets/svg/gift-card-icon.svg';
+  static const String SHARE = 'assets/svg/share.svg';
+  static const String SHOW_DETAILS = 'assets/svg/show-details.svg';
   static const String WARNING_DIALOG = 'assets/svg/warning-dialog.svg';
 }

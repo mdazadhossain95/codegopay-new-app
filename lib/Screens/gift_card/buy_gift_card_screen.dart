@@ -2,7 +2,6 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:codegopay/Screens/Dashboard_screen/bloc/dashboard_bloc.dart';
 import 'package:codegopay/constant_string/User.dart';
 
-import 'package:codegopay/cutom_weidget/custom_navigationBar.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +13,7 @@ import '../../utils/user_data_manager.dart';
 import '../../widgets/buttons/custom_floating_action_button.dart';
 import '../../widgets/buttons/primary_button_widget.dart';
 import '../../widgets/custom_image_widget.dart';
+import '../../widgets/toast/toast_util.dart';
 
 class BuyGiftCardScreen extends StatefulWidget {
   const BuyGiftCardScreen({super.key});
@@ -52,38 +52,17 @@ class _BuyGiftCardScreenState extends State<BuyGiftCardScreen> {
             listener: (context, DashboardState state) {
               if (state.giftCardGetFeeTypeModel?.status == 1) {
                 Navigator.pushNamed(context, 'buyGiftCardDetailsScreen');
-              } else if (state.statusModel?.status == 0) {
-                AwesomeDialog(
-                  context: context,
-                  dialogType: DialogType.error,
-                  animType: AnimType.rightSlide,
-                  desc: state.statusModel!.message,
-                  btnCancelText: 'OK',
-                  buttonsTextStyle: const TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'pop',
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
-                  btnCancelOnPress: () {},
-                ).show();
+
+              }
+
+              if (state.statusModel?.status == 0) {
+                CustomToast.showError(
+                    context, "Sorry!", state.statusModel!.message!);
               }
 
               if (state.giftCardDetailsModel?.status == 1) {
-                Navigator.pushNamed(context, 'userGiftCardDetailsScreen');
-              } else if (state.statusModel?.status == 0) {
-                AwesomeDialog(
-                  context: context,
-                  dialogType: DialogType.error,
-                  animType: AnimType.rightSlide,
-                  desc: state.statusModel!.message,
-                  btnCancelText: 'OK',
-                  buttonsTextStyle: const TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'pop',
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
-                  btnCancelOnPress: () {},
-                ).show();
+                Navigator.pushNamedAndRemoveUntil(
+                    context, 'userGiftCardDetailsScreen', (route) => false);
               }
             },
             child: BlocBuilder(
@@ -114,19 +93,94 @@ class _BuyGiftCardScreenState extends State<BuyGiftCardScreen> {
                                         fontWeight: FontWeight.w500),
                                   ),
                                 ),
-                                PrimaryButtonWidget(
-                                  onPressed: () {
-                                    _giftCardListBloc
-                                        .add(GiftCardGetFeeTypeEvent());
-                                  },
-                                  buttonText: 'Buy Gift Card',
+                                Container(
+                                  margin: EdgeInsets.only(bottom: 10),
+                                  padding: EdgeInsets.only(
+                                      left: 12, right: 12, top: 12),
+                                  decoration: BoxDecoration(
+                                    color: CustomColor.whiteColor,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Color(0x14000000),
+                                        // Hex color #00000014 (14 is the transparency in hexadecimal)
+                                        offset: Offset(0, 1),
+                                        // Horizontal and vertical offset
+                                        blurRadius: 8,
+                                        // Blur radius of the shadow
+                                        spreadRadius: -2, // Spread radius
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.circular(
+                                        8), // Optional: add border radius
+                                  ),
+                                  child: Column(
+                                    // mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 10),
+                                        child: Row(
+                                          children: [
+                                            CustomImageWidget(
+                                              imagePath:
+                                                  StaticAssets.giftCardIcon,
+                                              imageType: 'svg',
+                                              height: 48,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 10),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Gift Card',
+                                                    style: GoogleFonts.inter(
+                                                        color:
+                                                            CustomColor.black,
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                  Text(
+                                                    'Buy gift cards for everyone on your list!\nFind the perfect gift for anyone.',
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: GoogleFonts.inter(
+                                                        color: CustomColor.black
+                                                            .withOpacity(0.7),
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      PrimaryButtonWidget(
+                                        onPressed: () {
+                                          _giftCardListBloc
+                                              .add(GiftCardGetFeeTypeEvent());
+                                        },
+                                        buttonText: 'Buy Gift Card',
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                Text(
-                                  "Card List",
-                                  style: GoogleFonts.inter(
-                                    color: CustomColor.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: Text(
+                                    "Card List",
+                                    style: GoogleFonts.inter(
+                                      color: CustomColor.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
                                 ),
                                 state.giftCardListModel!.cardList!.isNotEmpty
@@ -140,20 +194,16 @@ class _BuyGiftCardScreenState extends State<BuyGiftCardScreen> {
                                               int index) {
                                             return InkWell(
                                               onTap: () {
+                                                var card = state
+                                                    .giftCardListModel!
+                                                    .cardList![index];
                                                 UserDataManager()
-                                                    .giftCardIbanSave(state
-                                                        .giftCardListModel!
-                                                        .cardList![index]
-                                                        .cardId
-                                                        .toString());
+                                                    .giftCardIbanSave(
+                                                        card.cardId.toString());
 
                                                 UserDataManager()
                                                     .giftCardDeleteCardIdSave(
-                                                        state
-                                                            .giftCardListModel!
-                                                            .cardList![index]
-                                                            .cardId
-                                                            .toString());
+                                                        card.cardId.toString());
                                                 _giftCardListBloc.add(
                                                     GiftCardGetDetailsEvent());
                                               },
@@ -164,19 +214,10 @@ class _BuyGiftCardScreenState extends State<BuyGiftCardScreen> {
                                                 padding:
                                                     const EdgeInsets.all(16),
                                                 decoration: BoxDecoration(
-                                                  color: CustomColor.whiteColor,
+                                                  color: CustomColor
+                                                      .cryptoListContainerColor,
                                                   borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.black
-                                                          .withOpacity(0.08),
-                                                      offset:
-                                                          const Offset(0, 1),
-                                                      blurRadius: 8,
-                                                      spreadRadius: -2,
-                                                    ),
-                                                  ],
+                                                      BorderRadius.circular(16),
                                                 ),
                                                 child: Row(
                                                   mainAxisAlignment:
@@ -200,14 +241,10 @@ class _BuyGiftCardScreenState extends State<BuyGiftCardScreen> {
                                                                 .center,
                                                             decoration:
                                                                 BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          11),
-                                                              border: Border.all(
-                                                                  width: 1,
-                                                                  color: const Color(
-                                                                      0xffE3E3E3)),
+                                                              shape: BoxShape
+                                                                  .circle,
+                                                              color: CustomColor
+                                                                  .whiteColor,
                                                             ),
                                                             child: state
                                                                         .giftCardListModel!
@@ -294,31 +331,6 @@ class _BuyGiftCardScreenState extends State<BuyGiftCardScreen> {
                                                                       color: Color(
                                                                           0xffC4C4C4)),
                                                                 ),
-                                                                Row(
-                                                                  children: [
-                                                                    Text(
-                                                                      "Status: ",
-                                                                      style: GoogleFonts.inter(
-                                                                          fontSize:
-                                                                              11,
-                                                                          fontWeight: FontWeight
-                                                                              .w500,
-                                                                          color:
-                                                                              Color(0xffC4C4C4)),
-                                                                    ),
-                                                                    Text(
-                                                                      "${state.giftCardListModel!.cardList![index].cardStatus}",
-                                                                      style: GoogleFonts.inter(
-                                                                          fontSize:
-                                                                              11,
-                                                                          fontWeight: FontWeight
-                                                                              .w500,
-                                                                          color: state.giftCardListModel!.cardList![index].cardStatus == "Active"
-                                                                              ? CustomColor.green
-                                                                              : CustomColor.errorColor),
-                                                                    ),
-                                                                  ],
-                                                                )
                                                               ],
                                                             ),
                                                           )
@@ -342,7 +354,25 @@ class _BuyGiftCardScreenState extends State<BuyGiftCardScreen> {
                                                                       .w500,
                                                               color: CustomColor
                                                                   .green),
-                                                        )
+                                                        ),
+                                                        Text(
+                                                          "${state.giftCardListModel!.cardList![index].cardStatus}",
+                                                          style: GoogleFonts.inter(
+                                                              fontSize: 11,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color: state
+                                                                          .giftCardListModel!
+                                                                          .cardList![
+                                                                              index]
+                                                                          .cardStatus ==
+                                                                      "Active"
+                                                                  ? CustomColor
+                                                                      .green
+                                                                  : CustomColor
+                                                                      .errorColor),
+                                                        ),
                                                       ],
                                                     )
                                                   ],
