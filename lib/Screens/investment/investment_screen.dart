@@ -2,17 +2,14 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:codegopay/Screens/investment/bloc/investment_bloc.dart';
 import 'package:codegopay/Screens/investment/master_node_dashboard_screen.dart';
 import 'package:codegopay/utils/assets.dart';
-import 'package:codegopay/widgets/custom_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:codegopay/constant_string/User.dart';
-import 'package:codegopay/cutom_weidget/custom_navigationBar.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:screenshot/screenshot.dart';
 
 import '../../utils/input_fields/custom_color.dart';
 import '../../widgets/buttons/custom_floating_action_button.dart';
@@ -97,21 +94,31 @@ class _InvestmentScreenState extends State<InvestmentScreen> {
                                   children: [
                                     appBarSection(context, state),
                                     Container(
+
                                       padding: const EdgeInsets.only(
                                           left: 16, right: 16, top: 16),
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(16),
-                                        ),
-                                        color: CustomColor.hubContainerBgColor,
-                                      ),
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(16),
+                                          ),
+                                          color:
+                                              CustomColor.hubContainerBgColor,
+                                          image: DecorationImage(
+                                            alignment: Alignment.topRight,
+                                            image: AssetImage(
+                                              // "images/investment/t_icon.png",
+                                             StaticAssets.stake,
+                                            ),
+                                            scale: 2,
+
+                                          )),
                                       child: Column(
                                         children: [
-                                          Image.asset(
-                                            "images/investment/t_icon.png",
-                                            height: 60,
-                                          ),
+                                          // Image.asset(
+                                          //   "images/investment/t_icon.png",
+                                          //   height: 60,
+                                          // ),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
@@ -273,13 +280,18 @@ class _InvestmentScreenState extends State<InvestmentScreen> {
                                           Radius.circular(16),
                                         ),
                                         color: CustomColor.hubContainerBgColor,
+                                          image: DecorationImage(
+                                            alignment: Alignment.bottomRight,
+                                            image: AssetImage(
+                                              // "images/investment/t_icon.png",
+                                              StaticAssets.masternode,
+                                            ),
+                                            scale: 1,
+
+                                          )
                                       ),
                                       child: Column(
                                         children: [
-                                          Image.asset(
-                                            "images/investment/masternode.png",
-                                            height: 60,
-                                          ),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,

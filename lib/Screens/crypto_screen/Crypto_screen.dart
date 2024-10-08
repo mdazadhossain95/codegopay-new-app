@@ -1,12 +1,10 @@
 import 'dart:async';
 
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:codegopay/Models/Crypto_coins_model.dart';
 import 'package:codegopay/Screens/crypto_screen/Euro_screen.dart';
 import 'package:codegopay/Screens/crypto_screen/bloc/crypto_bloc.dart';
 import 'package:codegopay/Screens/crypto_screen/coin_details.dart';
 import 'package:codegopay/constant_string/User.dart';
-import 'package:codegopay/cutom_weidget/custom_navigationBar.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
 import 'package:codegopay/utils/custom_scroll_behavior.dart';
 import 'package:codegopay/utils/input_fields/custom_color.dart';

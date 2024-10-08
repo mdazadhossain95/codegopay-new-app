@@ -545,7 +545,7 @@ class _StakingOverviewScreenState extends State<StakingOverviewScreen> {
                                     fontWeight: FontWeight.w500),
                               ),
                               Expanded(
-                                  child: state.stakeOverviewModel!.logs!.isEmpty
+                                  child: state.stakeOverviewModel!.logs!.isNotEmpty
                                       ? ListView.builder(
                                           itemCount: state
                                               .stakeOverviewModel!.logs!.length,

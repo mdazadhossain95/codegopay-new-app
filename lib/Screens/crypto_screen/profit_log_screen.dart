@@ -1,19 +1,11 @@
 import 'dart:async';
 
-import 'package:codegopay/Models/Crypto_coins_model.dart';
-import 'package:codegopay/Screens/crypto_screen/Buy_screen.dart';
-import 'package:codegopay/Screens/crypto_screen/Deposit_coin.dart';
-import 'package:codegopay/Screens/crypto_screen/Send_coin.dart';
 import 'package:codegopay/Screens/crypto_screen/bloc/crypto_bloc.dart';
 import 'package:codegopay/cutom_weidget/custom_navigationBar.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:page_transition/page_transition.dart';
 
 import '../../utils/assets.dart';
 import '../../utils/input_fields/custom_color.dart';

@@ -49,8 +49,6 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
               CustomToast.showError(
                   context, "Sorry!", state.statusModel!.message!);
             }
-
-
           },
           child: BlocBuilder(
               bloc: _cryptoBloc,
@@ -231,9 +229,9 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                                           vertical: 8),
                                       child: Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                            CrossAxisAlignment.center,
                                         children: [
                                           Text(
                                             'Order type',
@@ -289,7 +287,6 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                                         ],
                                       ),
                                     ),
-
                                   ],
                                 ),
                               ),
@@ -301,7 +298,8 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                         ),
                         Container(
                           alignment: Alignment.bottomCenter,
-                          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 20),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -314,7 +312,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                                           value = v!;
                                         });
                                       }),
-                                   Expanded(
+                                  Expanded(
                                     child: Text(
                                       "Select this choice to perform the conversion",
                                       textAlign: TextAlign.left,
@@ -338,7 +336,8 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                                   isRestart: true,
                                   color: value == true
                                       ? CustomColor.primaryColor
-                                      : CustomColor.primaryColor.withOpacity(0.1),
+                                      : CustomColor.primaryColor
+                                          .withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(100),
                                   buttonColor: CustomColor.whiteColor,
                                   initialPosition: SlidableButtonPosition.start,
@@ -348,14 +347,13 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                                       width: 56.0,
                                       height: 56.0,
                                       decoration: BoxDecoration(
-                                       shape: BoxShape.circle,
-                                        // border: Border.all(
-                                        //   color:
-                                        // ),
-                                        color: value == true
-                                            ? CustomColor.whiteColor
-                                            : CustomColor.whiteColor
-                                      ),
+                                          shape: BoxShape.circle,
+                                          // border: Border.all(
+                                          //   color:
+                                          // ),
+                                          color: value == true
+                                              ? CustomColor.whiteColor
+                                              : CustomColor.whiteColor),
                                       child: const Icon(
                                         Icons.keyboard_double_arrow_right,
                                         color: CustomColor.primaryColor,

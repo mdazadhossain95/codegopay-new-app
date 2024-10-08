@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:codegopay/Screens/crypto_screen/bloc/crypto_bloc.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
 import 'package:flutter/material.dart';
@@ -8,13 +7,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../constant_string/User.dart';
 import '../../utils/assets.dart';
-import '../../utils/custom_scroll_behavior.dart';
 import '../../utils/input_fields/custom_color.dart';
 import '../../widgets/buttons/primary_button_widget.dart';
 import '../../widgets/buttons/secondary_button_widget.dart';
 import '../../widgets/custom_image_widget.dart';
 import '../../widgets/success/success_widget.dart';
-import '../../widgets/toast/toast_util.dart';
 
 // ignore: must_be_immutable
 class DepositConfirmationScreen extends StatefulWidget {

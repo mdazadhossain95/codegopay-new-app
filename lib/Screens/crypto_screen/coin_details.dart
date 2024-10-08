@@ -5,7 +5,6 @@ import 'package:codegopay/Screens/crypto_screen/Buy_screen.dart';
 import 'package:codegopay/Screens/crypto_screen/Deposit_coin.dart';
 import 'package:codegopay/Screens/crypto_screen/Send_coin.dart';
 import 'package:codegopay/Screens/crypto_screen/bloc/crypto_bloc.dart';
-import 'package:codegopay/Screens/crypto_screen/staking_overivew.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

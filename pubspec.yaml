@@ -106,6 +106,8 @@ flutter:
     - assets/gifs/
     - assets/images/
     - assets/images/img_1.png
+    - assets/images/masternode.png
+    - assets/images/stake.png
     - assets/images/success-dialog.png
     - assets/logo/
     - assets/svg/

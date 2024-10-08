@@ -64,12 +64,15 @@ class AmountInputField extends StatelessWidget {
           ),
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.symmetric(horizontal: 1),
-            prefix: Text(
-              currencySymbol,
-              style: GoogleFonts.inter(
-                fontSize: 32,
-                fontWeight: FontWeight.w500,
-                color: CustomColor.black,
+            prefix: Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: Text(
+                currencySymbol,
+                style: GoogleFonts.inter(
+                  fontSize: 32,
+                  fontWeight: FontWeight.w500,
+                  color: CustomColor.black,
+                ),
               ),
             ),
             errorStyle: GoogleFonts.inter(

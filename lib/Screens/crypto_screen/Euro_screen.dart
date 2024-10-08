@@ -1,7 +1,6 @@
 import 'package:codegopay/Models/Crypto_coins_model.dart';
 import 'package:codegopay/Screens/crypto_screen/WithdrawEuro_screen.dart';
 import 'package:codegopay/Screens/crypto_screen/bloc/crypto_bloc.dart';
-import 'package:codegopay/cutom_weidget/custom_navigationBar.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
 import 'package:codegopay/utils/input_fields/custom_color.dart';
 import 'package:flutter/material.dart';

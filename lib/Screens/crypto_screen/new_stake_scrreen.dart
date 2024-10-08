@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:codegopay/Models/crypto/stake_custom_period_model.dart';
 import 'package:codegopay/Screens/crypto_screen/bloc/crypto_bloc.dart';
-import 'package:codegopay/Screens/crypto_screen/stake_confirm_screen.dart';
-import 'package:codegopay/cutom_weidget/custom_navigationBar.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
 import 'package:codegopay/utils/assets.dart';
 import 'package:codegopay/utils/input_fields/custom_color.dart';
@@ -12,17 +10,14 @@ import 'package:codegopay/widgets/custom_image_widget.dart';
 import 'package:codegopay/widgets/input_fields/amount_input_field_widget.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:screenshot/screenshot.dart';
 
-import '../../utils/validator.dart';
 import '../../widgets/buttons/default_back_button_widget.dart';
 import '../../widgets/buttons/primary_button_widget.dart';
-import '../../widgets/input_fields/defult_input_field_with_title_widget.dart';
 import '../../widgets/main/default_dropdown_field_with_title_widget.dart';
+import '../../widgets/toast/toast_util.dart';
 import 'Crypto_screen.dart';
 
 // ignore: must_be_immutable
@@ -92,6 +87,14 @@ class _NewStakingScreenState extends State<NewStakingScreen> {
 
             if (state.newStakeRequestModel != null &&
                 state.newStakeRequestModel!.status == 1) {
+
+              CustomToast.showSuccess(
+                  context, "Thank You!!", state.newStakeRequestModel!.message!);
+
+              Navigator.pushNamedAndRemoveUntil(context,
+                  'investmentScreen', (route) => false);
+
+
               return AwesomeDialog(
                 context: context,
                 dialogType: DialogType.warning,

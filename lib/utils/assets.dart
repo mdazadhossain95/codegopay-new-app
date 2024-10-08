@@ -85,6 +85,8 @@ class StaticAssets {
   //png image
   static const String successDialog = 'assets/images/success-dialog.png';
   static const String dashboardNotification = 'assets/images/dashboard-notification.png';
+  static const String stake = 'assets/images/stake.png';
+  static const String masternode = 'assets/images/masternode.png';
 
 
 }

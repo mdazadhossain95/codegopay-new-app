@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:codegopay/Screens/crypto_screen/bloc/crypto_bloc.dart';
 import 'package:codegopay/Screens/crypto_screen/confirm_screen.dart';
 import 'package:codegopay/constant_string/User.dart';
