@@ -27,6 +27,7 @@ class SignupUserInfoPage1Screen extends StatefulWidget {
 
 class _SignupUserInfoPage1ScreenState extends State<SignupUserInfoPage1Screen> {
   final _signupUserInfoKey = GlobalKey<FormState>();
+  bool _isButtonEnabled = false;
 
   bool? show = false;
 
@@ -51,8 +52,15 @@ class _SignupUserInfoPage1ScreenState extends State<SignupUserInfoPage1Screen> {
 
   Future<void> _loadCountries() async {
     await appRepo.GetCountries();
+
     setState(() {
       _countryList = BaseModel.availableCountriesList;
+    });
+  }
+
+  void _validateForm() {
+    setState(() {
+      _isButtonEnabled = _signupUserInfoKey.currentState!.validate() == true;
     });
   }
 
@@ -100,77 +108,78 @@ class _SignupUserInfoPage1ScreenState extends State<SignupUserInfoPage1Screen> {
                         nationality: true,
                         listitems: _countryList,
                         selectString: 'Select Country',
-
                       ),
                       CustomPhoneInputFieldWidget(
-                          controller: _phoneController,
-                          hint: 'White your phone number',
-                          label: 'Phone number',
-                          onChange: (value) {
-                            if (_signupUserInfoKey.currentState!.validate()) {
-                              setState(() {
-                                active = true;
-                              });
-                            }
-                          }),
+                        controller: _phoneController,
+                        hint: 'White your phone number',
+                        label: 'Phone number',
+                        onChange: (value) {
+                          _validateForm();
+                          if (_signupUserInfoKey.currentState!.validate()) {
+                            setState(() {
+                              active = true;
+                            });
+                          }
+                        },
+                        // countryList: _countryList,
+                        onCountrySelected: (value) {
+                          print('Selected Country: ${value.countryName}');
+                        }, appRepo: appRepo,
+                      ),
                       InputTextCustom(
-                          controller: _dobController,
-                          hint: 'dd-mm-yy',
-                          label: 'Date of birth',
-                          isEmail: false,
-                          isPassword: false,
-                          readOnly: true,
-                          suffixIconPath: StaticAssets.calendar,
-                          onTap: () async {
-                            DateTime? pickedDate = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(1920),
-                                initialEntryMode:
-                                    DatePickerEntryMode.calendarOnly,
+                        controller: _dobController,
+                        hint: 'dd-mm-yy',
+                        label: 'Date of birth',
+                        isEmail: false,
+                        isPassword: false,
+                        readOnly: true,
+                        suffixIconPath: StaticAssets.calendar,
+                        onTap: () async {
+                          active = true;
+                          DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(1920),
+                              initialEntryMode:
+                                  DatePickerEntryMode.calendarOnly,
+                              lastDate: DateTime.now());
 
-                                lastDate: DateTime.now());
-
-                            if (pickedDate != null) {
-                              debugPrint(pickedDate
-                                  .toString()); //pickedDate output format => 2021-03-10 00:00:00.000
-                              String formattedDate =
-                                  DateFormat('dd-MM-yyyy').format(pickedDate);
-                              debugPrint(formattedDate
-                                  .toString()); //formatted date output using intl package =>  2021-03-16
-                              setState(() {
-                                _dobController.text =
-                                    formattedDate; //set output date to TextField value.
-                              });
-                            } else {}
-                          },
-                          onChanged: () {
-                            if (_signupUserInfoKey.currentState!.validate()) {
-                              setState(() {
-                                active = true;
-                              });
-                            }
-                          }),
+                          if (pickedDate != null) {
+                            debugPrint(pickedDate
+                                .toString()); //pickedDate output format => 2021-03-10 00:00:00.000
+                            String formattedDate =
+                                DateFormat('dd-MM-yyyy').format(pickedDate);
+                            debugPrint(formattedDate
+                                .toString()); //formatted date output using intl package =>  2021-03-16
+                            setState(() {
+                              _dobController.text =
+                                  formattedDate; //set output date to TextField value.
+                            });
+                          } else {}
+                        },
+                      ),
                       OptionSelectorWidget(
                         controller: _genderController,
                         label: 'Gender',
                         listItems: const ["Male", "Female"],
-
                       ),
                     ],
                   ),
                 )),
             PrimaryButtonWidget(
-              onPressed: () {
-                if (_signupUserInfoKey.currentState!.validate()) {
-                  User.Phonenumber = _phoneController.text;
+              onPressed: active
+                  ? () {
+                      if (_signupUserInfoKey.currentState!.validate()) {
+                        User.Phonenumber = _phoneController.text;
 
-                  User.Gender = _genderController.text;
-                  User.dob = _dobController.text;
+                        User.Gender = _genderController.text;
+                        User.dob = _dobController.text;
 
-                  Navigator.pushNamed(context, 'signUpUserInfoPage2Screen');
-                }
-              } ,
+                        Navigator.pushNamed(
+                            context, 'signUpUserInfoPage2Screen');
+                      }
+                    }
+                  : null,
               buttonText: 'Next',
             ),
           ],

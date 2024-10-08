@@ -54,8 +54,9 @@ class _InputSelectState extends State<InputSelect> {
       setState(() {
         // Filter the list based on search input
         filteredItems = widget.listitems
-            .where((item) =>
-            item.countryName.toLowerCase().contains(searchController.text.toLowerCase()))
+            .where((item) => item.countryName
+                .toLowerCase()
+                .contains(searchController.text.toLowerCase()))
             .toList();
       });
     });
@@ -91,6 +92,7 @@ class _InputSelectState extends State<InputSelect> {
           focusNode: myFocusNode,
           readOnly: true,
           onTap: () {
+            filteredItems = widget.listitems;
             showModalBottomSheet(
               context: context,
               isDismissible: true,
@@ -139,14 +141,24 @@ class _InputSelectState extends State<InputSelect> {
                           // Search bar
                           TextField(
                             controller: searchController,
+                            onChanged: (value) {
+                              setState(() {
+                                filteredItems = widget.listitems
+                                    .where((item) => item.countryName
+                                        .toLowerCase()
+                                        .contains(value.toLowerCase()))
+                                    .toList();
+                              });
+                            },
                             decoration: InputDecoration(
                               hintText: "Search Country",
                               hintStyle: CustomStyle.loginInputTextHintStyle,
                               filled: true,
-                              fillColor:CustomColor.primaryInputHintColor,
+                              fillColor: CustomColor.primaryInputHintColor,
                               enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                    color: CustomColor.primaryInputHintBorderColor,
+                                    color:
+                                        CustomColor.primaryInputHintBorderColor,
                                     width: 1,
                                   ),
                                   borderRadius: BorderRadius.circular(12)),
@@ -164,19 +176,22 @@ class _InputSelectState extends State<InputSelect> {
                                   borderRadius: BorderRadius.circular(12)),
                               focusedBorder: OutlineInputBorder(
                                   borderSide: const BorderSide(
-                                    color: CustomColor.primaryInputHintBorderColor,
+                                    color:
+                                        CustomColor.primaryInputHintBorderColor,
                                     width: 1,
                                   ),
                                   borderRadius: BorderRadius.circular(12)),
                               border: OutlineInputBorder(
                                   borderSide: const BorderSide(
-                                    color: CustomColor.primaryInputHintBorderColor,
+                                    color:
+                                        CustomColor.primaryInputHintBorderColor,
                                     width: 1,
                                   ),
                                   borderRadius: BorderRadius.circular(12)),
                               disabledBorder: OutlineInputBorder(
                                   borderSide: const BorderSide(
-                                    color: CustomColor.primaryInputHintBorderColor,
+                                    color:
+                                        CustomColor.primaryInputHintBorderColor,
                                     width: 1,
                                   ),
                                   borderRadius: BorderRadius.circular(12)),
@@ -201,33 +216,49 @@ class _InputSelectState extends State<InputSelect> {
                                     widget.controller.text =
                                         filteredItems[index].countryName;
                                     widget.nationality == true
-                                        ? User.Nationality = filteredItems[index].countryId
-                                        : User.Country = filteredItems[index].countryId;
-                                    User.Reciving_country = filteredItems[index].countryId;
+                                        ? User.Nationality =
+                                            filteredItems[index].countryId
+                                        : User.Country =
+                                            filteredItems[index].countryId;
+                                    User.Reciving_country =
+                                        filteredItems[index].countryId;
                                     setState(() {
                                       bordershoww = true;
                                     });
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
-                                      horizontal: 20,
+                                      horizontal: 16,
                                       vertical: 20,
                                     ),
                                     decoration: const BoxDecoration(
                                       border: Border(
                                         bottom: BorderSide(
-                                          color: CustomColor.primaryInputHintBorderColor,
+                                          color: CustomColor
+                                              .primaryInputHintBorderColor,
                                           width: 1,
                                         ),
                                       ),
                                     ),
-                                    child: Text(
-                                      filteredItems[index].countryName,
-                                      style: GoogleFonts.inter(
-                                        color: CustomColor.black,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(right: 8),
+                                          child: Image.network(
+                                            filteredItems[index].image,
+                                            height: 24,
+                                            width: 36,
+                                          ),
+                                        ),
+                                        Text(
+                                          filteredItems[index].countryName,
+                                          style: GoogleFonts.inter(
+                                            color: CustomColor.black,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 );
@@ -329,4 +360,3 @@ class _InputSelectState extends State<InputSelect> {
     );
   }
 }
-

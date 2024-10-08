@@ -1,11 +1,9 @@
 import 'dart:io';
 
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:codegopay/Screens/Sign_up_screens/bloc/signup_bloc.dart';
 import 'package:codegopay/Screens/Sign_up_screens/signup_section/signup_verify_email.dart';
 import 'package:codegopay/constant_string/User.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
-import 'package:codegopay/cutom_weidget/input_textform.dart';
 import 'package:codegopay/utils/input_fields/custom_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,10 +12,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:seon_sdk_flutter_plugin/seon_sdk_flutter_plugin.dart';
 
 import '../../../utils/custom_style.dart';
-import '../../../utils/input_fields/password_input_Field_widget.dart';
 import '../../../utils/strings.dart';
 import '../../../utils/user_data_manager.dart';
-import '../../../widgets/buttons/custom_icon_button_widget.dart';
 import '../../../widgets/buttons/default_back_button_widget.dart';
 import '../../../widgets/buttons/primary_button_widget.dart';
 import '../../../widgets/input_fields/defult_input_field_with_title_widget.dart';
@@ -221,6 +217,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               onPressed: _isButtonEnabled
                                   ? () {
                                       if (_formKey.currentState!.validate()) {
+                                        _isButtonEnabled = false;
                                         User.email = _emailController.text;
                                         User.password =
                                             _passwordController.text;

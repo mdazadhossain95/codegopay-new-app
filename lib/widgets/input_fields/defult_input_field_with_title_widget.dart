@@ -146,9 +146,7 @@ class _DefaultInputFieldWithTitleWidgetState extends State<DefaultInputFieldWith
                 : CustomColor.primaryInputHintColor,
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: bordershoww
-                    ? CustomColor.primaryColor
-                    : CustomColor.primaryInputHintBorderColor,
+                color:  CustomColor.primaryColor,
                 width: 1,
               ),
               borderRadius: widget.borderRadius,

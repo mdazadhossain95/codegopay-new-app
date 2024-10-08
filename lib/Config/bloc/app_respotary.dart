@@ -78,7 +78,7 @@ class AppRespo {
           body: bodyData,
           urlEndPoint: AppConfig.endPointCountriesApi);
 
-      debugPrint("response : $response");
+      debugPrint("BaseModel response : $response");
       Map<String, dynamic> jsonResponse = jsonDecode(response!.data);
       return BaseModel.fromJson(jsonResponse);
     } on ApiException catch (e) {

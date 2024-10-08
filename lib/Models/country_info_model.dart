@@ -1,5 +1,5 @@
 class CountryInfoModel {
-  String ? countryId, phoneNameCode, countryName, countryCode, status, isIban;
+  String ? countryId, phoneNameCode, countryName, countryCode, status, isIban, image;
 
   CountryInfoModel({
     this.countryId,
@@ -8,14 +8,16 @@ class CountryInfoModel {
     this.countryCode,
     this.status,
     this.isIban,
+    this.image,
   });
 
   factory CountryInfoModel.fromJson(Map<String, dynamic> json) {
     return CountryInfoModel(
       countryId: json['id'] ?? '',
       phoneNameCode: json['country_code'] ?? '',
+      image: json['flag'] ?? '',
       countryName: json['country_name'] ?? '',
-      countryCode: json['phonecode'] == null ? '' : '+' + json['phonecode'],
+      countryCode: json['phonecode'] ?? '',
       status: json['status'] ?? '',
       isIban: json['is_iban'] ?? '',
     );
