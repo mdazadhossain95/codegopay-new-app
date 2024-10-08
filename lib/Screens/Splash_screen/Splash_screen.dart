@@ -39,10 +39,15 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     appRespo.getUserStatus();
-    _appBloc.add(UserstatusEvent());
+    // _appBloc.add(UserstatusEvent());
 
     User.Screen = 'Splash';
     firebaseCloudMessaging_Listeners(context);
+
+    Future.delayed(Duration(seconds: 3), () {
+      // Check the user status or navigate to the next screen based on your logic
+      _appBloc.add(UserstatusEvent());
+    });
   }
 
   @override
