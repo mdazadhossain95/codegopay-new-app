@@ -5,12 +5,10 @@ import 'package:codegopay/Screens/crypto_screen/bloc/crypto_bloc.dart';
 import 'package:codegopay/Screens/crypto_screen/new_stake_scrreen.dart';
 import 'package:codegopay/Screens/crypto_screen/profit_log_screen.dart';
 import 'package:codegopay/Screens/crypto_screen/stake_screen.dart';
-import 'package:codegopay/cutom_weidget/custom_navigationBar.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
 import 'package:codegopay/utils/assets.dart';
 import 'package:codegopay/widgets/custom_image_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
@@ -18,6 +16,7 @@ import 'package:page_transition/page_transition.dart';
 import '../../utils/input_fields/custom_color.dart';
 import '../../widgets/buttons/default_back_button_widget.dart';
 import '../../widgets/buttons/primary_button_widget.dart';
+import '../../widgets/toast/toast_util.dart';
 
 class StakingOverviewScreen extends StatefulWidget {
   final String symbol;
@@ -61,59 +60,15 @@ class _StakingOverviewScreenState extends State<StakingOverviewScreen> {
           bloc: _cryptoBloc,
           listener: (context, CryptoState state) async {
             if (state.statusModel != null && state.statusModel?.status == 0) {
-              AwesomeDialog(
-                context: context,
-                dialogType: DialogType.error,
-                animType: AnimType.rightSlide,
-                desc: state.statusModel?.message,
-                btnCancelText: 'OK',
-                buttonsTextStyle: const TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'pop',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
-                btnCancelOnPress: () {},
-              ).show();
+              CustomToast.showError(
+                  context, "Sorry!", state.statusModel!.message!);
             }
 
             if (state.stakeStopModel != null &&
                 state.stakeStopModel!.status == 1) {
-              AwesomeDialog(
-                context: context,
-                dialogType: DialogType.success,
-                animType: AnimType.rightSlide,
-                title: state.stakeStopModel!.message!,
-                btnCancelText: 'Okay',
-                btnCancelColor: Colors.green,
-                buttonsTextStyle: const TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'pop',
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
-                btnCancelOnPress: () {},
-              ).show();
+              CustomToast.showSuccess(
+                  context, "Hey!!", state.statusModel!.message!);
             }
-
-            // if (state.newStakeRequestModel!.status == 1) {
-            //   AwesomeDialog(
-            //     context: context,
-            //     dialogType: DialogType.success,
-            //     animType: AnimType.rightSlide,
-            //     desc: state.newStakeRequestModel?.message,
-            //     btnCancelText: 'OK',
-            //     btnCancelColor: Colors.green,
-            //     buttonsTextStyle: const TextStyle(
-            //         fontSize: 14,
-            //         fontFamily: 'pop',
-            //         fontWeight: FontWeight.w600,
-            //         color: Colors.white),
-            //     btnCancelOnPress: () {
-            //       _cryptoBloc.add(StakeOverviewEvent(symbol: widget.symbol));
-            //     },
-            //   ).show();
-            //
-            // }
           },
           child: BlocBuilder(
               bloc: _cryptoBloc,
@@ -149,10 +104,11 @@ class _StakingOverviewScreenState extends State<StakingOverviewScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     DefaultBackButtonWidget(onTap: () {
-                                      Navigator.pop(context);
+                                      Navigator.pushNamedAndRemoveUntil(context,
+                                          'investmentScreen', (route) => false);
                                     }),
                                     Text(
-                                      "${state.stakeOverviewModel!.overview!.symbol!} Staking Overivew",
+                                      "${state.stakeOverviewModel!.overview!.symbol!} Staking Overview",
                                       style: GoogleFonts.inter(
                                           color: CustomColor.black,
                                           fontSize: 18,
@@ -545,289 +501,303 @@ class _StakingOverviewScreenState extends State<StakingOverviewScreen> {
                                     fontWeight: FontWeight.w500),
                               ),
                               Expanded(
-                                  child: state.stakeOverviewModel!.logs!.isNotEmpty
-                                      ? ListView.builder(
-                                          itemCount: state
-                                              .stakeOverviewModel!.logs!.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            final log = state
-                                                .stakeOverviewModel!
-                                                .logs![index];
+                                  child:
+                                      state.stakeOverviewModel!.logs!.isNotEmpty
+                                          ? ListView.builder(
+                                              itemCount: state
+                                                  .stakeOverviewModel!
+                                                  .logs!
+                                                  .length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                final log = state
+                                                    .stakeOverviewModel!
+                                                    .logs![index];
 
-                                            return InkWell(
-                                              onTap: () {},
-                                              child: Container(
-                                                margin:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 6),
-                                                padding:
-                                                    const EdgeInsets.symmetric(
+                                                return InkWell(
+                                                  onTap: () {},
+                                                  child: Container(
+                                                    margin: const EdgeInsets
+                                                        .symmetric(vertical: 6),
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
                                                         horizontal: 12,
                                                         vertical: 8),
-                                                decoration: BoxDecoration(
-                                                    color: CustomColor
-                                                        .cryptoListContainerColor,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            16)),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Expanded(
-                                                        child: Row(
-                                                      children: [
-                                                        Expanded(
-                                                          child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                "Invest: ${log.amount}  ${log.coin}",
-                                                                style: GoogleFonts.inter(
-                                                                    color: CustomColor
-                                                                        .black,
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              ),
-                                                              Text(
-                                                                "Profit:  ${log.totalProfit}  ${log.coin}",
-                                                                style: GoogleFonts.inter(
-                                                                    color: CustomColor
-                                                                        .black,
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              ),
-                                                              Text(
-                                                                "Period: ${log.period}",
-                                                                style: GoogleFonts.inter(
-                                                                    color: CustomColor
-                                                                        .primaryTextHintColor,
-                                                                    fontSize:
-                                                                        11,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500),
-                                                              ),
-                                                              Text(
-                                                                "Status: ${log.status}",
-                                                                style: GoogleFonts.inter(
-                                                                    color: CustomColor
-                                                                        .primaryTextHintColor,
-                                                                    fontSize:
-                                                                    11,
-                                                                    fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        )
-                                                      ],
-                                                    )),
-                                                    Column(
+                                                    decoration: BoxDecoration(
+                                                        color: CustomColor
+                                                            .cryptoListContainerColor,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(16)),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
-                                                              .end,
+                                                              .center,
                                                       children: [
-                                                        log.status == "Active"
-                                                            ? InkWell(
-                                                                onTap: () {
-                                                                  AwesomeDialog(
-                                                                    context:
-                                                                        context,
-                                                                    dialogType:
-                                                                        DialogType
-                                                                            .warning,
-                                                                    animType:
-                                                                        AnimType
-                                                                            .rightSlide,
-                                                                    title:
-                                                                        "Do you want to stop?",
-                                                                    desc:
-                                                                        "You will lose profit.",
-                                                                    btnCancelText:
-                                                                        'cancel',
-                                                                    btnOkText:
-                                                                        "Confirm",
-                                                                    buttonsTextStyle: GoogleFonts.inter(
+                                                        Expanded(
+                                                            child: Row(
+                                                          children: [
+                                                            Expanded(
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    "Invest: ${log.amount}  ${log.coin}",
+                                                                    style: GoogleFonts.inter(
+                                                                        color: CustomColor
+                                                                            .black,
                                                                         fontSize:
-                                                                            13,
-
+                                                                            14,
                                                                         fontWeight:
-                                                                            FontWeight
-                                                                                .w500,
-                                                                        color: CustomColor.whiteColor),
-                                                                    btnCancelOnPress:
-                                                                        () {},
-                                                                    btnOkOnPress:
-                                                                        () {
-                                                                      _cryptoBloc.add(StakeStopEvent(
-                                                                          orderId:
-                                                                              log.orderId! ?? ""));
+                                                                            FontWeight.w500),
+                                                                  ),
+                                                                  Text(
+                                                                    "Profit:  ${log.totalProfit}  ${log.coin}",
+                                                                    style: GoogleFonts.inter(
+                                                                        color: CustomColor
+                                                                            .black,
+                                                                        fontSize:
+                                                                            14,
+                                                                        fontWeight:
+                                                                            FontWeight.w500),
+                                                                  ),
+                                                                  Text(
+                                                                    "Period: ${log.period}",
+                                                                    style: GoogleFonts.inter(
+                                                                        color: CustomColor
+                                                                            .primaryTextHintColor,
+                                                                        fontSize:
+                                                                            11,
+                                                                        fontWeight:
+                                                                            FontWeight.w500),
+                                                                  ),
+                                                                  Text(
+                                                                    "Status: ${log.status}",
+                                                                    style: GoogleFonts.inter(
+                                                                        color: CustomColor
+                                                                            .primaryTextHintColor,
+                                                                        fontSize:
+                                                                            11,
+                                                                        fontWeight:
+                                                                            FontWeight.w500),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            )
+                                                          ],
+                                                        )),
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            log.status ==
+                                                                    "Active"
+                                                                ? InkWell(
+                                                                    onTap: () {
+                                                                      AwesomeDialog(
+                                                                        context:
+                                                                            context,
+                                                                        dialogType:
+                                                                            DialogType.noHeader,
+                                                                        animType:
+                                                                            AnimType.bottomSlide,
+                                                                        title:
+                                                                            "Do you want to stop?",
+                                                                        desc:
+                                                                            "You will lose profit.",
+                                                                        titleTextStyle: GoogleFonts.inter(
+                                                                            fontSize:
+                                                                                20,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                            color: CustomColor.black),
+                                                                        descTextStyle: GoogleFonts.inter(
+                                                                            fontSize:
+                                                                                14,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                            color: CustomColor.black.withOpacity(0.7)),
+                                                                        btnCancelText:
+                                                                            'cancel',
+                                                                        btnOkText:
+                                                                            "Confirm",
+                                                                        btnOkColor:
+                                                                            CustomColor.primaryColor,
+                                                                        btnCancelColor:
+                                                                            CustomColor.errorColor,
+                                                                        buttonsTextStyle: GoogleFonts.inter(
+                                                                            fontSize:
+                                                                                13,
+                                                                            fontWeight:
+                                                                                FontWeight.w500,
+                                                                            color: CustomColor.whiteColor),
+                                                                        btnCancelOnPress:
+                                                                            () {},
+                                                                        btnOkOnPress:
+                                                                            () {
+                                                                          _cryptoBloc
+                                                                              .add(StakeStopEvent(orderId: log.orderId! ?? ""));
+                                                                        },
+                                                                      ).show();
                                                                     },
-                                                                  ).show();
-                                                                },
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            40),
-                                                                splashColor: Colors
-                                                                    .grey
-                                                                    .withOpacity(
-                                                                        0.2),
-                                                                child:
-                                                                    Container(
-                                                                  width: 110,
-                                                                  margin:
-                                                                      const EdgeInsets
-                                                                          .all(
-                                                                          5),
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .all(
-                                                                          10),
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    color: CustomColor.whiteColor,
                                                                     borderRadius:
                                                                         BorderRadius.circular(
                                                                             40),
-                                                                  ),
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .center,
-                                                                  child:
-                                                                       Text(
-                                                                    'Stop',
-                                                                    style:
-                                                                        GoogleFonts.inter(
-                                                                      color: Color(
-                                                                          0xff26273C),
-                                                                      fontSize:
-                                                                          11,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
+                                                                    splashColor: Colors
+                                                                        .grey
+                                                                        .withOpacity(
+                                                                            0.2),
+                                                                    child:
+                                                                        Container(
+                                                                      width:
+                                                                          110,
+                                                                      margin: const EdgeInsets
+                                                                          .all(
+                                                                          5),
+                                                                      padding: const EdgeInsets
+                                                                          .all(
+                                                                          10),
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: CustomColor
+                                                                            .whiteColor,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(40),
+                                                                      ),
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .center,
+                                                                      child:
+                                                                          Text(
+                                                                        'Stop',
+                                                                        style: GoogleFonts
+                                                                            .inter(
+                                                                          color:
+                                                                              Color(0xff26273C),
+                                                                          fontSize:
+                                                                              11,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                        ),
+                                                                      ),
                                                                     ),
-                                                                  ),
-                                                                ),
-                                                              )
-                                                            : Container(),
-                                                        InkWell(
-                                                          onTap: () {
-                                                            Navigator.push(
-                                                              context,
-                                                              PageTransition(
-                                                                type:
-                                                                    PageTransitionType
+                                                                  )
+                                                                : Container(),
+                                                            InkWell(
+                                                              onTap: () {
+                                                                Navigator.push(
+                                                                  context,
+                                                                  PageTransition(
+                                                                    type: PageTransitionType
                                                                         .scale,
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                isIos: true,
-                                                                duration:
-                                                                    const Duration(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    isIos: true,
+                                                                    duration: const Duration(
                                                                         microseconds:
                                                                             500),
-                                                                child: ProfitLogScreen(
-                                                                    orderId:
-                                                                        log.orderId! ??
-                                                                            ""),
-                                                              ),
-                                                            ).then((value) {
-                                                              _cryptoBloc.add(
-                                                                  StakeProfitLogEvent(
-                                                                      orderId:
-                                                                          log.orderId! ??
-                                                                              ""));
-                                                            });
-                                                          },
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(40),
-                                                          splashColor: Colors
-                                                              .grey
-                                                              .withOpacity(0.2),
-                                                          // Optional: Customize splash color
-                                                          child: Container(
-                                                            width: 110,
-                                                            margin:
-                                                                const EdgeInsets
-                                                                    .all(5),
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(10),
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color:
-                                                                  Colors.white,
+                                                                    child: ProfitLogScreen(
+                                                                        orderId:
+                                                                            log.orderId! ??
+                                                                                ""),
+                                                                  ),
+                                                                ).then((value) {
+                                                                  _cryptoBloc.add(
+                                                                      StakeProfitLogEvent(
+                                                                          orderId:
+                                                                              log.orderId! ?? ""));
+                                                                });
+                                                              },
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
                                                                           40),
-                                                            ),
-                                                            alignment: Alignment
-                                                                .center,
-                                                            child:  Text(
-                                                              'Profit Log',
-                                                              style: GoogleFonts.inter(
-                                                                color: Color(
-                                                                    0xff26273C),
-                                                                fontSize: 11,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
+                                                              splashColor: Colors
+                                                                  .grey
+                                                                  .withOpacity(
+                                                                      0.2),
+                                                              // Optional: Customize splash color
+                                                              child: Container(
+                                                                width: 110,
+                                                                margin:
+                                                                    const EdgeInsets
+                                                                        .all(5),
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        10),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              40),
+                                                                ),
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                child: Text(
+                                                                  'Profit Log',
+                                                                  style:
+                                                                      GoogleFonts
+                                                                          .inter(
+                                                                    color: Color(
+                                                                        0xff26273C),
+                                                                    fontSize:
+                                                                        11,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                  ),
+                                                                ),
                                                               ),
                                                             ),
-                                                          ),
-                                                        ),
+                                                          ],
+                                                        )
                                                       ],
-                                                    )
-                                                  ],
-                                                ),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            )
+                                          : Container(
+                                              alignment: Alignment.center,
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 20),
+                                              child: Column(
+                                                children: [
+                                                  CustomImageWidget(
+                                                    imagePath: StaticAssets
+                                                        .noTransaction,
+                                                    imageType: 'svg',
+                                                    height: 130,
+                                                  ),
+                                                  Text(
+                                                    "No Transaction",
+                                                    style: GoogleFonts.inter(
+                                                      color: CustomColor.black
+                                                          .withOpacity(0.6),
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            );
-                                          },
-                                        )
-                                      : Container(
-                                          alignment: Alignment.center,
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 20),
-                                          child: Column(
-                                            children: [
-                                              CustomImageWidget(
-                                                imagePath:
-                                                    StaticAssets.noTransaction,
-                                                imageType: 'svg',
-                                                height: 130,
-                                              ),
-                                              Text(
-                                                "No Transaction",
-                                                style: GoogleFonts.inter(
-                                                  color: CustomColor.black
-                                                      .withOpacity(0.6),
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )),
+                                            )),
                             ],
                           ),
                         );

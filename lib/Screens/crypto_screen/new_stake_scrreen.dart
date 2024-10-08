@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:codegopay/Models/crypto/stake_custom_period_model.dart';
 import 'package:codegopay/Screens/crypto_screen/bloc/crypto_bloc.dart';
+import 'package:codegopay/Screens/crypto_screen/staking_overivew.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
 import 'package:codegopay/utils/assets.dart';
 import 'package:codegopay/utils/input_fields/custom_color.dart';
@@ -36,6 +37,9 @@ class _NewStakingScreenState extends State<NewStakingScreen> {
   SingleValueDropDownController _dropDownController =
       SingleValueDropDownController();
 
+  final _formKey = GlobalKey<FormState>();
+  bool active = false;
+
   bool bordershoww = false;
   String selectedPeriod = '';
   double userProfit = 0.00;
@@ -52,13 +56,24 @@ class _NewStakingScreenState extends State<NewStakingScreen> {
 
     _cryptoBloc.add(StakeFeeEvent(symbol: widget.symbol));
     _cryptoBloc.add(StakePeriodEvent());
+    _amountController.addListener(_updateButtonState);
   }
 
   @override
   void dispose() {
     _cryptoBloc.close(); // Close the bloc
     streamController.close();
+    _amountController.removeListener(_updateButtonState);
+    _amountController.dispose();
     super.dispose();
+  }
+
+  void _updateButtonState() {
+    if (_formKey.currentState?.validate() ?? false) {
+      setState(() {
+        active = _formKey.currentState!.validate();
+      });
+    }
   }
 
   @override
@@ -69,57 +84,24 @@ class _NewStakingScreenState extends State<NewStakingScreen> {
           bloc: _cryptoBloc,
           listener: (context, CryptoState state) async {
             if (state.statusModel != null && state.statusModel!.status == 0) {
-              return AwesomeDialog(
-                context: context,
-                dialogType: DialogType.warning,
-                animType: AnimType.rightSlide,
-                desc: state.statusModel!.message,
-                btnCancelText: 'Okay',
-                btnCancelColor: Colors.green,
-                buttonsTextStyle: const TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'pop',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
-                btnCancelOnPress: () {},
-              ).show();
+              CustomToast.showError(
+                  context, "Sorry!!", state.statusModel!.message!);
             }
 
             if (state.newStakeRequestModel != null &&
                 state.newStakeRequestModel!.status == 1) {
-
               CustomToast.showSuccess(
                   context, "Thank You!!", state.newStakeRequestModel!.message!);
 
-              Navigator.pushNamedAndRemoveUntil(context,
-                  'investmentScreen', (route) => false);
-
-
-              return AwesomeDialog(
-                context: context,
-                dialogType: DialogType.warning,
-                animType: AnimType.rightSlide,
-                desc: state.newStakeRequestModel!.message,
-                btnCancelText: 'Okay',
-                btnCancelColor: Colors.green,
-                buttonsTextStyle: const TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'pop',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
-                btnCancelOnPress: () {
-                  Navigator.push(
-                    context,
-                    PageTransition(
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  PageTransition(
                       type: PageTransitionType.scale,
                       alignment: Alignment.center,
                       isIos: true,
                       duration: const Duration(microseconds: 500),
-                      child: const CryptoScreen(),
-                    ),
-                  );
-                },
-              ).show();
+                      child: StakingOverviewScreen(symbol: widget.symbol)),
+                  (route) => false);
             }
           },
           child: BlocBuilder(
@@ -158,193 +140,84 @@ class _NewStakingScreenState extends State<NewStakingScreen> {
                                 ],
                               ),
                             ),
-                            AmountInputField(
-                              label: "Request Amount",
-                              controller: _amountController,
-                              currencySymbol: state.stakeFeeBalanceModel!.coin!
-                                  .toUpperCase(),
-                              minAmount: 0,
-                              onChanged: (value) {
-                                amount = double.parse(_amountController.text);
-                                profitPercentage ??= 0.00;
+                            Form(
+                              key: _formKey,
+                              child: AmountInputField(
+                                label: "Request Amount",
+                                controller: _amountController,
+                                currencySymbol: state
+                                    .stakeFeeBalanceModel!.coin!
+                                    .toUpperCase(),
+                                minAmount: 0,
+                                onChanged: (value) {
+                                  amount = double.parse(_amountController.text);
+                                  profitPercentage ??= 0.00;
 
-                                if (amount > 0 && profitPercentage! > 0) {
-                                  setState(() {
-                                    userProfit =
-                                        amount * (profitPercentage! / 100);
-                                  });
-                                } else {
-                                  setState(() {
-                                    userProfit = 0.0;
-                                  });
-                                }
-                              },
+                                  if (amount > 0 && profitPercentage! > 0) {
+                                    setState(() {
+                                      userProfit =
+                                          amount * (profitPercentage! / 100);
+                                    });
+                                  } else {
+                                    setState(() {
+                                      userProfit = 0.0;
+                                    });
+                                  }
+                                  _updateButtonState();
+                                },
+                              ),
                             ),
-                            // Container(
-                            //   height: 140,
-                            //   margin: const EdgeInsets.symmetric(horizontal: 5),
-                            //   decoration: BoxDecoration(
-                            //     borderRadius: const BorderRadius.all(
-                            //       Radius.circular(10),
-                            //     ),
-                            //     color:
-                            //         const Color(0xFF263159).withOpacity(0.05),
-                            //   ),
-                            //   child: Column(
-                            //     // mainAxisAlignment:
-                            //     // MainAxisAlignment.center,
-                            //     children: [
-                            //       const Padding(
-                            //         padding: EdgeInsets.all(10.0),
-                            //         child: Row(
-                            //           mainAxisAlignment:
-                            //               MainAxisAlignment.spaceBetween,
-                            //           children: [
-                            //             Text(
-                            //               "Amount",
-                            //               style: TextStyle(
-                            //                   color: Colors.black,
-                            //                   fontSize: 14,
-                            //                   fontFamily: 'pop',
-                            //                   fontWeight: FontWeight.bold),
-                            //             ),
-                            //             Text(
-                            //               " ",
-                            //               style: TextStyle(
-                            //                   color: Colors.black,
-                            //                   fontSize: 14,
-                            //                   fontFamily: 'pop',
-                            //                   fontWeight: FontWeight.bold),
-                            //             ),
-                            //           ],
-                            //         ),
-                            //       ),
-                            //       Padding(
-                            //         padding: const EdgeInsets.all(10.0),
-                            //         child: TextFormField(
-                            //           autofocus: true,
-                            //           controller: _amountController,
-                            //           keyboardType: TextInputType.number,
-                            //           onChanged: (value) {
-                            //             amount = double.parse(
-                            //                 _amountController.text);
-                            //             profitPercentage ??= 0.00;
-                            //
-                            //             if (amount > 0 &&
-                            //                 profitPercentage! > 0) {
-                            //               setState(() {
-                            //                 userProfit = amount *
-                            //                     (profitPercentage! / 100);
-                            //               });
-                            //             } else {
-                            //               setState(() {
-                            //                 userProfit = 0.0;
-                            //               });
-                            //             }
-                            //           },
-                            //           style: const TextStyle(
-                            //               fontSize: 30,
-                            //               fontWeight: FontWeight.bold),
-                            //           decoration: InputDecoration(
-                            //               contentPadding:
-                            //                   const EdgeInsets.all(0),
-                            //               hintText: '000.00',
-                            //               hintStyle: const TextStyle(
-                            //                   fontFamily: 'pop',
-                            //                   fontSize: 30,
-                            //                   height: 2,
-                            //                   fontWeight: FontWeight.w900,
-                            //                   color: Color(0xffC4C4C4)),
-                            //               enabledBorder:
-                            //                   const OutlineInputBorder(
-                            //                 borderSide: BorderSide(
-                            //                   color: Colors.transparent,
-                            //                   width: 0,
-                            //                 ),
-                            //               ),
-                            //               errorBorder: const OutlineInputBorder(
-                            //                 borderSide: BorderSide(
-                            //                   color: Colors.transparent,
-                            //                   width: 0,
-                            //                 ),
-                            //               ),
-                            //               errorMaxLines: 1,
-                            //               errorStyle: const TextStyle(
-                            //                 fontFamily: 'pop',
-                            //                 fontSize: 12,
-                            //                 color: Colors.transparent,
-                            //               ),
-                            //               focusedBorder:
-                            //                   const OutlineInputBorder(
-                            //                 borderSide: BorderSide(
-                            //                   color: Colors.transparent,
-                            //                   width: 0,
-                            //                 ),
-                            //               ),
-                            //               suffixText:
-                            //                   state.stakeFeeBalanceModel!.coin!,
-                            //               suffixStyle: const TextStyle(
-                            //                   color: Colors.black,
-                            //                   fontSize: 12,
-                            //                   fontWeight: FontWeight.bold)),
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
-                            state.stakeCustomPeriodModel!.period!.isNotEmpty
-                                ? Padding(
-                                    padding: const EdgeInsets.only(top: 20),
-                                    child: DefaultDropDownFieldWithTitleWidget(
-                                      controller: _dropDownController,
-                                      title: "Duration",
-                                      hint: "Select Period",
-                                      dropDownItemCount: state
-                                              .stakeCustomPeriodModel
-                                              ?.period
-                                              ?.length ??
-                                          0,
-                                      dropDownList: state
-                                              .stakeCustomPeriodModel?.period
-                                              ?.map<DropDownValueModel>(
-                                                  (Period period) {
-                                            return DropDownValueModel(
-                                              name:
-                                                  "${period.month} Month (Profit ${period.profit}% Per Month)",
-                                              value: period,
-                                            );
-                                          }).toList() ??
-                                          [],
-                                      onChanged: (val) {
-                                        setState(() {
-                                          selectedPeriod =
-                                              (val as DropDownValueModel)
-                                                  .value
-                                                  ?.month;
-                                          profitPercentage =
-                                              double.parse((val).value?.profit);
-                                          bordershoww = val != null;
-                                        });
+                            if (state
+                                .stakeCustomPeriodModel!.period!.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 20),
+                                child: DefaultDropDownFieldWithTitleWidget(
+                                  controller: _dropDownController,
+                                  title: "Duration",
+                                  hint: "Select Period",
+                                  dropDownItemCount: state
+                                          .stakeCustomPeriodModel
+                                          ?.period
+                                          ?.length ??
+                                      0,
+                                  dropDownList: state
+                                          .stakeCustomPeriodModel?.period
+                                          ?.map<DropDownValueModel>(
+                                              (Period period) {
+                                        return DropDownValueModel(
+                                          name:
+                                              "${period.month} Month (Profit ${period.profit}% Per Month)",
+                                          value: period,
+                                        );
+                                      }).toList() ??
+                                      [],
+                                  onChanged: (val) {
+                                    setState(() {
+                                      selectedPeriod =
+                                          (val as DropDownValueModel)
+                                              .value
+                                              ?.month;
+                                      profitPercentage =
+                                          double.parse((val).value?.profit);
+                                      bordershoww = val != null;
+                                    });
 
-                                        amount = double.parse(
-                                            _amountController.text);
+                                    amount =
+                                        double.parse(_amountController.text);
 
-                                        if (amount > 0 &&
-                                            profitPercentage! > 0) {
-                                          setState(() {
-                                            userProfit = amount *
-                                                (profitPercentage! / 100);
-                                          });
-                                        } else {
-                                          setState(() {
-                                            userProfit = 0.0;
-                                          });
-                                        }
-                                      },
-                                    ),
-                                  )
-                                : Container(),
-
+                                    if (amount > 0 && profitPercentage! > 0) {
+                                      setState(() {
+                                        userProfit =
+                                            amount * (profitPercentage! / 100);
+                                      });
+                                    } else {
+                                      setState(() {
+                                        userProfit = 0.0;
+                                      });
+                                    }
+                                  },
+                                ),
+                              ),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 5),
                               child: Text(
@@ -355,51 +228,52 @@ class _NewStakingScreenState extends State<NewStakingScreen> {
                                     color: CustomColor.black.withOpacity(0.4)),
                               ),
                             ),
-
                             const SizedBox(height: 10),
-                            state.stakeCustomPeriodModel!.period!.isNotEmpty
-                                ? Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16, vertical: 8),
-                                    decoration: BoxDecoration(
-                                        color: CustomColor.noteContainerColor,
-                                        borderRadius: BorderRadius.circular(8)),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 5, top: 3),
-                                          child: CustomImageWidget(
-                                            imagePath: StaticAssets.info,
-                                            imageType: 'svg',
-                                            height: 18,
-                                            width: 18,
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Text(
-                                            "Note: ${state.stakeCustomPeriodModel!.message!}",
-                                            textAlign: TextAlign.justify,
-                                            style: GoogleFonts.inter(
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.w500,
-                                              color: CustomColor.black
-                                                  .withOpacity(0.4),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                            if (state
+                                .stakeCustomPeriodModel!.period!.isNotEmpty)
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
+                                decoration: BoxDecoration(
+                                    color: CustomColor.noteContainerColor,
+                                    borderRadius: BorderRadius.circular(8)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.start,
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          right: 5, top: 3),
+                                      child: CustomImageWidget(
+                                        imagePath: StaticAssets.info,
+                                        imageType: 'svg',
+                                        height: 18,
+                                        width: 18,
+                                      ),
                                     ),
-                                  )
-                                : Container(),
+                                    Expanded(
+                                      child: Text(
+                                        "Note: ${state.stakeCustomPeriodModel!.message!}",
+                                        textAlign: TextAlign.justify,
+                                        style: GoogleFonts.inter(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w500,
+                                          color: CustomColor.black
+                                              .withOpacity(0.4),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            if (state
+                                .stakeCustomPeriodModel!.period!.isNotEmpty)
                             const SizedBox(height: 30),
-
                             PrimaryButtonWidget(
-                              onPressed: () {
+                              onPressed: active? () {
+                                active = false;
                                 if (_newStakingformKey.currentState!
                                     .validate()) {
                                   _cryptoBloc.add(StakeRequestEvent(
@@ -409,7 +283,7 @@ class _NewStakingScreenState extends State<NewStakingScreen> {
                                     isCustom: "1",
                                   ));
                                 }
-                              },
+                              } : null,
                               buttonText: 'Send Request',
                             ),
                           ],

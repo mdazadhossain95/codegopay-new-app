@@ -119,7 +119,7 @@ class _ProfitLogScreenState extends State<ProfitLogScreen> {
                                                       .cryptoListContainerColor,
                                                   borderRadius:
                                                   BorderRadius.circular(
-                                                      16)),
+                                                      12)),
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
@@ -165,7 +165,7 @@ class _ProfitLogScreenState extends State<ProfitLogScreen> {
                                                               style: GoogleFonts.inter(
                                                                   color: Color(
                                                                       0xff26273C),
-                                                                  fontSize: 18,
+                                                                  fontSize: 16,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w500),
@@ -173,9 +173,8 @@ class _ProfitLogScreenState extends State<ProfitLogScreen> {
                                                             Text(
                                                               "Period",
                                                               style: GoogleFonts.inter(
-                                                                  color: Color(
-                                                                      0xff9395A4),
-                                                                  fontSize: 14,
+                                                                  color: CustomColor.black.withOpacity(0.7),
+                                                                  fontSize: 12,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w500),
@@ -190,12 +189,12 @@ class _ProfitLogScreenState extends State<ProfitLogScreen> {
                                                         CrossAxisAlignment.end,
                                                     children: [
                                                       Text(
-                                                        "${state.stakeProfitLog!.logs![index].profit} ${state.stakeProfitLog!.logs![index].coin}",
+                                                        "${state.stakeProfitLog!.logs![index].profit} ${state.stakeProfitLog!.logs![index].coin}".toUpperCase(),
                                                         style:
                                                             GoogleFonts.inter(
                                                                 color: Color(
                                                                     0xff26273C),
-                                                                fontSize: 16,
+                                                                fontSize: 15,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w500),
@@ -204,9 +203,8 @@ class _ProfitLogScreenState extends State<ProfitLogScreen> {
                                                         "${state.stakeProfitLog!.logs![index].period}",
                                                         style:
                                                             GoogleFonts.inter(
-                                                                color: Color(
-                                                                    0xff26273C),
-                                                                fontSize: 12,
+                                                                color: CustomColor.black.withOpacity(0.7),
+                                                                fontSize: 11,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w500),
@@ -231,7 +229,7 @@ class _ProfitLogScreenState extends State<ProfitLogScreen> {
                                                 height: 130,
                                               ),
                                               Text(
-                                                "No Transaction",
+                                                "No Transactions",
                                                 style: GoogleFonts.inter(
                                                   color: CustomColor.black
                                                       .withOpacity(0.6),
@@ -250,7 +248,6 @@ class _ProfitLogScreenState extends State<ProfitLogScreen> {
                   ),
                 );
               })),
-      bottomNavigationBar: CustomBottomBar(index: 1),
     );
   }
 }

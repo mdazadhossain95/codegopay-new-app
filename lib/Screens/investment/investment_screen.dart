@@ -123,7 +123,7 @@ class _InvestmentScreenState extends State<InvestmentScreen> {
                                             children: [
                                               Padding(
                                                 padding: EdgeInsets.symmetric(
-                                                    horizontal: 3),
+                                                    horizontal: 3, vertical: 8),
                                                 child: Text("Staking",
                                                     style: GoogleFonts.inter(
                                                       color: CustomColor.black,
@@ -295,7 +295,7 @@ class _InvestmentScreenState extends State<InvestmentScreen> {
                                             children: [
                                               Padding(
                                                 padding: EdgeInsets.symmetric(
-                                                    horizontal: 3),
+                                                    horizontal: 3, vertical: 8),
                                                 child: Text(
                                                     "Buy Virtual\nMaster Node",
                                                     textAlign: TextAlign.center,

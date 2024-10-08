@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../utils/input_fields/custom_color.dart';
+import '../../widgets/toast/toast_util.dart';
 
 // ignore: must_be_immutable
 class StakingScreen extends StatefulWidget {
@@ -53,20 +54,8 @@ class _StakingScreenState extends State<StakingScreen> {
           listener: (context, CryptoState state) async {
             if (state.statusModel != null &&
                 state.statusModel!.status == 0) {
-              return AwesomeDialog(
-                context: context,
-                dialogType: DialogType.warning,
-                animType: AnimType.rightSlide,
-                desc: state.statusModel!.message,
-                btnCancelText: 'Okay',
-                btnCancelColor: Colors.green,
-                buttonsTextStyle: const TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'pop',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
-                btnCancelOnPress: () {},
-              ).show();
+              CustomToast.showError(
+                  context, "Sorry!", state.statusModel!.message!);
             }
 
             if (state.stakeOrderModel != null &&
