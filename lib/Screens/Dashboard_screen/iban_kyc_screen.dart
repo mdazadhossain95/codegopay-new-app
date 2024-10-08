@@ -2,15 +2,20 @@ import 'dart:async';
 
 import 'package:codegopay/Screens/Sign_up_screens/bloc/signup_bloc.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
+import 'package:codegopay/utils/assets.dart';
 import 'package:codegopay/utils/user_data_manager.dart';
+import 'package:codegopay/widgets/custom_image_widget.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_idensic_mobile_sdk_plugin/flutter_idensic_mobile_sdk_plugin.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../Models/dashboard/refresh_sumsub_token_model.dart';
+import '../../utils/input_fields/custom_color.dart';
+import '../../widgets/buttons/primary_button_widget.dart';
 import '../Sign_up_screens/bloc/Signup_respotary.dart';
 
 class IbanKycScreen extends StatefulWidget {
@@ -295,149 +300,109 @@ class _IbanKycScreenState extends State<IbanKycScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: const SystemUiOverlayStyle(
-            statusBarIconBrightness: Brightness.dark,
-            statusBarBrightness: Brightness.light,
-            statusBarColor: Colors.white,
-            systemNavigationBarIconBrightness: Brightness.dark,
-            systemNavigationBarColor: Colors.white),
-        child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            body: BlocListener(
+    return Scaffold(
+        backgroundColor: CustomColor.scaffoldBg,
+        resizeToAvoidBottomInset: false,
+        body: BlocListener(
+          bloc: _signupBloc,
+          listener: (context, SignupState state) async {},
+          child: BlocBuilder(
               bloc: _signupBloc,
-              listener: (context, SignupState state) async {},
-              child: BlocBuilder(
-                  bloc: _signupBloc,
-                  builder: (context, SignupState state) {
-                    return ProgressHUD(
-                      inAsyncCall: state.isloading,
-                      child: SafeArea(
-                        bottom: false,
-                        child: GestureDetector(
-                          onTap: () {
-                            FocusScope.of(context).requestFocus(FocusNode());
-                          },
-                          child: Container(
-                            width: double.maxFinite,
-                            height: double.maxFinite,
-                            padding: const EdgeInsets.only(
-                                left: 25, right: 25, top: 40),
-                            child: _isLoading
-                                ? const Center(
-                                    child: CircularProgressIndicator())
-                                : Column(
+              builder: (context, SignupState state) {
+                return ProgressHUD(
+                  inAsyncCall: state.isloading,
+                  child: SafeArea(
+                    bottom: false,
+                    child: Container(
+                      width: double.maxFinite,
+                      height: double.maxFinite,
+                      padding:
+                          const EdgeInsets.only(left: 16, right: 16, top: 30),
+                      child: _isLoading
+                          ? const Center(child: CircularProgressIndicator())
+                          : Column(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
-                                      Expanded(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              height: 34,
-                                              alignment: Alignment.center,
-                                              child: Image.asset(
-                                                'images/applogo.png',
-                                                height: 34,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 42,
-                                            ),
-                                            Container(
-                                                alignment: Alignment.center,
-                                                child: Image.asset(
-                                                    'images/kyc_welcome.png')),
-                                            const SizedBox(
-                                              height: 22,
-                                            ),
-                                            const Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  "Verify your",
-                                                  style: TextStyle(
-                                                      color: Color(0xff2C2C2C),
-                                                      fontFamily: 'pop',
-                                                      fontSize: 25,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                                Text(
-                                                  " identity",
-                                                  style: TextStyle(
-                                                      color: Color(0xff009456),
-                                                      fontFamily: 'pop',
-                                                      fontSize: 25,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(
-                                              height: 50,
-                                            ),
-                                            Text(
-                                              message,
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontFamily: 'pop',
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w500),
-                                            )
-                                          ],
-                                        ),
+                                      Container(
+                                          height: 34,
+                                          alignment: Alignment.center,
+                                          child: CustomImageWidget(
+                                            imagePath:
+                                                StaticAssets.arrowNarrowLeft,
+                                            imageType: 'svg',
+                                            height: 24,
+                                          )),
+                                      const SizedBox(
+                                        height: 42,
+                                      ),
+                                      Container(
+                                          alignment: Alignment.center,
+                                          child: CustomImageWidget(
+                                            imagePath: StaticAssets.kycWelcome,
+                                            imageType: 'svg',
+                                            height: 200,
+                                          )),
+                                      const SizedBox(
+                                        height: 22,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Verify your",
+                                            style: GoogleFonts.inter(
+                                                color: Color(0xff2C2C2C),
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          Text(
+                                            " identity",
+                                            style: GoogleFonts.inter(
+                                                color: CustomColor.green,
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ],
                                       ),
                                       const SizedBox(
                                         height: 10,
                                       ),
-                                      Container(
-                                        height: 60,
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(11)),
-                                        child: ElevatedButton(
-                                            onPressed: () => launchSDK(),
-                                            style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    const Color(0xff10245C),
-                                                elevation: 0,
-                                                shadowColor: Colors.transparent,
-                                                minimumSize:
-                                                    const Size.fromHeight(40),
-                                                disabledBackgroundColor:
-                                                    const Color(0xffC4C4C4),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            11))),
-                                            child: const Text(
-                                              'Continue',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 15,
-                                                  fontFamily: 'pop',
-                                                  fontWeight: FontWeight.w500),
-                                            )),
-                                      ),
-                                      const SizedBox(
-                                        height: 30,
+                                      Text(
+                                        message,
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.inter(
+                                            color: Colors.black,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500),
                                       )
                                     ],
                                   ),
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
-            )));
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                PrimaryButtonWidget(
+                                  onPressed: () => launchSDK(),
+                                  buttonText: 'Continue',
+                                ),
+                                const SizedBox(
+                                  height: 30,
+                                )
+                              ],
+                            ),
+                    ),
+                  ),
+                );
+              }),
+        ));
   }
 
   void iOS_Permission() async {

@@ -13,6 +13,7 @@ import 'package:intl/intl.dart';
 
 import '../../utils/custom_date_picker.dart';
 import '../../widgets/buttons/default_back_button_widget.dart';
+import '../../widgets/toast/toast_util.dart';
 
 class TransactionScreen extends StatefulWidget {
   const TransactionScreen({super.key});
@@ -94,41 +95,14 @@ class _TransactionScreenState extends State<TransactionScreen> {
           bloc: _dashboardBloc,
           listener: (context, DashboardState state) async {
             if (state.statusModel?.status == 0) {
-              AwesomeDialog(
-                context: context,
-                dialogType: DialogType.error,
-                animType: AnimType.rightSlide,
-                desc: state.statusModel?.message,
-                btnCancelText: 'OK',
-                buttonsTextStyle: const TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'pop',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
-                btnCancelOnPress: () {},
-              ).show();
+              CustomToast.showError(
+                  context, "Sorry!", state.statusModel!.message!);
             }
 
             if (state.statusModel?.status == 1) {
-              AwesomeDialog(
-                context: context,
-                dismissOnTouchOutside: false,
-                dialogType: DialogType.success,
-                animType: AnimType.rightSlide,
-                desc: state.statusModel?.message,
-                btnCancelText: 'OK',
-                btnCancelColor: Colors.green,
-                buttonsTextStyle: const TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'pop',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
-                btnCancelOnPress: () {
-                  // Navigator.pushNamedAndRemoveUntil(
-                  //     context, 'dashboard', (route) => false);
-                  Navigator.pop(context);
-                },
-              ).show();
+              CustomToast.showSuccess(
+                  context, "Thank You!", state.statusModel!.message!);
+              Navigator.pop(context);
             }
           },
           child: BlocBuilder(
@@ -144,8 +118,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                         appBarSection(context, state),
                         Container(
                           height: 150,
-                          margin:
-                              const EdgeInsets.symmetric(horizontal: 16),
+                          margin: const EdgeInsets.symmetric(horizontal: 16),
                           child: Form(
                             key: _formkey,
                             child: Column(
@@ -153,8 +126,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Expanded(
                                       child: CustomDatePicker(
@@ -197,8 +169,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                     Expanded(
                                       child: Container(
                                         height: 48,
-                                        margin:
-                                            const EdgeInsets.only(top: 20),
+                                        margin: const EdgeInsets.only(top: 20),
                                         child: ElevatedButton(
                                           onPressed: () {
                                             if (_formkey.currentState!
@@ -213,8 +184,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                         .format(_toDate!);
 
                                                 UserDataManager()
-                                                    .setFromDateSave(
-                                                        fromDate);
+                                                    .setFromDateSave(fromDate);
                                                 UserDataManager()
                                                     .setToDateSave(toDate);
 
@@ -226,8 +196,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                     'Searching from $fromDate to $toDate');
                                               } else {
                                                 // Handle empty fields
-                                                ScaffoldMessenger.of(
-                                                        context)
+                                                ScaffoldMessenger.of(context)
                                                     .showSnackBar(
                                                   const SnackBar(
                                                     content: Text(
@@ -238,15 +207,17 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                             }
                                           },
                                           style: ElevatedButton.styleFrom(
-                                            foregroundColor: CustomColor.primaryColor,
-                                            backgroundColor: CustomColor.primaryColor,
+                                            foregroundColor:
+                                                CustomColor.primaryColor,
+                                            backgroundColor:
+                                                CustomColor.primaryColor,
                                             elevation: 0,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(48),
                                             ),
                                           ),
-                                          child:  Text(
+                                          child: Text(
                                             'Send Statement To Email',
                                             style: GoogleFonts.inter(
                                               fontSize: 14,
@@ -259,8 +230,6 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                     ),
                                   ],
                                 ),
-
-
                               ],
                             ),
                           ),
@@ -281,10 +250,12 @@ class _TransactionScreenState extends State<TransactionScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          DefaultBackButtonWidget(onTap: () {
-            Navigator.pop(context);
-          },),
-           Text(
+          DefaultBackButtonWidget(
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+          Text(
             'Export PDF',
             style: GoogleFonts.inter(
                 color: CustomColor.black,

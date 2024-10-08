@@ -16,6 +16,7 @@ import '../../widgets/buttons/default_back_button_widget.dart';
 import '../../widgets/buttons/primary_button_widget.dart';
 import '../../widgets/main/currency_selector_widget.dart';
 import '../../widgets/main/iban_selector_widget.dart';
+import '../../widgets/toast/toast_util.dart';
 
 class CreateIbanScreen extends StatefulWidget {
   const CreateIbanScreen({super.key});
@@ -53,35 +54,13 @@ class _CreateIbanScreenState extends State<CreateIbanScreen> {
           bloc: _dashboardBloc,
           listener: (context, DashboardState state) async {
             if (state.ibanKycCheckModel?.status == 0) {
-              AwesomeDialog(
-                context: context,
-                dialogType: DialogType.error,
-                animType: AnimType.rightSlide,
-                desc: state.ibanKycCheckModel?.message,
-                btnCancelText: 'OK',
-                buttonsTextStyle: const TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'pop',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
-                btnCancelOnPress: () {},
-              ).show();
+              CustomToast.showError(
+                  context, "Sorry!", state.ibanKycCheckModel!.message!);
             }
 
             if (state.statusModel?.status == 0) {
-              AwesomeDialog(
-                context: context,
-                dialogType: DialogType.error,
-                animType: AnimType.rightSlide,
-                desc: state.statusModel?.message,
-                btnCancelText: 'OK',
-                buttonsTextStyle: const TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'pop',
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white),
-                btnCancelOnPress: () {},
-              ).show();
+              CustomToast.showError(
+                  context, "Sorry!", state.statusModel!.message!);
             }
 
             if (state.ibanKycCheckModel?.status == 1) {
@@ -110,7 +89,8 @@ class _CreateIbanScreenState extends State<CreateIbanScreen> {
                   child: ProgressHUD(
                     inAsyncCall: state.isloading,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 20),
                       child: Column(
                         children: [
                           appBarSection(context, state),
@@ -140,12 +120,12 @@ class _CreateIbanScreenState extends State<CreateIbanScreen> {
                                 ),
                                 allowIbanLabel
                                     ? InputTextCustom(
-                                  controller: _ibanLabel,
-                                  hint: 'write label',
-                                  label: 'Label',
-                                  isEmail: false,
-                                  isPassword: false,
-                                )
+                                        controller: _ibanLabel,
+                                        hint: 'write label',
+                                        label: 'Label',
+                                        isEmail: false,
+                                        isPassword: false,
+                                      )
                                     : Container(),
                               ],
                             ),
@@ -153,24 +133,24 @@ class _CreateIbanScreenState extends State<CreateIbanScreen> {
                           const SizedBox(height: 10), // Space before buttons
                           allowIbanLabel
                               ? PrimaryButtonWidget(
-                            onPressed: () {
-                              _dashboardBloc.add(CreateibanEvent(
-                                  Label: _ibanLabel.text,
-                                  currency: _currencyController.text,
-                                  iban: _ibanController.text));
-                              // _ibanLabel.text = '';
-                            },
-                            buttonText: 'Confirm',
-                          )
+                                  onPressed: () {
+                                    _dashboardBloc.add(CreateibanEvent(
+                                        Label: _ibanLabel.text,
+                                        currency: _currencyController.text,
+                                        iban: _ibanController.text));
+                                    // _ibanLabel.text = '';
+                                  },
+                                  buttonText: 'Confirm',
+                                )
                               : PrimaryButtonWidget(
-                            onPressed: () {
-                              _dashboardBloc.add(IbanSumSubVerified(
-                                currency: _currencyController.text,
-                                iban: _ibanController.text,
-                              ));
-                            },
-                            buttonText: 'Next',
-                          ),
+                                  onPressed: () {
+                                    _dashboardBloc.add(IbanSumSubVerified(
+                                      currency: _currencyController.text,
+                                      iban: _ibanController.text,
+                                    ));
+                                  },
+                                  buttonText: 'Next',
+                                ),
                         ],
                       ),
                     ),
