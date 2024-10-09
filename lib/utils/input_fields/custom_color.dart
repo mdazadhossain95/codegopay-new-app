@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 class CustomColor {
   static const Color primaryColor = Color(0xFF132559);
   static const Color secondaryColor = Color(0xFF555555);
+  static const Color dashboardSendContainerColor = Color(0xffB689FF);
+  static const Color disableColor = Color(0xFF8992AC);
+
 
   static const Color transparent = Colors.transparent;
 
@@ -34,7 +37,6 @@ class CustomColor {
   static const Color dashboardTopContainerColor = Color(0xffF6F9FC);
   static const Color dashboardTopContainerBorderColor = Color(0xff33A1DF);
   static const Color dashboardProfileBorderColor = Color(0xffE3E3E3);
-  static const Color dashboardSendContainerColor = Color(0xffB689FF);
   static const Color transactionDetailsTextColor = Color(0xff393939);
   static const Color transactionFromContainerColor = Color(0xFFF4F6F8);
   static const Color notificationBgColor = Color(0xFFF2F5F6);

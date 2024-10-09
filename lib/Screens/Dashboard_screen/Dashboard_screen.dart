@@ -167,6 +167,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                 listener: (context, DashboardState state) async {
                   if (state.dashboardModel?.status == 1) {
                     User.profileimage = state.dashboardModel!.profileimage!;
+                    // User.EuroBlamce = state.dashboardModel!.balance!;
+                    User.currency = state.dashboardModel!.currency!;
 
                     debugPrint(
                         "state.dashboardModel?.sof?.sourceOfWealth ${state.dashboardModel?.sof?.sourceOfWealth}");

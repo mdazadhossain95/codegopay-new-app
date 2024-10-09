@@ -27,7 +27,7 @@ class PrimaryButtonWidget extends StatelessWidget {
       this.apiBackgroundColor, // Accepts color from API
       this.defaultBackgroundColor =
           CustomColor.primaryButtonColor, // Default local color
-      this.disabledColor = const Color(0xFF8992AC),
+      this.disabledColor = CustomColor.disableColor,
       this.elevation = 0,
       this.borderRadius = const BorderRadius.all(Radius.circular(1000)),
       this.textStyle, // Optional text style parameter

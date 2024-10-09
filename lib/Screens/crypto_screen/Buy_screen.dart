@@ -125,7 +125,7 @@ class _BuyScreenState extends State<BuyScreen> {
                                 controller: _textEditingController,
                                 label:
                                     widget.isBuy ? 'Buy Amount' : 'Sell Amount',
-                                currencySymbol: widget.symbol.toUpperCase(),
+                                currencySymbol:  widget.isBuy ? User.currency! : widget.symbol.toUpperCase(),
                                 autofocus: false,
                                 readOnly: true,
                                 minAmount: 0,
@@ -141,6 +141,7 @@ class _BuyScreenState extends State<BuyScreen> {
                           margin: const EdgeInsets.symmetric(horizontal: 16),
                           child: Row(
                             children: [
+                              if(widget.isBuy)
                               Expanded(
                                   child: InkWell(
                                 onTap: () {
@@ -166,6 +167,7 @@ class _BuyScreenState extends State<BuyScreen> {
                                   ),
                                 ),
                               )),
+                              if(widget.isBuy)
                               Expanded(
                                   child: InkWell(
                                 onTap: () {
@@ -191,6 +193,7 @@ class _BuyScreenState extends State<BuyScreen> {
                                   ),
                                 ),
                               )),
+                              if(widget.isBuy)
                               Expanded(
                                   child: InkWell(
                                 onTap: () {
@@ -249,7 +252,7 @@ class _BuyScreenState extends State<BuyScreen> {
                                       onTap: () {
                                         setState(() {
                                           _textEditingController.text =
-                                              User.EuroBlamce;
+                                              User.cryptoBalance;
                                         });
                                       },
                                       child: Container(

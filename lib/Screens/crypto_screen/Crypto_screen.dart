@@ -10,7 +10,6 @@ import 'package:codegopay/utils/custom_scroll_behavior.dart';
 import 'package:codegopay/utils/input_fields/custom_color.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
@@ -79,6 +78,7 @@ class _CryptoScreenState extends State<CryptoScreen> {
             bloc: _cryptoBloc,
             listener: (context, CryptoState state) async {
               if (state.coins!.status == 1) {
+
                 Eurocoin = state.coins!.curruncylist!.where((element) {
                   final title = element.currencyName!.toLowerCase();
 
@@ -87,7 +87,7 @@ class _CryptoScreenState extends State<CryptoScreen> {
                   return title.contains(searc);
                 }).toList();
 
-                User.EuroBlamce = Eurocoin![0].fiatBalance!.replaceAll('€', '');
+
               }
 
               if (state.statusModel?.status == 0) {

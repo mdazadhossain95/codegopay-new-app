@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 
+import '../../constant_string/User.dart';
 import '../../utils/assets.dart';
 import '../../utils/input_fields/custom_color.dart';
 import '../../widgets/buttons/default_back_button_widget.dart';
@@ -84,6 +85,8 @@ class _CoinDetailsState extends State<CoinDetails> {
                             });
                           },
                         ), builder: (context, snapshot) {
+                          User.cryptoBalance =
+                              state.coindetailsModel!.coin!.cryptoBalance!;
                           return Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -645,9 +648,9 @@ class _CoinDetailsState extends State<CoinDetails> {
                                                                               .symmetric(
                                                                               vertical: 15),
                                                                           child:
-                                                                          Row(
+                                                                              Row(
                                                                             mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceBetween,
+                                                                                MainAxisAlignment.spaceBetween,
                                                                             children: [
                                                                               Column(
                                                                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -681,16 +684,16 @@ class _CoinDetailsState extends State<CoinDetails> {
                                                                         ),
                                                                         Container(
                                                                           padding:
-                                                                          EdgeInsets.all(16.0),
+                                                                              EdgeInsets.all(16.0),
                                                                           decoration:
-                                                                          BoxDecoration(
+                                                                              BoxDecoration(
                                                                             color:
-                                                                            CustomColor.hubContainerBgColor,
+                                                                                CustomColor.hubContainerBgColor,
                                                                             borderRadius:
-                                                                            BorderRadius.circular(12),
+                                                                                BorderRadius.circular(12),
                                                                           ),
                                                                           child:
-                                                                          Column(
+                                                                              Column(
                                                                             children: [
                                                                               Row(
                                                                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -712,7 +715,8 @@ class _CoinDetailsState extends State<CoinDetails> {
                                                                                       color: CustomColor.black.withOpacity(0.6),
                                                                                       fontWeight: FontWeight.w400,
                                                                                       fontSize: 14,
-                                                                                    ),                                                                                  ),
+                                                                                    ),
+                                                                                  ),
                                                                                 ],
                                                                               ),
                                                                               const SizedBox(height: 10),
@@ -727,7 +731,8 @@ class _CoinDetailsState extends State<CoinDetails> {
                                                                                       color: CustomColor.black,
                                                                                       fontWeight: FontWeight.w500,
                                                                                       fontSize: 14,
-                                                                                    ),                                                                                  ),
+                                                                                    ),
+                                                                                  ),
                                                                                   Text(
                                                                                     state.coindetailsModel!.trx![index].amount!,
                                                                                     textAlign: TextAlign.center,
@@ -735,7 +740,8 @@ class _CoinDetailsState extends State<CoinDetails> {
                                                                                       color: CustomColor.black.withOpacity(0.6),
                                                                                       fontWeight: FontWeight.w400,
                                                                                       fontSize: 14,
-                                                                                    ),                                                                                   ),
+                                                                                    ),
+                                                                                  ),
                                                                                 ],
                                                                               ),
                                                                             ],

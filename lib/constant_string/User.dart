@@ -26,6 +26,7 @@ class User {
       planlink,
       purpose,
       planuniquid,
+      currency,
       profileimage;
 
   static int planpage = 0;
@@ -33,6 +34,7 @@ class User {
   static int investmentHidepage = 0;
 
   static String EuroBlamce = '';
+  static String cryptoBalance = '';
   static String Screen = 'Main';
 
   static String Phonecode = '1';
