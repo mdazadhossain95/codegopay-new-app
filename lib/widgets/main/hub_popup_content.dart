@@ -164,7 +164,7 @@ class _HubPopupContentState extends State<HubPopupContent>
                             isHubContainerBorderColor: false,
                             onTap: () {
                               Navigator.pushNamedAndRemoveUntil(context,
-                                  'addBeneficiaryScreen', (route) => false);
+                                  'beneficiaryListScreen', (route) => false);
                             },
                           ),
 
