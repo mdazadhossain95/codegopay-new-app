@@ -5,10 +5,10 @@ import 'package:codegopay/utils/assets.dart';
 import 'package:codegopay/widgets/custom_image_widget.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:screenshot/screenshot.dart';
 
 import '../../../utils/input_fields/custom_color.dart';
 import '../../../utils/strings.dart';
@@ -172,27 +172,25 @@ class _KycStartScreenState extends State<KycStartScreen> {
                                 height: 20,
                               ),
                               Container(
-                                  alignment: Alignment.center,
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 5),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
-                                  decoration: BoxDecoration(
-                                      color: idProofIconColor,
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(
-                                        color: CustomColor
-                                            .primaryInputHintBorderColor,
-                                      )),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                alignment: Alignment.center,
+                                margin: const EdgeInsets.symmetric(vertical: 5),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                decoration: BoxDecoration(
+                                  color: idProofIconColor,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color:
+                                        CustomColor.primaryInputHintBorderColor,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
@@ -207,48 +205,52 @@ class _KycStartScreenState extends State<KycStartScreen> {
                                                 imageType: 'svg',
                                                 height: 25,
                                               ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(
-                                                Strings.identityDocuments,
-                                                style: GoogleFonts.inter(
-                                                    color: CustomColor.black,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              SizedBox(width: 35),
-                                              SizedBox(
-                                                width: 220,
-                                                child: Text(
-                                                  idProofMessage,
-                                                  maxLines: 2,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: GoogleFonts.inter(
-                                                      color: CustomColor
-                                                          .primaryInputHintBorderColor,
-                                                      fontSize: 13,
-                                                      fontWeight:
-                                                          FontWeight.w400),
+                                              const SizedBox(width: 5),
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      Strings.identityDocuments,
+                                                      style: GoogleFonts.inter(
+                                                        color:
+                                                            CustomColor.black,
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      idProofMessage,
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: GoogleFonts.inter(
+                                                        color: CustomColor
+                                                            .primaryInputHintBorderColor,
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             ],
-                                          )
+                                          ),
                                         ],
                                       ),
-                                      CustomImageWidget(
-                                        imagePath: idProofTick,
-                                        imageType: 'svg',
-                                        height: 20,
-                                      ),
-                                    ],
-                                  )),
+                                    ),
+                                    CustomImageWidget(
+                                      imagePath: idProofTick,
+                                      imageType: 'svg',
+                                      height: 20,
+                                    ),
+                                  ],
+                                ),
+                              ),
+
                               //address proof
                               Container(
                                   alignment: Alignment.center,
@@ -269,58 +271,61 @@ class _KycStartScreenState extends State<KycStartScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              CustomImageWidget(
-                                                imagePath:
-                                                    StaticAssets.addressProof,
-                                                imageType: 'svg',
-                                                height: 25,
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(
-                                                Strings.addressProof,
-                                                style: GoogleFonts.inter(
-                                                    color: CustomColor.black,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              SizedBox(width: 35),
-                                              SizedBox(
-                                                width: 230,
-                                                child: Text(
-                                                  addressProofMessage,
-                                                  maxLines: 2,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: GoogleFonts.inter(
-                                                      color: CustomColor
-                                                          .primaryInputHintBorderColor,
-                                                      fontSize: 13,
-                                                      fontWeight:
-                                                          FontWeight.w400),
+                                      Expanded(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                CustomImageWidget(
+                                                  imagePath:
+                                                      StaticAssets.addressProof,
+                                                  imageType: 'svg',
+                                                  height: 25,
                                                 ),
-                                              ),
-                                            ],
-                                          )
-                                        ],
+                                                const SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        Strings.addressProof,
+                                                        style: GoogleFonts.inter(
+                                                            color:
+                                                                CustomColor.black,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.w500),
+                                                      ),
+                                                      Text(
+                                                        addressProofMessage,
+                                                        maxLines: 2,
+                                                        overflow:
+                                                            TextOverflow.ellipsis,
+                                                        style: GoogleFonts.inter(
+                                                            color: CustomColor
+                                                                .primaryInputHintBorderColor,
+                                                            fontSize: 13,
+                                                            fontWeight:
+                                                                FontWeight.w400),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       CustomImageWidget(
                                         imagePath: addressProofTick,
@@ -350,57 +355,61 @@ class _KycStartScreenState extends State<KycStartScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              CustomImageWidget(
-                                                imagePath: StaticAssets.selfie,
-                                                imageType: 'svg',
-                                                height: 25,
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(
-                                                Strings.selfies,
-                                                style: GoogleFonts.inter(
-                                                    color: CustomColor.black,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              SizedBox(width: 35),
-                                              SizedBox(
-                                                width: 230,
-                                                child: Text(
-                                                  selfieMessage,
-                                                  maxLines: 2,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: GoogleFonts.inter(
-                                                      color: CustomColor
-                                                          .primaryInputHintBorderColor,
-                                                      fontSize: 13,
-                                                      fontWeight:
-                                                          FontWeight.w400),
+                                      Expanded(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                CustomImageWidget(
+                                                  imagePath: StaticAssets.selfie,
+                                                  imageType: 'svg',
+                                                  height: 25,
                                                 ),
-                                              ),
-                                            ],
-                                          )
-                                        ],
+                                                const SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        Strings.selfies,
+                                                        style: GoogleFonts.inter(
+                                                            color: CustomColor.black,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                            FontWeight.w500),
+                                                      ),
+                                                      Text(
+                                                        selfieMessage,
+                                                        maxLines: 2,
+                                                        overflow:
+                                                        TextOverflow.ellipsis,
+                                                        style: GoogleFonts.inter(
+                                                            color: CustomColor
+                                                                .primaryInputHintBorderColor,
+                                                            fontSize: 13,
+                                                            fontWeight:
+                                                            FontWeight.w400),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+
+
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       CustomImageWidget(
                                         imagePath: selfieTick,
@@ -481,7 +490,6 @@ class _KycStartScreenState extends State<KycStartScreen> {
                                     },
                                     buttonText: 'Continue',
                                   ),
-
                       ],
                     ),
                   ),

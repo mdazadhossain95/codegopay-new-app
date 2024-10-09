@@ -18,6 +18,7 @@ import '../../../Models/kyc/kyc_document_type_model.dart';
 import '../../../cutom_weidget/cutom_progress_bar.dart';
 import '../../../utils/strings.dart';
 import '../../../utils/user_data_manager.dart';
+import '../../../widgets/toast/toast_util.dart';
 import '../bloc/signup_bloc.dart';
 import 'id_verify/capture_view_front_screen.dart';
 import 'passport_verify/passport_view_screen.dart';
@@ -104,19 +105,8 @@ class _KycScreenState extends State<KycScreen> {
       bloc: _kycScreenBloc,
       listener: (context, SignupState state) {
         if (state.kycDocumentTypeModel?.status == 0) {
-          AwesomeDialog(
-            context: context,
-            dialogType: DialogType.error,
-            animType: AnimType.rightSlide,
-            desc: state.statusModel?.message,
-            btnCancelText: 'OK',
-            buttonsTextStyle: const TextStyle(
-                fontSize: 14,
-                fontFamily: 'pop',
-                fontWeight: FontWeight.w600,
-                color: Colors.white),
-            btnCancelOnPress: () {},
-          ).show();
+          CustomToast.showError(
+              context, "Sorry!", state.statusModel!.message!);
         } else if (state.kycDocumentTypeModel?.status == 1) {
           setState(() {
             // Populate _cardTypes with the document types received from the API response
@@ -217,60 +207,59 @@ class _KycScreenState extends State<KycScreen> {
                                 setState(() {});
                               },
                               child: Center(
-                                  child: DottedBorder(
-                                      child: Container(
-                                          padding: const EdgeInsets.all(20.0),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
-                                          child: Expanded(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    CustomImageWidget(
-                                                      imagePath:
-                                                          StaticAssets.icDoc,
-                                                      imageType: "svg",
-                                                      height: 24,
-                                                    ),
-                                                    Text(
-                                                      Strings.identityDocuments,
-                                                      style: GoogleFonts.inter(
-                                                        fontSize: 16,
-                                                        color:
-                                                            CustomColor.black,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 250,
-                                                      child: Text(
-                                                        Strings
-                                                            .identityDocumentsSubTitle,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style:
-                                                            GoogleFonts.inter(
-                                                          fontSize: 13,
-                                                          color: CustomColor
-                                                              .subtitleTextColor,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
+                                  child: Container(
+                                      padding: const EdgeInsets.all(20.0),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        border: Border.all(
+                                          color: CustomColor.black.withOpacity(0.4),
+                                        )
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              CustomImageWidget(
+                                                imagePath:
+                                                    StaticAssets.icDoc,
+                                                imageType: "svg",
+                                                height: 24,
+                                              ),
+                                              Text(
+                                                Strings.identityDocuments,
+                                                style: GoogleFonts.inter(
+                                                  fontSize: 16,
+                                                  color:
+                                                      CustomColor.black,
+                                                  fontWeight:
+                                                      FontWeight.w500,
                                                 ),
-                                              ],
-                                            ),
-                                          )))),
+                                              ),
+                                              Text(
+                                                Strings
+                                                    .identityDocumentsSubTitle,
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign:
+                                                    TextAlign.center,
+                                                style:
+                                                    GoogleFonts.inter(
+                                                  fontSize: 13,
+                                                  color: CustomColor
+                                                      .subtitleTextColor,
+                                                  fontWeight:
+                                                      FontWeight.w400,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ))),
                             ),
                             const SizedBox(
                               height: 30,

@@ -31,11 +31,11 @@ class Strings {
   static const String kycStartSubTitle = 'it will only take about 2 minutes';
 
   static const String identityDocuments = 'Identity Documents';
-  static const String identityDocumentsSubTitle = 'Please take picture of your Id Card / Driving Licence / Passport';
+  static const String identityDocumentsSubTitle = 'Please take picture of your\nId Card / Driving Licence / Passport';
   static const String addressProof = 'Address Proof';
   static const String uploadAddressProof = 'Upload Proof address';
-  static const String uploadAddressProofSubTitle = 'We accept only Bank Statement, Utility bill, Council tax letter, Benefits letter';
-  static const String addressProofSubTitle = 'Please take picture of your Utility Bill / Bank Solvency';
+  static const String uploadAddressProofSubTitle = 'We accept only Bank Statement,\nUtility bill, Council tax letter, Benefits letter';
+  static const String addressProofSubTitle = 'Please take picture of your\nUtility Bill / Bank Solvency';
   static const String selfies = 'Selfies';
   static const String selfiesSubTitle = 'Please take a selfie with a clear background';
   static const String idDocTitle = 'Let’s Verify your kyc';

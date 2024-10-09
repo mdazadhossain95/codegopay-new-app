@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../widgets/toast/toast_util.dart';
 import '../bloc/signup_bloc.dart';
 
 class KycSubmitScreen extends StatefulWidget {
@@ -32,21 +33,9 @@ class _KycSubmitScreenState extends State<KycSubmitScreen> {
       bloc: _kycSubmitBloc,
       listener: (context, SignupState state) {
         if (state.kycSubmitModel?.status == 0) {
-          AwesomeDialog(
-            context: context,
-            dialogType: DialogType.error,
-            animType: AnimType.rightSlide,
-            desc: state.kycSubmitModel?.message,
-            btnCancelText: 'OK',
-            buttonsTextStyle: const TextStyle(
-                fontSize: 14,
-                fontFamily: 'pop',
-                fontWeight: FontWeight.w600,
-                color: Colors.white),
-            btnCancelOnPress: () {
-              Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
-            },
-          ).show();
+          CustomToast.showError(
+              context, "Sorry!", state.kycSubmitModel!.message!);
+          Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
         } else if (state.kycSubmitModel?.status == 1) {
           Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
         }
@@ -90,8 +79,8 @@ class _KycSubmitScreenState extends State<KycSubmitScreen> {
                             //   ),
                             // ),
                             Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
                               child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,

@@ -142,49 +142,48 @@ class _AddressProofScreenState extends State<AddressProofScreen> {
     return InkWell(
       onTap: () {},
       child: Center(
-          child: DottedBorder(
-              child: Container(
-                  padding: const EdgeInsets.all(20.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CustomImageWidget(
-                              imagePath: StaticAssets.addressProof,
-                              imageType: "svg",
-                              height: 24,
-                            ),
-                            Text(
-                              Strings.uploadAddressProof,
-                              style: GoogleFonts.inter(
-                                fontSize: 16,
-                                color: CustomColor.black,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 250,
-                              child: Text(
-                                Strings.uploadAddressProofSubTitle,
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.inter(
-                                  fontSize: 13,
-                                  color: CustomColor.subtitleTextColor,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                          ],
+          child: Container(
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                  border: Border.all(
+                    color: CustomColor.black.withOpacity(0.4),
+                  )
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CustomImageWidget(
+                        imagePath: StaticAssets.addressProof,
+                        imageType: "svg",
+                        height: 24,
+                      ),
+                      Text(
+                        Strings.uploadAddressProof,
+                        style: GoogleFonts.inter(
+                          fontSize: 16,
+                          color: CustomColor.black,
+                          fontWeight: FontWeight.w500,
                         ),
-                      ],
-                    ),
-                  )))),
+                      ),
+                      Text(
+                        Strings.uploadAddressProofSubTitle,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.inter(
+                          fontSize: 13,
+                          color: CustomColor.subtitleTextColor,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ))),
     );
   }
 
