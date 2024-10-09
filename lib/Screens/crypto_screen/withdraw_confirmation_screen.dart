@@ -51,6 +51,7 @@ class _WithdrawConfirmationScreenState
                 context,
                 MaterialPageRoute(
                   builder: (context) => SuccessWidget(
+                    disableButton: false,
                     imageType: SuccessImageType.success,
                     title: 'Hey!',
                     subTitle: state.ibanDepositEurToCryptoCancelModel!.message!,
@@ -68,6 +69,7 @@ class _WithdrawConfirmationScreenState
                 context,
                 MaterialPageRoute(
                   builder: (context) => SuccessWidget(
+                    disableButton: false,
                     imageType: SuccessImageType.error,
                     title: 'Sorry!',
                     subTitle: state.ibanDepositEurToCryptoCancelModel!.message!,

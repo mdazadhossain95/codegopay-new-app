@@ -216,6 +216,7 @@ class _TransferConfirmationScreenState
             context,
             MaterialPageRoute(
               builder: (context) => SuccessWidget(
+                disableButton: false,
                 imageType: SuccessImageType.success,
                 title: 'Transaction Success',
                 subTitle: state.pushModel!.message!,
@@ -234,6 +235,7 @@ class _TransferConfirmationScreenState
             context,
             MaterialPageRoute(
               builder: (context) => SuccessWidget(
+                disableButton: false,
                 imageType: SuccessImageType.error,
                 title: 'Transaction Failed!',
                 subTitle: state.pushModel!.message!,

@@ -25,7 +25,7 @@ class SuccessWidget extends StatefulWidget {
     required this.subTitle,
     required this.btnText,
     required this.onTap,
-    this.disableButton,
+    required this.disableButton,
   });
 
   final SuccessImageType imageType; // Updated to the new enum name
@@ -33,7 +33,7 @@ class SuccessWidget extends StatefulWidget {
   final String subTitle;
   final String btnText;
   final VoidCallback onTap;
-  bool? disableButton;
+  final bool disableButton; // Marked as final since it’s now immutable
 
   @override
   State<SuccessWidget> createState() => _SuccessWidgetState();
@@ -104,11 +104,13 @@ class _SuccessWidgetState extends State<SuccessWidget> {
                 ),
               ),
               const SizedBox(height: 10),
-             if(widget.disableButton == true)
-              PrimaryButtonWidget(
-                onPressed: widget.onTap,
-                buttonText: widget.btnText,
-              ), // Space before buttons
+              if (widget.disableButton == true)
+                Container()
+              else
+                PrimaryButtonWidget(
+                  onPressed: widget.onTap,
+                  buttonText: widget.btnText,
+                ), // Space before buttons
             ],
           ),
         ),

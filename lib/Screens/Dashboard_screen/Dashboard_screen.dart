@@ -1642,220 +1642,202 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                 ),
                                               ],
                                             ),
-                                            state.dashboardModel!.transaction!
-                                                        .past!.isEmpty &&
-                                                    state
-                                                        .dashboardModel!
-                                                        .transaction!
-                                                        .yesterday!
-                                                        .isEmpty &&
-                                                    state
-                                                        .dashboardModel!
-                                                        .transaction!
-                                                        .today!
-                                                        .isEmpty
-                                                ? Container(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 20),
-                                                    child: Column(
-                                                      children: [
-                                                        CustomImageWidget(
-                                                          imagePath: StaticAssets
-                                                              .noTransaction,
-                                                          imageType: 'svg',
-                                                          height: 130,
-                                                        ),
-                                                        Text(
-                                                          "No Transaction",
-                                                          style:
-                                                              GoogleFonts.inter(
-                                                            color: CustomColor
-                                                                .black
-                                                                .withOpacity(
-                                                                    0.6),
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                      ],
+                                            if (state
+                                                    .dashboardModel!
+                                                    .transaction!
+                                                    .past!
+                                                    .isEmpty &&
+                                                state
+                                                    .dashboardModel!
+                                                    .transaction!
+                                                    .yesterday!
+                                                    .isEmpty &&
+                                                state
+                                                    .dashboardModel!
+                                                    .transaction!
+                                                    .today!
+                                                    .isEmpty)
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 20),
+                                                child: Column(
+                                                  children: [
+                                                    CustomImageWidget(
+                                                      imagePath: StaticAssets
+                                                          .noTransaction,
+                                                      imageType: 'svg',
+                                                      height: 130,
                                                     ),
-                                                  )
-                                                : SizedBox(
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height *
-                                                            0.5,
-                                                    child: ListView(
+                                                    Text(
+                                                      "No Transaction",
+                                                      style: GoogleFonts.inter(
+                                                        color: CustomColor.black
+                                                            .withOpacity(0.6),
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            else
+                                              Column(
+                                                // shrinkWrap: true,
+                                                // physics:
+                                                //     NeverScrollableScrollPhysics(),
+                                                // padding:
+                                                //     const EdgeInsets.all(0),
+                                                children: [
+                                                  //today list
+                                                  if (state
+                                                      .dashboardModel!
+                                                      .transaction!
+                                                      .today!
+                                                      .isNotEmpty)
+                                                    ListView.builder(
+                                                      itemCount: state
+                                                          .dashboardModel!
+                                                          .transaction!
+                                                          .today!
+                                                          .length,
                                                       shrinkWrap: true,
-                                                      physics: NeverScrollableScrollPhysics(),
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              0),
-                                                      children: [
-                                                        state
-                                                                .dashboardModel!
-                                                                .transaction!
-                                                                .today!
-                                                                .isNotEmpty
-                                                            ? ListView.builder(
-                                                                itemCount: state
-                                                                    .dashboardModel!
-                                                                    .transaction!
-                                                                    .today!
-                                                                    .length,
-                                                                shrinkWrap:
-                                                                    true,
-                                                                physics:
-                                                                    NeverScrollableScrollPhysics(),
-                                                                itemBuilder:
-                                                                    (BuildContext
-                                                                            context,
-                                                                        int index) {
-                                                                  var today = state
-                                                                      .dashboardModel!
-                                                                      .transaction!
-                                                                      .today![index];
-                                                                  return TransactionCardWidget(
-                                                                    uniqueId: today
-                                                                        .unique_id!,
-                                                                    image: today
-                                                                        .image,
-                                                                    beneficiaryName:
-                                                                        today
-                                                                            .beneficiaryName!,
-                                                                    reasonPayment:
-                                                                        today
-                                                                            .reasonPayment!,
-                                                                    created: today
-                                                                        .created!,
-                                                                    amount: today
-                                                                        .amount!,
-                                                                    status: today
-                                                                        .status!,
-                                                                    type: today
-                                                                        .type!,
-                                                                    onTap: () {
-                                                                      trx_uniquid =
-                                                                          today
-                                                                              .unique_id!;
-                                                                      _dashboardBloc.add(transactiondetailsEvent(
-                                                                          uniqueId:
-                                                                              trx_uniquid));
-                                                                    },
-                                                                  );
-                                                                },
-                                                              )
-                                                            : Container(),
-                                                        state
-                                                                .dashboardModel!
-                                                                .transaction!
-                                                                .yesterday!
-                                                                .isNotEmpty
-                                                            ? ListView.builder(
-                                                                itemCount: state
-                                                                    .dashboardModel!
-                                                                    .transaction!
-                                                                    .yesterday!
-                                                                    .length,
-                                                                shrinkWrap:
-                                                                    true,
-                                                                physics:
-                                                                    const NeverScrollableScrollPhysics(),
-                                                                itemBuilder:
-                                                                    (BuildContext
-                                                                            context,
-                                                                        int index) {
-                                                                  var yesterdayList = state
-                                                                      .dashboardModel!
-                                                                      .transaction!
-                                                                      .yesterday![index];
-                                                                  return TransactionCardWidget(
+                                                      physics:
+                                                          NeverScrollableScrollPhysics(),
+                                                      itemBuilder:
+                                                          (BuildContext context,
+                                                              int index) {
+                                                        var today = state
+                                                            .dashboardModel!
+                                                            .transaction!
+                                                            .today![index];
+                                                        return TransactionCardWidget(
+                                                          uniqueId:
+                                                              today.unique_id!,
+                                                          image: today.image,
+                                                          beneficiaryName: today
+                                                              .beneficiaryName!,
+                                                          reasonPayment: today
+                                                              .reasonPayment!,
+                                                          created:
+                                                              today.created!,
+                                                          amount: today.amount!,
+                                                          status: today.status!,
+                                                          type: today.type!,
+                                                          onTap: () {
+                                                            trx_uniquid = today
+                                                                .unique_id!;
+                                                            _dashboardBloc.add(
+                                                                transactiondetailsEvent(
                                                                     uniqueId:
-                                                                        yesterdayList
-                                                                            .unique_id!,
-                                                                    image: yesterdayList
-                                                                        .image,
-                                                                    beneficiaryName:
-                                                                        yesterdayList
-                                                                            .beneficiaryName!,
-                                                                    reasonPayment:
-                                                                        yesterdayList
-                                                                            .reasonPayment!,
-                                                                    created:
-                                                                        yesterdayList
-                                                                            .created!,
-                                                                    amount: yesterdayList
-                                                                        .amount!,
-                                                                    status: yesterdayList
-                                                                        .status!,
-                                                                    type: yesterdayList
-                                                                        .type!,
-                                                                    onTap: () {
-                                                                      trx_uniquid =
-                                                                          yesterdayList
-                                                                              .unique_id!;
-                                                                      _dashboardBloc.add(transactiondetailsEvent(
-                                                                          uniqueId:
-                                                                              trx_uniquid));
-                                                                    },
-                                                                  );
-                                                                },
-                                                              )
-                                                            : Container(),
-                                                        ListView.builder(
-                                                          itemCount: state
-                                                              .dashboardModel!
-                                                              .transaction!
-                                                              .past!
-                                                              .length,
-                                                          shrinkWrap: true,
-                                                          physics:
-                                                              const NeverScrollableScrollPhysics(),
-                                                          itemBuilder:
-                                                              (BuildContext
-                                                                      context,
-                                                                  int index) {
-                                                            var pastList = state
-                                                                .dashboardModel!
-                                                                .transaction!
-                                                                .past![index];
-                                                            return TransactionCardWidget(
-                                                              uniqueId: pastList
-                                                                  .uniqueId!,
-                                                              image: pastList
-                                                                  .image,
-                                                              beneficiaryName:
-                                                                  pastList
-                                                                      .beneficiaryName!,
-                                                              reasonPayment:
-                                                                  pastList
-                                                                      .reasonPayment!,
-                                                              created: pastList
-                                                                  .created!,
-                                                              amount: pastList
-                                                                  .amount!,
-                                                              status: pastList
-                                                                  .status!,
-                                                              type: pastList
-                                                                  .type!,
-                                                              onTap: () {
-                                                                trx_uniquid =
-                                                                    pastList
-                                                                        .uniqueId!;
-                                                                _dashboardBloc.add(
-                                                                    transactiondetailsEvent(
-                                                                        uniqueId:
-                                                                            trx_uniquid));
-                                                              },
-                                                            );
+                                                                        trx_uniquid));
                                                           },
-                                                        ),
-                                                      ],
-                                                    ),
+                                                        );
+                                                      },
+                                                    )
+                                                  else
+                                                    Container(),
+
+                                                  //yesterday list
+                                                  if (state
+                                                      .dashboardModel!
+                                                      .transaction!
+                                                      .yesterday!
+                                                      .isNotEmpty)
+                                                    ListView.builder(
+                                                      itemCount: state
+                                                          .dashboardModel!
+                                                          .transaction!
+                                                          .yesterday!
+                                                          .length,
+                                                      shrinkWrap: true,
+                                                      physics:
+                                                          const NeverScrollableScrollPhysics(),
+                                                      itemBuilder:
+                                                          (BuildContext context,
+                                                              int index) {
+                                                        var yesterdayList = state
+                                                            .dashboardModel!
+                                                            .transaction!
+                                                            .yesterday![index];
+                                                        return TransactionCardWidget(
+                                                          uniqueId:
+                                                              yesterdayList
+                                                                  .unique_id!,
+                                                          image: yesterdayList
+                                                              .image,
+                                                          beneficiaryName:
+                                                              yesterdayList
+                                                                  .beneficiaryName!,
+                                                          reasonPayment:
+                                                              yesterdayList
+                                                                  .reasonPayment!,
+                                                          created: yesterdayList
+                                                              .created!,
+                                                          amount: yesterdayList
+                                                              .amount!,
+                                                          status: yesterdayList
+                                                              .status!,
+                                                          type: yesterdayList
+                                                              .type!,
+                                                          onTap: () {
+                                                            trx_uniquid =
+                                                                yesterdayList
+                                                                    .unique_id!;
+                                                            _dashboardBloc.add(
+                                                                transactiondetailsEvent(
+                                                                    uniqueId:
+                                                                        trx_uniquid));
+                                                          },
+                                                        );
+                                                      },
+                                                    )
+                                                  else
+                                                    Container(),
+                                                  ListView.builder(
+                                                    itemCount: state
+                                                        .dashboardModel!
+                                                        .transaction!
+                                                        .past!
+                                                        .length,
+                                                    shrinkWrap: true,
+                                                    physics:
+                                                        const NeverScrollableScrollPhysics(),
+                                                    itemBuilder:
+                                                        (BuildContext context,
+                                                            int index) {
+                                                      var pastList = state
+                                                          .dashboardModel!
+                                                          .transaction!
+                                                          .past![index];
+                                                      return TransactionCardWidget(
+                                                        uniqueId:
+                                                            pastList.uniqueId!,
+                                                        image: pastList.image,
+                                                        beneficiaryName: pastList
+                                                            .beneficiaryName!,
+                                                        reasonPayment: pastList
+                                                            .reasonPayment!,
+                                                        created:
+                                                            pastList.created!,
+                                                        amount:
+                                                            pastList.amount!,
+                                                        status:
+                                                            pastList.status!,
+                                                        type: pastList.type!,
+                                                        onTap: () {
+                                                          trx_uniquid = pastList
+                                                              .uniqueId!;
+                                                          _dashboardBloc.add(
+                                                              transactiondetailsEvent(
+                                                                  uniqueId:
+                                                                      trx_uniquid));
+                                                        },
+                                                      );
+                                                    },
                                                   ),
+                                                ],
+                                              ),
                                           ],
                                         )),
                                   ],
