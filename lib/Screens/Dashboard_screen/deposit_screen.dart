@@ -30,6 +30,7 @@ class DashboardDepositScreen extends StatefulWidget {
 class _DashboardDepositScreenState extends State<DashboardDepositScreen>
     with SingleTickerProviderStateMixin {
   final DashboardBloc _dashboardBloc = DashboardBloc();
+  bool local = true;
 
   @override
   void initState() {
@@ -59,201 +60,334 @@ class _DashboardDepositScreenState extends State<DashboardDepositScreen>
                     child: Container(
                       margin:
                           EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: ListView(
+                        // mainAxisAlignment: MainAxisAlignment.start,
+                        // crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           appBarSection(context, state),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: Text(
-                              "Local",
-                              style: GoogleFonts.inter(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 18,
-                                color: CustomColor.black,
-                              ),
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 10),
+                            padding: EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(24),
+                              color: CustomColor.currencyCustomSelectorColor,
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 5),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  "For domestic transfers only",
-                                  style: GoogleFonts.inter(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14,
-                                    color:
-                                        CustomColor.transactionDetailsTextColor,
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () {},
-                                  child: Text(
-                                    "",
-                                    style: GoogleFonts.inter(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 13,
-                                      color: CustomColor.primaryColor,
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        local = true;
+                                      });
+                                    },
+                                    child: Container(
+                                      height: 41,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(24),
+                                        color: local
+                                            ? CustomColor.whiteColor
+                                            : CustomColor
+                                                .currencyCustomSelectorColor,
+                                        boxShadow: local
+                                            ? [
+                                                BoxShadow(
+                                                  color: Color(0x0D000000),
+                                                  // Shadow color
+                                                  offset: Offset(0, 2),
+                                                  // Offset of the shadow
+                                                  blurRadius: 4,
+                                                  // Blur radius
+                                                  spreadRadius:
+                                                      0, // Spread radius (0px)
+                                                ),
+                                              ]
+                                            : [],
+                                      ),
+                                      child: Text(
+                                        'Local',
+                                        style: GoogleFonts.inter(
+                                            color: local
+                                                ? CustomColor.black
+                                                : CustomColor.black
+                                                    .withOpacity(0.6),
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w400),
+                                      ),
                                     ),
                                   ),
                                 ),
+                                Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        local = false;
+                                      });
+                                    },
+                                    child: Container(
+                                      height: 41,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(24),
+                                        color: local
+                                            ? CustomColor
+                                                .currencyCustomSelectorColor
+                                            : CustomColor.whiteColor,
+                                        boxShadow: local
+                                            ? []
+                                            : [
+                                                BoxShadow(
+                                                  color: Color(0x0D000000),
+                                                  // Shadow color
+                                                  offset: Offset(0, 2),
+                                                  // Offset of the shadow
+                                                  blurRadius: 4,
+                                                  // Blur radius
+                                                  spreadRadius:
+                                                      0, // Spread radius (0px)
+                                                ),
+                                              ],
+                                      ),
+                                      child: Text(
+                                        'Swift',
+                                        style: GoogleFonts.inter(
+                                            color: local
+                                                ? CustomColor.black
+                                                    .withOpacity(0.6)
+                                                : CustomColor.black,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
                           ),
-                          Container(
-                            padding: EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                                color: CustomColor.whiteColor,
-                                borderRadius: BorderRadius.circular(16)),
-                            child: Column(
-                              children: [
-                                BeneficiaryInfoWidget(
-                                  label: "Beneficiary",
-                                  title: widget.name ?? "",
-                                  onCopy: () {
-                                    copyToClipboard(context, widget.name);
-                                  },
-                                ),
-                                BeneficiaryInfoWidget(
-                                  label: "IBAN",
-                                  title: widget.iban ?? "",
-                                  onCopy: () {
-                                    copyToClipboard(context, widget.iban);
-                                  },
-                                ),
-                                BeneficiaryInfoWidget(
-                                  label: "BIC/SWIFT Code",
-                                  title: widget.bic ?? "",
-                                  onCopy: () {
-                                    copyToClipboard(context, widget.bic);
-                                  },
-                                ),
-                                BeneficiaryInfoWidget(
-                                  label: "Bank and Name Address",
-                                  title:
-                                      "${widget.bankName}\n${widget.bankAddress}" ??
-                                          "",
-                                  onCopy: () {
-                                    copyToClipboard(context,
-                                        "${widget.bankName}\n${widget.bankAddress}");
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(16),
-                            margin: EdgeInsets.symmetric(vertical: 10),
-                            decoration: BoxDecoration(
-                                color: CustomColor.whiteColor,
-                                borderRadius: BorderRadius.circular(16)),
-                            child: Column(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(8),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                          margin: EdgeInsets.only(right: 10),
-                                          padding: EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                            color: CustomColor.primaryColor,
+                          local
+                              ? Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 5),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "For domestic transfers only",
+                                            style: GoogleFonts.inter(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 14,
+                                              color: CustomColor
+                                                  .transactionDetailsTextColor,
+                                            ),
                                           ),
-                                          child: CustomImageWidget(
-                                            imagePath:
-                                                StaticAssets.shieldDollar,
-                                            imageType: 'svg',
-                                            height: 30,
-                                          )),
-                                      Expanded(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "Protected Deposit",
+                                          InkWell(
+                                            onTap: () {},
+                                            child: Text(
+                                              "",
                                               style: GoogleFonts.inter(
-                                                color: CustomColor.black,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            Text(
-                                              "Your money is protected by the Lithuanian Deposit Guarantee Scheme.",
-                                              style: GoogleFonts.inter(
-                                                color: CustomColor
-                                                    .primaryTextHintColor,
-                                                fontSize: 12,
                                                 fontWeight: FontWeight.w400,
+                                                fontSize: 13,
+                                                color: CustomColor.primaryColor,
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Divider(
-                                  color:
-                                      CustomColor.dashboardProfileBorderColor,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.all(8),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                          margin: EdgeInsets.only(right: 10),
-                                          padding: EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                            color: CustomColor.primaryColor,
                                           ),
-                                          child: CustomImageWidget(
-                                            imagePath: StaticAssets.light,
-                                            imageType: 'svg',
-                                            height: 30,
-                                          )),
-                                      Expanded(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "Cross-platform transfer",
-                                              style: GoogleFonts.inter(
-                                                color: CustomColor.black,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            Text(
-                                              "Receive transfers from Euro bank into your Revolut Payments Account using these details.",
-                                              style: GoogleFonts.inter(
-                                                color: CustomColor
-                                                    .primaryTextHintColor,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                        ],
                                       ),
-                                    ],
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.all(16),
+                                      decoration: BoxDecoration(
+                                          color: CustomColor.whiteColor,
+                                          borderRadius:
+                                              BorderRadius.circular(16)),
+                                      child: Column(
+                                        children: [
+                                          BeneficiaryInfoWidget(
+                                            label: "Beneficiary",
+                                            title: widget.name ?? "",
+                                            onCopy: () {
+                                              copyToClipboard(
+                                                  context, widget.name);
+                                            },
+                                          ),
+                                          BeneficiaryInfoWidget(
+                                            label: "IBAN",
+                                            title: widget.iban ?? "",
+                                            onCopy: () {
+                                              copyToClipboard(
+                                                  context, widget.iban);
+                                            },
+                                          ),
+                                          BeneficiaryInfoWidget(
+                                            label: "BIC/SWIFT Code",
+                                            title: widget.bic ?? "",
+                                            onCopy: () {
+                                              copyToClipboard(
+                                                  context, widget.bic);
+                                            },
+                                          ),
+                                          BeneficiaryInfoWidget(
+                                            label: "Bank and Name Address",
+                                            title:
+                                                "${widget.bankName}\n${widget.bankAddress}" ??
+                                                    "",
+                                            onCopy: () {
+                                              copyToClipboard(context,
+                                                  "${widget.bankName}\n${widget.bankAddress}");
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.all(16),
+                                      margin:
+                                          EdgeInsets.symmetric(vertical: 10),
+                                      decoration: BoxDecoration(
+                                          color: CustomColor.whiteColor,
+                                          borderRadius:
+                                              BorderRadius.circular(16)),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.all(8),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                    margin: EdgeInsets.only(
+                                                        right: 10),
+                                                    padding: EdgeInsets.all(10),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12.0),
+                                                      color: CustomColor
+                                                          .primaryColor,
+                                                    ),
+                                                    child: CustomImageWidget(
+                                                      imagePath: StaticAssets
+                                                          .shieldDollar,
+                                                      imageType: 'svg',
+                                                      height: 30,
+                                                    )),
+                                                Expanded(
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "Protected Deposit",
+                                                        style:
+                                                            GoogleFonts.inter(
+                                                          color:
+                                                              CustomColor.black,
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "Your money is protected by the Lithuanian Deposit Guarantee Scheme.",
+                                                        style:
+                                                            GoogleFonts.inter(
+                                                          color: CustomColor
+                                                              .primaryTextHintColor,
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Divider(
+                                            color: CustomColor
+                                                .dashboardProfileBorderColor,
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.all(8),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                    margin: EdgeInsets.only(
+                                                        right: 10),
+                                                    padding: EdgeInsets.all(10),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12.0),
+                                                      color: CustomColor
+                                                          .primaryColor,
+                                                    ),
+                                                    child: CustomImageWidget(
+                                                      imagePath:
+                                                          StaticAssets.light,
+                                                      imageType: 'svg',
+                                                      height: 30,
+                                                    )),
+                                                Expanded(
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "Cross-platform transfer",
+                                                        style:
+                                                            GoogleFonts.inter(
+                                                          color:
+                                                              CustomColor.black,
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        "Receive transfers from Euro bank into your Revolut Payments Account using these details.",
+                                                        style:
+                                                            GoogleFonts.inter(
+                                                          color: CustomColor
+                                                              .primaryTextHintColor,
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                )
+                              : Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 50),
+                                    child: Text(
+                                      "Coming Soon...",
+                                      style: GoogleFonts.inter(
+                                        color: CustomColor.black,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 14,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          )
+                                )
                         ],
                       ),
                     ),

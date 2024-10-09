@@ -78,7 +78,6 @@ class _CryptoScreenState extends State<CryptoScreen> {
             bloc: _cryptoBloc,
             listener: (context, CryptoState state) async {
               if (state.coins!.status == 1) {
-
                 Eurocoin = state.coins!.curruncylist!.where((element) {
                   final title = element.currencyName!.toLowerCase();
 
@@ -86,8 +85,6 @@ class _CryptoScreenState extends State<CryptoScreen> {
 
                   return title.contains(searc);
                 }).toList();
-
-
               }
 
               if (state.statusModel?.status == 0) {
