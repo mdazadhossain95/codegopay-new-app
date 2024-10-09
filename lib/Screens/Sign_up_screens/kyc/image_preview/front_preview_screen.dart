@@ -1,18 +1,14 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
 import 'package:codegopay/utils/user_data_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../Config/bloc/app_bloc.dart';
 import '../../../../Config/bloc/app_respotary.dart';
 import '../../../../utils/input_fields/custom_color.dart';
-import '../../../../widgets/buttons/custom_icon_button_widget.dart';
 import '../../../../widgets/buttons/default_back_button_widget.dart';
 import '../../../../widgets/buttons/primary_button_widget.dart';
 import '../../../../widgets/buttons/secondary_button_widget.dart';

@@ -102,7 +102,7 @@ class AmountInputField extends StatelessWidget {
                 width: 1,
               ),
             ),
-            focusedBorder: const UnderlineInputBorder(
+            focusedBorder:  UnderlineInputBorder(
               borderSide: BorderSide(
                 color: CustomColor.primaryColor,
                 width: 1,

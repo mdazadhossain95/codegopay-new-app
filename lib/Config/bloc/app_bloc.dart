@@ -9,6 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../Models/application.dart';
 import '../../utils/connectionStatusSingleton.dart';
 import '../../utils/connectivity_manager.dart';
+import '../../utils/input_fields/custom_color.dart';
 import '../../utils/user_data_manager.dart';
 import 'app_respotary.dart';
 
@@ -23,8 +24,11 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   final AppRespo appRespo = AppRespo();
 
+
+
   void mapEventToState(AppEvent event, Emitter<AppState> emit) async {
     if (event is UserstatusEvent) {
+      // Load colors before any other processing
       await checkNetwork();
       String isBioMetric = await UserDataManager().getIsUsingBiometricAuth();
       Application.isBioMetric = isBioMetric;
@@ -48,6 +52,14 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           "--------------📍📍📍CHECK USER HIDE STATUS📍📍📍-------------");
 
       if (userAppStatusModel.locationhide == 0) {
+        UserDataManager()
+            .darkButtonColorSave(userAppStatusModel.button!.appDarkButtonColor.toString());
+        UserDataManager()
+            .lightButtonColorSave(userAppStatusModel.button!.appLightButtonColor.toString());
+        UserDataManager()
+            .transferButtonColorSave(userAppStatusModel.button!.transferButtonColor.toString());
+        UserDataManager()
+            .depositButtonColorSave(userAppStatusModel.button!.depositButtonColor.toString());
         if (serviceEnabled == false) {
           emit(locationdenied());
         } else if (await Permission.location.isRestricted) {
@@ -84,9 +96,18 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           }
         }
       } else {
+
         if (ConnectivityManager.isNetworkAvailable) {
           UserDataManager()
               .statusMessageSave(userAppStatusModel.message.toString());
+          UserDataManager()
+              .darkButtonColorSave(userAppStatusModel.button!.appDarkButtonColor.toString());
+          UserDataManager()
+              .lightButtonColorSave(userAppStatusModel.button!.appLightButtonColor.toString());
+          UserDataManager()
+              .transferButtonColorSave(userAppStatusModel.button!.transferButtonColor.toString());
+          UserDataManager()
+              .depositButtonColorSave(userAppStatusModel.button!.depositButtonColor.toString());
 
           if (userAppStatusModel.status == 0) {
             emit(WelcomeScreenState());
@@ -111,6 +132,16 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         } else if (!await ConnectionStatusSingleton.getInstance()
             .isConnectedToInternet()) {
           emit(NoNetworkState());
+          UserDataManager()
+              .darkButtonColorSave(userAppStatusModel.button!.appDarkButtonColor.toString());
+          UserDataManager()
+              .lightButtonColorSave(userAppStatusModel.button!.appLightButtonColor.toString());
+          UserDataManager()
+              .transferButtonColorSave(userAppStatusModel.button!.transferButtonColor.toString());
+          UserDataManager()
+              .depositButtonColorSave(userAppStatusModel.button!.depositButtonColor.toString());
+
+
         }
       }
     }

@@ -1,11 +1,63 @@
+import 'package:codegopay/utils/user_data_manager.dart';
 import 'package:flutter/material.dart';
 
 class CustomColor {
-  static const Color primaryColor = Color(0xFF132559);
-  static const Color secondaryColor = Color(0xFF555555);
-  static const Color dashboardSendContainerColor = Color(0xffB689FF);
-  static const Color disableColor = Color(0xFF8992AC);
+  //default color will change from api
+  static Color primaryColor = Color(0xFF132559);
+  static Color disableColor = Color(0xFF8992AC);
 
+  static Color transferButtonColor = Color(0xffB689FF);
+  static Color depositButtonColor = Color(0xffB689FF);
+
+  // Method to load colors asynchronously
+  Future<void> loadColors() async {
+    // Dark color
+    String darkButtonColorString = await UserDataManager().getDarkButtonColor();
+    primaryColor = _colorFromString(darkButtonColorString) ?? primaryColor;
+    debugPrint("This is dark check : $darkButtonColorString");
+
+    // Uncomment and modify for other button colors as needed
+    String lightButtonColorString =
+        await UserDataManager().getLightButtonColor();
+    disableColor = _colorFromString(lightButtonColorString) ?? disableColor;
+    debugPrint("This is disable check : $disableColor");
+
+    String transferButtonColorString =
+        await UserDataManager().getTransferButtonColor();
+    transferButtonColor =
+        _colorFromString(transferButtonColorString) ?? transferButtonColor;
+    debugPrint("This is transfer check : $transferButtonColor");
+
+    String depositButtonColorString =
+        await UserDataManager().getDepositButtonColor();
+    depositButtonColor =
+        _colorFromString(depositButtonColorString) ?? depositButtonColor;
+    debugPrint("This is deposit check : $depositButtonColor");
+  }
+
+  /// Converts a string to a Color object. Assumes the string is in the format "0xFFxxxxxx".
+  Color? _colorFromString(String colorString) {
+    try {
+      // Ensure the color string is trimmed
+      colorString = colorString.trim();
+
+      // Remove the "0x" prefix if it exists
+      if (colorString.startsWith("0x")) {
+        colorString = colorString.substring(2);
+      }
+
+      // Parse the integer directly after removing the prefix
+      return Color(int.parse(colorString, radix: 16));
+    } catch (e) {
+      // Handle any parsing errors
+      print("Error parsing color: $e");
+      return null; // Return null if there's an error
+    }
+  }
+
+  Color secondaryColor = Color(0xFF555555);
+
+  static const Color dashboardSendContainerColor = Color(0xffB689FF);
 
   static const Color transparent = Colors.transparent;
 

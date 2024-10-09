@@ -73,19 +73,19 @@ class _CryptoSearchInputWidgetState extends State<CryptoSearchInputWidget> {
             ),
             borderRadius: BorderRadius.circular(12)),
         focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
+            borderSide:  BorderSide(
               color: CustomColor.primaryColor,
               width: 1,
             ),
             borderRadius: BorderRadius.circular(12)),
         border: OutlineInputBorder(
-            borderSide: const BorderSide(
+            borderSide:  BorderSide(
               color: CustomColor.primaryColor,
               width: 1,
             ),
             borderRadius: BorderRadius.circular(12)),
         disabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
+            borderSide:  BorderSide(
               color: CustomColor.primaryColor,
               width: 1,
             ),

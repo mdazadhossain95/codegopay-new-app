@@ -1,10 +1,8 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../utils/user_data_manager.dart';
-import '../image_preview/address_preview_screen.dart';
 import '../captuer/capture_controller.dart';
 import '../image_preview/front_preview_screen.dart';
 

@@ -666,7 +666,8 @@ class UserDataManager {
   }
 
   Future<String> getDashboardIban() async {
-    String ibanData = await SecureSt().getInstance().read(key: 'ibanData') ?? '';
+    String ibanData =
+        await SecureSt().getInstance().read(key: 'ibanData') ?? '';
     return ibanData;
   }
 
@@ -704,7 +705,6 @@ class UserDataManager {
     return email;
   }
 
-
   void forgotPassUniqueIdSave(String uniqueId) async {
     SecureSt().getInstance().write(key: 'uniqueId', value: uniqueId);
   }
@@ -725,13 +725,70 @@ class UserDataManager {
   }
 
   Future<String> getForgotPassUserId() async {
-    String userId =
-        await SecureSt().getInstance().read(key: 'userId') ?? '';
+    String userId = await SecureSt().getInstance().read(key: 'userId') ?? '';
     return userId;
   }
 
   Future<void> clearForgotPassUserId() async {
     print("user user id deleted");
     await SecureSt().getInstance().delete(key: 'userId');
+  }
+
+  void darkButtonColorSave(String darkButton) async {
+    SecureSt().getInstance().write(key: 'darkButton', value: darkButton);
+  }
+
+  Future<String> getDarkButtonColor() async {
+    String darkButton =
+        await SecureSt().getInstance().read(key: 'darkButton') ?? '';
+    return darkButton;
+  }
+
+  Future<void> clearDarkButtonColor() async {
+    await SecureSt().getInstance().delete(key: 'darkButton');
+  }
+
+  void lightButtonColorSave(String lightButton) async {
+    SecureSt().getInstance().write(key: 'lightButton', value: lightButton);
+  }
+
+  Future<String> getLightButtonColor() async {
+    String lightButton =
+        await SecureSt().getInstance().read(key: 'lightButton') ?? '';
+    return lightButton;
+  }
+
+  Future<void> clearLightButtonColor() async {
+    await SecureSt().getInstance().delete(key: 'lightButton');
+  }
+
+  void transferButtonColorSave(String transferButton) async {
+    SecureSt()
+        .getInstance()
+        .write(key: 'transferButton', value: transferButton);
+  }
+
+  Future<String> getTransferButtonColor() async {
+    String transferButton =
+        await SecureSt().getInstance().read(key: 'transferButton') ?? '';
+    return transferButton;
+  }
+
+  Future<void> clearTransferButtonColor() async {
+    await SecureSt().getInstance().delete(key: 'transferButton');
+  }
+
+  void depositButtonColorSave(String depositButton) async {
+    SecureSt().getInstance().write(key: 'depositButton', value: depositButton);
+  }
+
+  Future<String> getDepositButtonColor() async {
+    String depositButton =
+        await SecureSt().getInstance().read(key: 'depositButton') ?? '';
+    return depositButton;
+  }
+
+  Future<void> clearDepositButtonColor() async {
+    await SecureSt().getInstance().delete(key: 'depositButton');
   }
 }

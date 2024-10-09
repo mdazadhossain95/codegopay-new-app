@@ -25,6 +25,7 @@ class SuccessWidget extends StatefulWidget {
     required this.subTitle,
     required this.btnText,
     required this.onTap,
+    this.disableButton,
   });
 
   final SuccessImageType imageType; // Updated to the new enum name
@@ -32,6 +33,7 @@ class SuccessWidget extends StatefulWidget {
   final String subTitle;
   final String btnText;
   final VoidCallback onTap;
+  bool? disableButton;
 
   @override
   State<SuccessWidget> createState() => _SuccessWidgetState();
@@ -102,6 +104,7 @@ class _SuccessWidgetState extends State<SuccessWidget> {
                 ),
               ),
               const SizedBox(height: 10),
+             if(widget.disableButton == true)
               PrimaryButtonWidget(
                 onPressed: widget.onTap,
                 buttonText: widget.btnText,
@@ -125,7 +128,7 @@ class _SuccessWidgetState extends State<SuccessWidget> {
                 context, 'dashboard', (route) => false);
           }),
           Text(
-            'Create IBAN',
+            '',
             style: GoogleFonts.inter(
                 color: CustomColor.black,
                 fontSize: 18,

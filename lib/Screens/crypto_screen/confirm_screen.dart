@@ -354,7 +354,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                                           color: value == true
                                               ? CustomColor.whiteColor
                                               : CustomColor.whiteColor),
-                                      child: const Icon(
+                                      child:  Icon(
                                         Icons.keyboard_double_arrow_right,
                                         color: CustomColor.primaryColor,
                                       )),

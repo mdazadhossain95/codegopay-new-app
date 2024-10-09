@@ -1,6 +1,7 @@
 import 'package:codegopay/Config/Custom_route.dart';
 import 'package:codegopay/Config/bloc/app_bloc.dart';
 import 'package:codegopay/Models/application.dart';
+import 'package:codegopay/utils/input_fields/custom_color.dart';
 
 import 'package:codegopay/utils/location_serveci.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -12,7 +13,6 @@ import 'package:geolocator/geolocator.dart' as geo;
 import 'package:permission_handler/permission_handler.dart';
 
 import 'firebase_options.dart';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,49 +54,28 @@ class _MyAppState extends State<MyApp> {
 
   void _handleMessage(RemoteMessage message) {
     if (mounted) {
-      Application.navKey.currentState?.pushNamedAndRemoveUntil(
-          'dashboard', (route) => false);
+      Application.navKey.currentState
+          ?.pushNamedAndRemoveUntil('dashboard', (route) => false);
     }
   }
-
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return BlocProvider(
-  //     create: (context) => AppBloc(),
-  //     child: MaterialApp(
-  //       title: 'CodegoPay Individual',
-  //       debugShowCheckedModeBanner: false,
-  //       onGenerateRoute: generatroutecustomRoute,
-  //       initialRoute: '/',
-  //       navigatorKey: Application.navKey,
-  //       theme: ThemeData(
-  //         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-  //         useMaterial3: true,
-  //       ),
-  //     ),
-  //   );
-  // }
-
 
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
         designSize: const Size(414, 896),
         builder: (_, child) => BlocProvider(
-          create: (context) => AppBloc(),
-          child: MaterialApp(
-            title: 'CodegoPay Individual',
-            debugShowCheckedModeBanner: false,
-            onGenerateRoute: generatroutecustomRoute,
-            initialRoute: '/',
-            navigatorKey: Application.navKey,
-            theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
-              useMaterial3: true,
-            ),
-          ),
-        ));
+              create: (context) => AppBloc(),
+              child: MaterialApp(
+                title: 'CodegoPay Individual',
+                debugShowCheckedModeBanner: false,
+                onGenerateRoute: generatroutecustomRoute,
+                initialRoute: '/',
+                navigatorKey: Application.navKey,
+                theme: ThemeData(
+                  colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+                  useMaterial3: true,
+                ),
+              ),
+            ));
   }
 }
-

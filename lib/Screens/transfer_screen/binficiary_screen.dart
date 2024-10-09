@@ -358,7 +358,7 @@ class _BeneficiaryListScreenState extends State<BeneficiaryListScreen> {
             },
           ),
           Text(
-            'Add Beneficiary',
+            'Beneficiary List',
             style: GoogleFonts.inter(
                 color: CustomColor.black,
                 fontSize: 18,

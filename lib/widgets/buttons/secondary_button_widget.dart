@@ -14,11 +14,11 @@ class SecondaryButtonWidget extends StatelessWidget {
   final double elevation;
   final BorderRadiusGeometry borderRadius;
   final TextStyle? textStyle; // Optional text style property
-  final Color defaultTextColor; // Default text color property
-  final Color? borderColor; // Border color property for customization
+  Color defaultTextColor; // Default text color property
+  Color? borderColor; // Border color property for customization
   final double borderWidth; // Property to control border thickness
 
-  const SecondaryButtonWidget({
+  SecondaryButtonWidget({
     super.key,
     required this.onPressed, // Nullable function
     required this.buttonText,
@@ -26,15 +26,17 @@ class SecondaryButtonWidget extends StatelessWidget {
     this.width = double.infinity,
     this.margin = const EdgeInsets.only(bottom: 20),
     this.apiBackgroundColor, // Accepts color from API
-    this.defaultBackgroundColor = CustomColor.secondaryButtonColor, // Default local color
+    this.defaultBackgroundColor =
+        CustomColor.secondaryButtonColor, // Default local color
     this.disabledColor = CustomColor.secondaryButtonColor,
     this.elevation = 0,
     this.borderRadius = const BorderRadius.all(Radius.circular(1000)),
     this.textStyle, // Optional text style parameter
-    this.defaultTextColor = CustomColor.secondaryTextColor, // Default text color
-    this.borderColor = CustomColor.primaryButtonColor, // Default border color
+    Color? defaultTextColor, // Default text color
+    Color? borderColor, // Default border color
     this.borderWidth = 1.0, // Default border width
-  });
+  })  : borderColor = borderColor ?? CustomColor.primaryColor,
+        defaultTextColor = defaultTextColor ?? CustomColor.primaryColor;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +47,8 @@ class SecondaryButtonWidget extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: borderRadius,
         border: Border.all(
-          color: borderColor ?? Colors.transparent, // Use the borderColor if provided
+          color: borderColor ?? Colors.transparent,
+          // Use the borderColor if provided
           width: borderWidth, // Set border width
         ),
       ),
@@ -54,7 +57,8 @@ class SecondaryButtonWidget extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: onPressed != null
               ? apiBackgroundColor ?? defaultBackgroundColor
-              : disabledColor, // Use disabled color if onPressed is null
+              : disabledColor,
+          // Use disabled color if onPressed is null
           elevation: elevation,
           disabledBackgroundColor: disabledColor,
           shadowColor: Colors.transparent,
@@ -69,9 +73,11 @@ class SecondaryButtonWidget extends StatelessWidget {
         ),
         child: Text(
           buttonText,
-          style: textStyle?.copyWith(color: textStyle?.color ?? defaultTextColor) ??
-              GoogleFonts.sourceSans3(
-                color: defaultTextColor, // Use defaultTextColor if no textStyle is provided
+          style: textStyle?.copyWith(
+                  color: textStyle?.color ?? defaultTextColor) ??
+              GoogleFonts.inter(
+                color: defaultTextColor,
+                // Use defaultTextColor if no textStyle is provided
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
               ),

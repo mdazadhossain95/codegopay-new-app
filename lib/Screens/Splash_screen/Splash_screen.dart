@@ -5,6 +5,7 @@ import 'package:codegopay/constant_string/User.dart';
 import 'package:codegopay/utils/assets.dart';
 import 'package:codegopay/utils/input_fields/custom_color.dart';
 import 'package:codegopay/utils/location_serveci.dart';
+import 'package:codegopay/utils/user_data_manager.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +15,7 @@ import '../../Config/bloc/app_respotary.dart';
 import '../../utils/custom_style.dart';
 import '../../utils/strings.dart';
 import '../../widgets/logo_widget.dart';
+import '../../widgets/success/success_widget.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -34,18 +36,17 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   AppRespo appRespo = AppRespo();
+  CustomColor customColor = CustomColor();
 
   @override
   void initState() {
     super.initState();
     appRespo.getUserStatus();
-    // _appBloc.add(UserstatusEvent());
 
     User.Screen = 'Splash';
     firebaseCloudMessaging_Listeners(context);
 
     Future.delayed(Duration(seconds: 3), () {
-      // Check the user status or navigate to the next screen based on your logic
       _appBloc.add(UserstatusEvent());
     });
   }
@@ -61,7 +62,9 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: BlocListener(
         bloc: _appBloc,
-        listener: (context, AppState state) {
+        listener: (context, AppState state) async {
+          customColor.loadColors();
+
           if (state is WelcomeScreenState) {
             Navigator.pushNamedAndRemoveUntil(
                 context, 'WelcomeScreen', (route) => false);
@@ -81,8 +84,23 @@ class _SplashScreenState extends State<SplashScreen> {
             Navigator.pushNamedAndRemoveUntil(
                 context, 'getpin', (route) => false);
           } else if (state is LockScreenState) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, 'lockScreen', (route) => false);
+            String message = await UserDataManager().getStatusMessage();
+
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SuccessWidget(
+                    imageType: SuccessImageType.warning,
+                    title: "Sorry!",
+                    subTitle: message,
+                    btnText: "Continue",
+                    disableButton: true,
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+                (route) => false);
           } else if (state is OpenScreenstate) {
             _launchInWebView(Uri.parse(User.urlweb!));
           } else if (state is NoNetworkState) {
@@ -140,7 +158,7 @@ class _SplashScreenState extends State<SplashScreen> {
               child: Container(
                 alignment: Alignment.bottomCenter,
                 padding: const EdgeInsets.symmetric(vertical: 10),
-                child:  Text(
+                child: Text(
                   Strings.tapToStart,
                   style: CustomStyle.splashTextStyle,
                 ),

@@ -126,7 +126,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
+                    borderSide:  BorderSide(
                       color: CustomColor.primaryColor,
                       width: 1,
                     ),

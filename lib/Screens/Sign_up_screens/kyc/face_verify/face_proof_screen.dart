@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui' as ui;
 import 'package:awesome_dialog/awesome_dialog.dart';
 
 import 'package:flutter/material.dart';
@@ -7,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_face_api/flutter_face_api.dart' hide Image;
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:flutter_face_api/flutter_face_api.dart';
 
 import '../../../../cutom_weidget/cutom_progress_bar.dart';
 import '../../../../utils/assets.dart';

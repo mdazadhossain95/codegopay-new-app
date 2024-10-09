@@ -8,17 +8,17 @@ class CustomIconButtonWidget extends StatelessWidget {
   final VoidCallback onTap;
   final double iconSize;
   final String svgAssetPath;
-  final Color? apiColor; // Optional API-provided color
+   Color? apiColor; // Optional API-provided color
   final Color defaultColor; // Default color
 
-  const CustomIconButtonWidget({
+   CustomIconButtonWidget({
     super.key,
     required this.onTap,
     this.iconSize = 24.0, // Default icon size
     this.svgAssetPath = StaticAssets.helpCircle, // Default SVG asset path
     this.apiColor, // Accept color from API
-    this.defaultColor = CustomColor.primaryColor, // Set a default color
-  });
+     Color? defaultColor, // Accept color as optional
+  }) : defaultColor = defaultColor ?? CustomColor.primaryColor;
 
   @override
   Widget build(BuildContext context) {

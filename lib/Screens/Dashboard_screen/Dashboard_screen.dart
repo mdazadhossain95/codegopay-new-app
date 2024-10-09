@@ -27,16 +27,13 @@ import '../../utils/user_data_manager.dart';
 import '../../widgets/buttons/custom_container_button.dart';
 import '../../widgets/buttons/custom_floating_action_button.dart';
 import '../../widgets/buttons/primary_button_widget.dart';
-import '../../widgets/main/hub_popup_content.dart';
 import '../../widgets/main/iban_container_widget.dart';
 import '../../widgets/main/transaction_card_widget.dart';
 import '../../widgets/main/transaction_details_widget.dart';
 import '../../widgets/toast/custom_dialog_widget.dart';
 import '../../widgets/toast/toast_helper.dart';
-import '../../widgets/toast/toast_util.dart';
 import '../Profile_screen/Profile_screen.dart';
 import '../Profile_screen/bloc/profile_bloc.dart';
-import '../crypto_screen/Deposit_coin.dart';
 import '../no_network_connection/updateapp_screen.dart';
 import '../transfer_screen/binficiary_screen.dart';
 import '../transfer_screen/send_money.dart';
@@ -684,6 +681,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                 ),
                                                 Expanded(
                                                   child: CustomContainerButton(
+                                                    transferButton: false,
                                                     imagePath: StaticAssets
                                                         .arrowDownLeft,
                                                     buttonText: "Deposit",
@@ -973,7 +971,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                               });
                                             },
                                             child: Container(
-                                              padding: const EdgeInsets.all(16),
+                                              padding: const EdgeInsets.all(10),
                                               margin: const EdgeInsets.only(
                                                   left: 16,
                                                   right: 16,
@@ -1022,7 +1020,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                   .dashboardNotification),
                                                         ),
                                                         const SizedBox(
-                                                          width: 13,
+                                                          width: 10,
                                                         ),
                                                         Expanded(
                                                           child: Column(
@@ -1208,6 +1206,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                 children: [
                                                   Expanded(
                                                     child: ListView.builder(
+                                                      physics:
+                                                          NeverScrollableScrollPhysics(),
                                                       scrollDirection:
                                                           Axis.horizontal,
                                                       shrinkWrap: true,
@@ -1272,7 +1272,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                       shape: BoxShape
                                                                           .circle,
                                                                       color: CustomColor
-                                                                          .dashboardSendContainerColor,
+                                                                          .transferButtonColor,
                                                                       border:
                                                                           Border
                                                                               .all(
@@ -1283,8 +1283,9 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                       ),
                                                                       boxShadow: [
                                                                         BoxShadow(
-                                                                          color:
-                                                                              Color(0xFFEBDCFD),
+                                                                          color: CustomColor
+                                                                              .transferButtonColor
+                                                                              .withOpacity(0.3),
                                                                           spreadRadius:
                                                                               2,
                                                                           blurRadius:
@@ -1311,7 +1312,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                         .only(
                                                                         top: 5),
                                                                     child: Text(
-                                                                      "Beneficiary",
+                                                                      "Send",
                                                                       maxLines:
                                                                           2,
                                                                       textAlign:
@@ -1689,6 +1690,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                             0.5,
                                                     child: ListView(
                                                       shrinkWrap: true,
+                                                      physics: NeverScrollableScrollPhysics(),
                                                       padding:
                                                           const EdgeInsets.all(
                                                               0),
@@ -1707,7 +1709,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                 shrinkWrap:
                                                                     true,
                                                                 physics:
-                                                                    const BouncingScrollPhysics(),
+                                                                    NeverScrollableScrollPhysics(),
                                                                 itemBuilder:
                                                                     (BuildContext
                                                                             context,
@@ -1761,7 +1763,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                                 shrinkWrap:
                                                                     true,
                                                                 physics:
-                                                                    const BouncingScrollPhysics(),
+                                                                    const NeverScrollableScrollPhysics(),
                                                                 itemBuilder:
                                                                     (BuildContext
                                                                             context,
@@ -1811,7 +1813,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                                                               .length,
                                                           shrinkWrap: true,
                                                           physics:
-                                                              const BouncingScrollPhysics(),
+                                                              const NeverScrollableScrollPhysics(),
                                                           itemBuilder:
                                                               (BuildContext
                                                                       context,
@@ -2770,7 +2772,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                 context, 'dashboard', (route) => false);
           });
     } catch (e) {
-      print("confirmation message");
+      debugPrint("confirmation message");
     }
   }
 

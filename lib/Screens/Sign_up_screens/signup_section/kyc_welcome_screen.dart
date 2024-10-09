@@ -13,7 +13,6 @@ import '../../../utils/input_fields/custom_color.dart';
 import '../../../utils/strings.dart';
 import '../../../widgets/buttons/primary_button_widget.dart';
 import '../../../widgets/custom_image_widget.dart';
-import '../../../widgets/main_logo_widget.dart';
 import '../bloc/Signup_respotary.dart';
 
 class KycWelcomeScreen extends StatefulWidget {

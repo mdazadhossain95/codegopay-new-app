@@ -39,7 +39,6 @@ import '../../../Models/kyc/kyc_document_type_model.dart';
 import '../../../Models/login_section/forgot_password_model.dart';
 import '../../../Models/login_section/forgot_password_otp_model.dart';
 import '../../../Models/login_section/login_email_verified_model.dart';
-import '../../../Models/login_section/login_model.dart';
 import '../../../Models/signup_models/signup_email_verified_model.dart';
 import '../../../Models/signup_models/user_signup_account_model.dart';
 

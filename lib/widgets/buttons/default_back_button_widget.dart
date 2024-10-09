@@ -11,14 +11,14 @@ class DefaultBackButtonWidget extends StatelessWidget {
   final Color? apiColor; // Optional API-provided color
   final Color defaultColor; // Default color
 
-  const DefaultBackButtonWidget({
+   DefaultBackButtonWidget({
     super.key,
     required this.onTap,
     this.iconSize = 24.0, // Default icon size
     this.svgAssetPath = StaticAssets.arrowNarrowLeft, // Default SVG asset path
     this.apiColor, // Accept color from API
-    this.defaultColor = CustomColor.primaryColor, // Set a default color
-  });
+    Color? defaultColor, // Set a default color
+  }) : defaultColor = defaultColor ?? CustomColor.primaryColor;
 
   @override
   Widget build(BuildContext context) {

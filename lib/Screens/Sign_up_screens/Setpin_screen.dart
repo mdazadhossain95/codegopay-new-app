@@ -6,15 +6,12 @@ import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
 import 'package:codegopay/utils/input_fields/custom_color.dart';
 import 'package:codegopay/utils/validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../utils/custom_style.dart';
 import '../../utils/input_fields/custom_pincode_input_field_widget.dart';
 import '../../utils/strings.dart';
 import '../../utils/user_data_manager.dart';
-import '../../widgets/buttons/custom_icon_button_widget.dart';
 import '../../widgets/buttons/default_back_button_widget.dart';
 import '../../widgets/buttons/primary_button_widget.dart';
 

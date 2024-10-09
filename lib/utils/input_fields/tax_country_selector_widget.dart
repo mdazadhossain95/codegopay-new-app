@@ -14,8 +14,6 @@ import '../../widgets/custom_image_widget.dart';
 import '../custom_style.dart';
 import 'custom_color.dart';
 
-
-
 class TextCountrySelectorWidget extends StatefulWidget {
   final TextEditingController controller;
   final String label, hint, selectString;
@@ -43,19 +41,20 @@ class TextCountrySelectorWidget extends StatefulWidget {
   });
 
   @override
-  State<TextCountrySelectorWidget> createState() => _TextCountrySelectorWidgetState();
+  State<TextCountrySelectorWidget> createState() =>
+      _TextCountrySelectorWidgetState();
 }
 
 class _TextCountrySelectorWidgetState extends State<TextCountrySelectorWidget> {
   late CountryInfoModel
-  _selectedCountry; // Stores the selected country information
+      _selectedCountry; // Stores the selected country information
   FocusNode myFocusNode = FocusNode();
   bool bordershoww = false;
   bool _isCountryListLoaded =
-  false; // Indicates if country list has been loaded
+      false; // Indicates if country list has been loaded
   TextEditingController searchController = TextEditingController();
   List<CountryInfoModel> _countryList =
-  []; // Country list to display in selector
+      []; // Country list to display in selector
   List<CountryInfoModel> filteredItems = []; // Filtered list based on search
 
   @override
@@ -172,10 +171,10 @@ class _TextCountrySelectorWidgetState extends State<TextCountrySelectorWidget> {
                                 filteredItems = value.isEmpty
                                     ? _countryList // Show full list if search is empty
                                     : _countryList
-                                    .where((item) => item.countryName!
-                                    .toLowerCase()
-                                    .contains(value.toLowerCase()))
-                                    .toList();
+                                        .where((item) => item.countryName!
+                                            .toLowerCase()
+                                            .contains(value.toLowerCase()))
+                                        .toList();
                               });
                             },
                             decoration: InputDecoration(
@@ -186,7 +185,7 @@ class _TextCountrySelectorWidgetState extends State<TextCountrySelectorWidget> {
                               enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                     color:
-                                    CustomColor.primaryInputHintBorderColor,
+                                        CustomColor.primaryInputHintBorderColor,
                                     width: 1,
                                   ),
                                   borderRadius: BorderRadius.circular(12)),
@@ -205,21 +204,21 @@ class _TextCountrySelectorWidgetState extends State<TextCountrySelectorWidget> {
                               focusedBorder: OutlineInputBorder(
                                   borderSide: const BorderSide(
                                     color:
-                                    CustomColor.primaryInputHintBorderColor,
+                                        CustomColor.primaryInputHintBorderColor,
                                     width: 1,
                                   ),
                                   borderRadius: BorderRadius.circular(12)),
                               border: OutlineInputBorder(
                                   borderSide: const BorderSide(
                                     color:
-                                    CustomColor.primaryInputHintBorderColor,
+                                        CustomColor.primaryInputHintBorderColor,
                                     width: 1,
                                   ),
                                   borderRadius: BorderRadius.circular(12)),
                               disabledBorder: OutlineInputBorder(
                                   borderSide: const BorderSide(
                                     color:
-                                    CustomColor.primaryInputHintBorderColor,
+                                        CustomColor.primaryInputHintBorderColor,
                                     width: 1,
                                   ),
                                   borderRadius: BorderRadius.circular(12)),
@@ -243,14 +242,11 @@ class _TextCountrySelectorWidgetState extends State<TextCountrySelectorWidget> {
                                   onTap: () {
                                     Navigator.pop(context);
                                     widget.controller.text =
-                                    country.countryName!;
+                                        country.countryName!;
                                     widget.nationality == true
-                                        ? User.TaxCountry =
-                                        country.countryId
-                                        : User.TaxCountry =
-                                        country.countryId;
-                                    User.TaxCountry =
-                                        country.countryId;
+                                        ? User.TaxCountry = country.countryId
+                                        : User.TaxCountry = country.countryId;
+                                    User.TaxCountry = country.countryId;
                                     setState(() {
                                       bordershoww = true;
                                     });
@@ -273,7 +269,7 @@ class _TextCountrySelectorWidgetState extends State<TextCountrySelectorWidget> {
                                       children: [
                                         Padding(
                                           padding:
-                                          const EdgeInsets.only(right: 8),
+                                              const EdgeInsets.only(right: 8),
                                           child: Image.network(
                                             filteredItems[index].image!,
                                             height: 24,
@@ -350,21 +346,21 @@ class _TextCountrySelectorWidgetState extends State<TextCountrySelectorWidget> {
               borderRadius: BorderRadius.circular(11),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide: BorderSide(
                 color: CustomColor.primaryColor,
                 width: 1,
               ),
               borderRadius: BorderRadius.circular(11),
             ),
             border: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide: BorderSide(
                 color: CustomColor.primaryColor,
                 width: 1,
               ),
               borderRadius: BorderRadius.circular(11),
             ),
             disabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide: BorderSide(
                 color: CustomColor.primaryColor,
                 width: 1,
               ),

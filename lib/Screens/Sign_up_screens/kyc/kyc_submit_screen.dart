@@ -1,8 +1,5 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:codegopay/constant_string/User.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../widgets/toast/toast_util.dart';

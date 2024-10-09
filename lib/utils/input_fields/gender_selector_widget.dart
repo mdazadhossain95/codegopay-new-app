@@ -11,14 +11,14 @@ class OptionSelectorWidget extends StatefulWidget {
   final Color selectedColor; // Color for the selected option
   final Color unselectedColor; // Color for the unselected option
 
-  const OptionSelectorWidget({
+  OptionSelectorWidget({
     super.key,
     required this.controller,
     required this.label,
     required this.listItems,
-    this.selectedColor = CustomColor.primaryColor, // Default primary color
+    Color? selectedColor, // Default primary color
     this.unselectedColor = const Color(0xffF4F6F8), // Default unselected color
-  });
+  }) : selectedColor = selectedColor ?? CustomColor.primaryColor;
 
   @override
   State<OptionSelectorWidget> createState() => _OptionSelectorWidgetState();

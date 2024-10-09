@@ -34,17 +34,18 @@ class ProgressHUD extends StatelessWidget {
   final Widget child;
   final Color spinningKitColor;
 
-  const ProgressHUD({
+  ProgressHUD({
     super.key,
     required this.inAsyncCall,
     this.opacity = 0.1,
     this.color = Colors.black,
     this.offset,
     this.dismissible = false,
-    this.spinningKitColor =  CustomColor.primaryColor,
+    Color? spinningKitColor,
     required this.child,
   })  : assert(child != null),
-        assert(inAsyncCall != null);
+        assert(inAsyncCall != null),
+        spinningKitColor = spinningKitColor ?? CustomColor.primaryColor;
 
   @override
   Widget build(BuildContext context) {

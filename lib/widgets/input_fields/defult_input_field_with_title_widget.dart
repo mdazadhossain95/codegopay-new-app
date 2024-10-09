@@ -166,21 +166,21 @@ class _DefaultInputFieldWithTitleWidgetState extends State<DefaultInputFieldWith
               borderRadius: widget.borderRadius,
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide:  BorderSide(
                 color: CustomColor.primaryColor,
                 width: 1,
               ),
               borderRadius: widget.borderRadius,
             ),
             border: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide:  BorderSide(
                 color: CustomColor.primaryColor,
                 width: 1,
               ),
               borderRadius: widget.borderRadius,
             ),
             disabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide:  BorderSide(
                 color: CustomColor.primaryColor,
                 width: 1,
               ),

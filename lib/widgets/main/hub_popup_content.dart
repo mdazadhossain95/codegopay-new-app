@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../constant_string/User.dart';
 import '../../utils/assets.dart';
 import '../../utils/input_fields/custom_color.dart';
-import '../buttons/custom_icon_button_widget.dart';
 import 'hub_container_widget.dart';
 
 class HubPopupContent extends StatefulWidget {
@@ -83,9 +82,9 @@ class _HubPopupContentState extends State<HubPopupContent>
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "HUB",
+                            "Dashboard Menu",
                             style: GoogleFonts.inter(
-                              fontSize: 28,
+                              fontSize: 22,
                               fontWeight: FontWeight.w500,
                               color: CustomColor.black,
                             ),

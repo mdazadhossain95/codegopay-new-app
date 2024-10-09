@@ -1,10 +1,7 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
 import 'package:codegopay/utils/validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../Config/bloc/app_bloc.dart';
 import '../../../Config/bloc/app_respotary.dart';

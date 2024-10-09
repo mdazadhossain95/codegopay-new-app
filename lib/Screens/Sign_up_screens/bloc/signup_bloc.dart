@@ -30,7 +30,6 @@ import '../../../Models/kyc/kyc_face_verify_model.dart';
 import '../../../Models/kyc/kyc_submit_model.dart';
 import '../../../Models/kyc/user_kyc_check_status_model.dart';
 import '../../../Models/login_section/login_email_verified_model.dart';
-import '../../../Models/login_section/login_model.dart';
 import '../../../Models/signup_models/signup_email_verified_model.dart';
 import '../../../Models/signup_models/user_signup_account_model.dart';
 

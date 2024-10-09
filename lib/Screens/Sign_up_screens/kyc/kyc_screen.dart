@@ -2,7 +2,6 @@
 
 import 'dart:ui';
 
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:codegopay/utils/assets.dart';
 import 'package:codegopay/utils/input_fields/custom_color.dart';
 import 'package:codegopay/widgets/custom_image_widget.dart';

@@ -1,6 +1,4 @@
-import 'package:codegopay/utils/assets.dart';
 import 'package:codegopay/utils/validator.dart';
-import 'package:codegopay/widgets/custom_image_widget.dart';
 import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -118,21 +116,21 @@ class _DefaultDropDownFieldWithTitleWidgetState
               borderRadius: widget.borderRadius,
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide:  BorderSide(
                 color: CustomColor.primaryColor,
                 width: 1,
               ),
               borderRadius: widget.borderRadius,
             ),
             border: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide:  BorderSide(
                 color: CustomColor.primaryColor,
                 width: 1,
               ),
               borderRadius: widget.borderRadius,
             ),
             disabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide:  BorderSide(
                 color: CustomColor.primaryColor,
                 width: 1,
               ),

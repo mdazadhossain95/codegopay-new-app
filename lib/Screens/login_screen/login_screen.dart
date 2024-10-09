@@ -20,6 +20,7 @@ import '../../widgets/buttons/custom_icon_button_widget.dart';
 import '../../widgets/buttons/primary_button_widget.dart';
 import '../../widgets/input_fields/default_input_field_widget.dart';
 import '../../widgets/input_fields/default_password_input_field_widget.dart';
+import '../../widgets/toast/toast_util.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -131,19 +132,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             );
           } else if (state.loginResponse?.status == 0) {
-            AwesomeDialog(
-              context: context,
-              dialogType: DialogType.error,
-              animType: AnimType.rightSlide,
-              desc: state.loginResponse?.message,
-              btnCancelText: 'OK',
-              buttonsTextStyle: const TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'pop',
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white),
-              btnCancelOnPress: () {},
-            ).show();
+            CustomToast.showError(
+                context, "Sorry!", state.loginResponse!.message!);
           } else if (state.loginResponse?.status == 2) {
             //go to onboard profile
             UserDataManager()
@@ -284,7 +274,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     if (_isLoading)
-                      const Center(
+                       Center(
                         child: SpinKitDualRing(
                           color: CustomColor.primaryColor,
                         ),

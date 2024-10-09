@@ -7,12 +7,14 @@ class CustomContainerButton extends StatelessWidget {
   final String imagePath;
   final String buttonText;
   final VoidCallback onPressed;
+  bool? transferButton;
 
-  const CustomContainerButton({
+  CustomContainerButton({
     super.key,
     required this.imagePath,
     required this.buttonText,
     required this.onPressed,
+    this.transferButton = true,
   });
 
   @override
@@ -24,10 +26,14 @@ class CustomContainerButton extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(48),
           border: Border.all(color: CustomColor.whiteColor, width: 1),
-          color: CustomColor.dashboardSendContainerColor,
+          color: transferButton!
+              ? CustomColor.transferButtonColor
+              : CustomColor.depositButtonColor,
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFFEBDCFD), // Shadow color
+              color: transferButton!
+                  ? CustomColor.transferButtonColor.withOpacity(0.3)
+                  : CustomColor.depositButtonColor.withOpacity(0.3),
               offset: Offset(0, 0), // No offset
               spreadRadius: 2,
               blurRadius: 0,

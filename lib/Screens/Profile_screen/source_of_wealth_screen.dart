@@ -1,21 +1,17 @@
 import 'dart:ui' as ui;
 import 'dart:convert';
 
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:codegopay/Screens/Sign_up_screens/bloc/signup_bloc.dart';
 import 'package:codegopay/cutom_weidget/cutom_progress_bar.dart';
-import 'package:codegopay/cutom_weidget/input_textform.dart';
 import 'package:codegopay/cutom_weidget/selectsourcefund.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 
-import '../../cutom_weidget/select_funds.dart';
 import '../../cutom_weidget/text_uploadimages.dart';
 import '../../utils/custom_style.dart';
 import '../../utils/input_fields/custom_color.dart';

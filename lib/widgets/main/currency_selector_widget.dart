@@ -186,7 +186,7 @@ class _CurrencySelectorState extends State<CurrencySelector> {
                 borderRadius: BorderRadius.circular(11),
               ),
               focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
+                borderSide:  BorderSide(
                   color: CustomColor.primaryColor,
                   width: 1,
                 ),

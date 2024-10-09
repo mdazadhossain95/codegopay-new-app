@@ -348,21 +348,21 @@ class _InputSelectState extends State<InputSelect> {
               borderRadius: BorderRadius.circular(11),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide:  BorderSide(
                 color: CustomColor.primaryColor,
                 width: 1,
               ),
               borderRadius: BorderRadius.circular(11),
             ),
             border: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide:  BorderSide(
                 color: CustomColor.primaryColor,
                 width: 1,
               ),
               borderRadius: BorderRadius.circular(11),
             ),
             disabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide:  BorderSide(
                 color: CustomColor.primaryColor,
                 width: 1,
               ),

@@ -17,7 +17,7 @@ class PrimaryButtonWidget extends StatelessWidget {
   final Color defaultTextColor; // New property for default text color
 
   // Set default border color and default text color
-  const PrimaryButtonWidget(
+  PrimaryButtonWidget(
       {super.key,
       required this.onPressed, // Nullable function
       required this.buttonText,
@@ -25,14 +25,15 @@ class PrimaryButtonWidget extends StatelessWidget {
       this.width = double.infinity,
       this.margin = const EdgeInsets.only(bottom: 20),
       this.apiBackgroundColor, // Accepts color from API
-      this.defaultBackgroundColor =
-          CustomColor.primaryButtonColor, // Default local color
-      this.disabledColor = CustomColor.disableColor,
+      Color? defaultBackgroundColor, // Default local color
+      Color? disabledColor,
       this.elevation = 0,
       this.borderRadius = const BorderRadius.all(Radius.circular(1000)),
       this.textStyle, // Optional text style parameter
       this.defaultTextColor = CustomColor.primaryTextColor // Default text color
-      });
+      })
+      : disabledColor = disabledColor ?? CustomColor.disableColor,
+        defaultBackgroundColor = disabledColor ?? CustomColor.primaryColor;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +63,7 @@ class PrimaryButtonWidget extends StatelessWidget {
           buttonText,
           style: textStyle?.copyWith(
                   color: textStyle?.color ?? defaultTextColor) ??
-              GoogleFonts.sourceSans3(
+              GoogleFonts.inter(
                 color: defaultTextColor,
                 // Use defaultTextColor if no textStyle is provided
                 fontSize: 15,

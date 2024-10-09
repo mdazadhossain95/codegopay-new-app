@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:codegopay/Screens/Profile_screen/bloc/profile_bloc.dart';
 import 'package:codegopay/Screens/Profile_screen/change_password_otp_screen.dart';
 import 'package:codegopay/constant_string/User.dart';

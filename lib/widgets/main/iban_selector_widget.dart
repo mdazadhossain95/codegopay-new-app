@@ -177,7 +177,7 @@ class _IbanSelectorState extends State<IbanSelector> {
               borderRadius: BorderRadius.circular(11),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
+              borderSide:  BorderSide(
                 color: CustomColor.primaryColor,
                 width: 1,
               ),

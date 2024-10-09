@@ -7,7 +7,6 @@ import 'package:codegopay/Screens/investment/investment_screen.dart';
 
 import '../Screens/Dashboard_screen/Dashboard_screen.dart';
 import '../Screens/Dashboard_screen/create_iban_screen.dart';
-import '../Screens/Dashboard_screen/deposit_screen.dart';
 import '../Screens/Dashboard_screen/iban_kyc_screen.dart';
 import '../Screens/Dashboard_screen/transaction_screen.dart';
 import '../Screens/Profile_screen/source_of_wealth_screen.dart';
@@ -43,7 +42,6 @@ import '../Screens/card_screen_test/debit_card_screen.dart';
 import '../Screens/card_screen_test/perpaid_card_beneficiary_screen.dart';
 import '../Screens/card_screen_test/prepaid_card_activated_screen.dart';
 import '../Screens/crypto_screen/Crypto_screen.dart';
-import '../Screens/gift_card/buy_gift_card_confirm_details_screen.dart';
 import '../Screens/gift_card/show_gift_card_screen.dart';
 import '../Screens/investment/master_node_dashboard_screen.dart';
 import '../Screens/login_screen/forgot_password_screen.dart';
