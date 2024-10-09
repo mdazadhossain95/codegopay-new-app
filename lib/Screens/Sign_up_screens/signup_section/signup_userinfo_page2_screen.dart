@@ -87,6 +87,8 @@ class _SignupUserInfoPage2ScreenState extends State<SignupUserInfoPage2Screen> {
                         nationality: false,
                         listitems: BaseModel.availableCountriesList,
                         selectString: 'Select Country',
+                        onCountrySelected: (value) {},
+                        appRepo: appRespo,
                       ),
                       InputTextCustom(
                           controller: _residenceAddressController,

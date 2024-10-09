@@ -1,3 +1,4 @@
+import 'package:codegopay/Config/bloc/app_respotary.dart';
 import 'package:codegopay/Models/base_model.dart';
 import 'package:codegopay/Screens/Sign_up_screens/bloc/signup_bloc.dart';
 import 'package:codegopay/constant_string/User.dart';
@@ -31,6 +32,8 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
   FocusNode myFocusNode = FocusNode();
 
   FocusNode passwordFocusNode = FocusNode();
+
+  AppRespo appRespo = AppRespo();
 
   @override
   void initState() {
@@ -111,6 +114,8 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
                                     listitems: BaseModel.availableCountriesList,
                                     selectString: 'Select Country',
                                     nationality: false,
+                                    onCountrySelected: (CountryInfoModel) {},
+                                    appRepo: appRespo,
                                   ),
                                   InputTextCustom(
                                       controller: _reciveaddress,

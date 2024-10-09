@@ -108,6 +108,8 @@ class _SignupUserInfoPage1ScreenState extends State<SignupUserInfoPage1Screen> {
                         nationality: true,
                         listitems: _countryList,
                         selectString: 'Select Country',
+                        onCountrySelected: (value) {},
+                        appRepo: appRepo,
                       ),
                       CustomPhoneInputFieldWidget(
                         controller: _phoneController,
@@ -124,7 +126,8 @@ class _SignupUserInfoPage1ScreenState extends State<SignupUserInfoPage1Screen> {
                         // countryList: _countryList,
                         onCountrySelected: (value) {
                           print('Selected Country: ${value.countryName}');
-                        }, appRepo: appRepo,
+                        },
+                        appRepo: appRepo,
                       ),
                       InputTextCustom(
                         controller: _dobController,

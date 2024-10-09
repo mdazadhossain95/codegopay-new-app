@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../Models/base_model.dart';
+import '../../Models/country_info_model.dart';
 import '../../widgets/buttons/custom_icon_button_widget.dart';
 import '../../widgets/custom_image_widget.dart';
 import '../custom_style.dart';
@@ -20,6 +22,10 @@ class TextCountrySelectorWidget extends StatefulWidget {
   bool? nationality = true;
   final String? variable;
   final List listitems;
+  final Function(String)? onChange;
+  final bool readOnly;
+  final Function(CountryInfoModel) onCountrySelected;
+  final appRepo; // Accept the appRepo as a parameter to load countries dynamically
 
   TextCountrySelectorWidget({
     super.key,
@@ -30,6 +36,10 @@ class TextCountrySelectorWidget extends StatefulWidget {
     required this.selectString,
     this.nationality,
     this.variable,
+    this.readOnly = false,
+    required this.onCountrySelected,
+    required this.appRepo,
+    this.onChange, // Required field for appRepo
   });
 
   @override
@@ -37,36 +47,51 @@ class TextCountrySelectorWidget extends StatefulWidget {
 }
 
 class _TextCountrySelectorWidgetState extends State<TextCountrySelectorWidget> {
+  late CountryInfoModel
+  _selectedCountry; // Stores the selected country information
   FocusNode myFocusNode = FocusNode();
   bool bordershoww = false;
+  bool _isCountryListLoaded =
+  false; // Indicates if country list has been loaded
   TextEditingController searchController = TextEditingController();
-  List filteredItems = [];
+  List<CountryInfoModel> _countryList =
+  []; // Country list to display in selector
+  List<CountryInfoModel> filteredItems = []; // Filtered list based on search
 
   @override
   void initState() {
     super.initState();
+    _selectedCountry = CountryInfoModel(
+        countryCode: "+1",
+        countryName: "United States",
+        image: "path_to_default_image"); // Set a default country
+    _loadCountries(); // Call method to load countries from appRepo
     myFocusNode.addListener(() {
       setState(() {});
     });
+  }
 
-    // Initialize the filtered items list to show all items initially
-    filteredItems = widget.listitems;
-
-    searchController.addListener(() {
-      setState(() {
-        // Filter the list based on search input
-        filteredItems = widget.listitems
-            .where((item) => item.countryName
-            .toLowerCase()
-            .contains(searchController.text.toLowerCase()))
-            .toList();
-      });
+  // Function to load the country list using appRepo
+  Future<void> _loadCountries() async {
+    await widget.appRepo.GetCountries(); // Use appRepo to load the countries
+    setState(() {
+      _countryList =
+          BaseModel.availableCountriesList; // Fetch country list from BaseModel
+      filteredItems = _countryList; // Initialize filtered items
+      _isCountryListLoaded = true; // Set flag to true once list is loaded
+      if (_countryList.isNotEmpty) {
+        _selectedCountry =
+            _countryList.first; // Select the first country by default
+        widget.onCountrySelected(
+            _selectedCountry); // Call the callback function with selected country
+      }
     });
   }
 
   @override
   void dispose() {
-    searchController.dispose();
+    searchController.dispose(); // Dispose searchController
+    myFocusNode.dispose(); // Dispose focusNode
     super.dispose();
   }
 
@@ -94,7 +119,6 @@ class _TextCountrySelectorWidgetState extends State<TextCountrySelectorWidget> {
           focusNode: myFocusNode,
           readOnly: true,
           onTap: () {
-            filteredItems = widget.listitems;
             showModalBottomSheet(
               context: context,
               isDismissible: true,
@@ -127,7 +151,7 @@ class _TextCountrySelectorWidgetState extends State<TextCountrySelectorWidget> {
                                 svgAssetPath: StaticAssets.xClose,
                               ),
                               Text(
-                                widget.selectString,
+                                'Select Country',
                                 style: GoogleFonts.inter(
                                   color: CustomColor.primaryColor,
                                   fontSize: 17,
@@ -144,9 +168,11 @@ class _TextCountrySelectorWidgetState extends State<TextCountrySelectorWidget> {
                           TextField(
                             controller: searchController,
                             onChanged: (value) {
-                              setState(() {
-                                filteredItems = widget.listitems
-                                    .where((item) => item.countryName
+                              setStater(() {
+                                filteredItems = value.isEmpty
+                                    ? _countryList // Show full list if search is empty
+                                    : _countryList
+                                    .where((item) => item.countryName!
                                     .toLowerCase()
                                     .contains(value.toLowerCase()))
                                     .toList();
@@ -212,18 +238,19 @@ class _TextCountrySelectorWidgetState extends State<TextCountrySelectorWidget> {
                             child: ListView.builder(
                               itemCount: filteredItems.length,
                               itemBuilder: (BuildContext context, int index) {
+                                CountryInfoModel country = filteredItems[index];
                                 return InkWell(
                                   onTap: () {
                                     Navigator.pop(context);
                                     widget.controller.text =
-                                        filteredItems[index].countryName;
+                                    country.countryName!;
                                     widget.nationality == true
                                         ? User.TaxCountry =
-                                        filteredItems[index].countryId
+                                        country.countryId
                                         : User.TaxCountry =
-                                        filteredItems[index].countryId;
+                                        country.countryId;
                                     User.TaxCountry =
-                                        filteredItems[index].countryId;
+                                        country.countryId;
                                     setState(() {
                                       bordershoww = true;
                                     });
@@ -245,15 +272,16 @@ class _TextCountrySelectorWidgetState extends State<TextCountrySelectorWidget> {
                                     child: Row(
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.only(right: 8),
+                                          padding:
+                                          const EdgeInsets.only(right: 8),
                                           child: Image.network(
-                                            filteredItems[index].image,
+                                            filteredItems[index].image!,
                                             height: 24,
                                             width: 36,
                                           ),
                                         ),
                                         Text(
-                                          filteredItems[index].countryName,
+                                          filteredItems[index].countryName!,
                                           style: GoogleFonts.inter(
                                             color: CustomColor.black,
                                             fontSize: 14,

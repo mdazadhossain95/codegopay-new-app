@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../Config/bloc/app_respotary.dart';
 import '../../../Models/base_model.dart';
 import '../../../cutom_weidget/cutom_progress_bar.dart';
 import '../../../cutom_weidget/select_funds.dart';
@@ -38,6 +39,7 @@ class _SignupUserInfoPage3ScreenState extends State<SignupUserInfoPage3Screen> {
   bool active = false;
 
   final SignupBloc _signupBloc = SignupBloc();
+  final AppRespo appRespo = AppRespo();
 
   @override
   void initState() {
@@ -122,6 +124,8 @@ class _SignupUserInfoPage3ScreenState extends State<SignupUserInfoPage3Screen> {
                                   nationality: true,
                                   listitems: BaseModel.availableCountriesList,
                                   selectString: 'Select Country',
+                                  onCountrySelected: (value) {},
+                                  appRepo: appRespo,
                                 ),
                                 InputTextCustom(
                                     controller: _taxNumberController,
@@ -164,21 +168,19 @@ class _SignupUserInfoPage3ScreenState extends State<SignupUserInfoPage3Screen> {
                                       const EdgeInsets.symmetric(vertical: 20),
                                   child: PrimaryButtonWidget(
                                     onPressed: () {
-                                            if (_signupUserInfoPage3Key
-                                                .currentState!
-                                                .validate()) {
-                                              User.taxincome =
-                                                  _taxNumberController.text;
-                                              User.icomesource =
-                                                  _sourceOfFundsController.text;
-                                              User.purpose =
-                                                  _purposeOfAccountController
-                                                      .text;
+                                      if (_signupUserInfoPage3Key.currentState!
+                                          .validate()) {
+                                        User.taxincome =
+                                            _taxNumberController.text;
+                                        User.icomesource =
+                                            _sourceOfFundsController.text;
+                                        User.purpose =
+                                            _purposeOfAccountController.text;
 
-                                              _signupBloc.add(
-                                                  SignupPersonalDataEvent());
-                                            }
-                                          },
+                                        _signupBloc
+                                            .add(SignupPersonalDataEvent());
+                                      }
+                                    },
                                     buttonText: 'Continue',
                                   ),
                                 ),
